@@ -1937,7 +1937,7 @@ contains
     end subroutine disp_2_tstring_type
     
     !> Format output string
-    pure module function format_output_string(x, width, brief, sep, max_elem_len) result(str)
+    pure function format_output_string(x, width, brief, sep, max_elem_len) result(str)
     
         type(string_type), intent(in) :: x(:)
         integer, intent(in) :: width
@@ -2043,7 +2043,7 @@ contains
         
     end function format_output_string
     
-    !> Print array infomation
+    !> Print array information
     pure type(string_type) function array_info_maker(m, n) result(info)
         integer, intent(in) :: m
         integer, intent(in), optional :: n

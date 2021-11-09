@@ -31,7 +31,7 @@ module stdlib_io
   !> version: experimental
   !>
   !> Display a scalar, vector or matrix formatted.
-  !> ([Specification](../page/specs/stdlib_io.html#display-the-value-of-the-vairable))
+  !> ([Specification](../page/specs/stdlib_io.html#display-the-value-of-the-variable))
   interface disp
       module subroutine disp_char(x, header, unit, brief, format, width, sep)
           character(*), intent(in), optional :: x
