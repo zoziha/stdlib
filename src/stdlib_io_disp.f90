@@ -1082,7 +1082,7 @@ contains
         integer :: unit_, width_
         logical :: brief_
         character(len=:), allocatable :: format_, sep_
-        integer :: i
+        
         
         
         type(string_type) :: array_info
@@ -2044,7 +2044,7 @@ contains
     end function format_output_string
     
     !> Print array infomation
-    pure type(string_type) module function array_info_maker(m, n) result(info)
+    pure type(string_type) function array_info_maker(m, n) result(info)
         integer, intent(in) :: m
         integer, intent(in), optional :: n
         
@@ -2057,7 +2057,7 @@ contains
     end function array_info_maker
     
     !> Display `character(*)` value.
-    module subroutine disp_char(x, header, unit, brief, format, width, sep)
+    subroutine disp_char(x, header, unit, brief, format, width, sep)
     
         character(*), intent(in), optional :: x
         character(len=*), intent(in), optional :: header
