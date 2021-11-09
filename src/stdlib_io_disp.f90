@@ -2057,7 +2057,7 @@ contains
     end function array_info_maker
     
     !> Display `character(*)` value.
-    subroutine disp_char(x, header, unit, brief, format, width, sep)
+    module subroutine disp_char(x, header, unit, brief, format, width, sep)
     
         character(*), intent(in), optional :: x
         character(len=*), intent(in), optional :: header
