@@ -1989,7 +1989,7 @@ contains
             num1 = merge(width/elem_len, 1, elem_len <= width)
             num2 = size(x, 1)/num1
             
-            if (num2 > 1 .or. size(x, 1) /= 0) then
+            if (num2 > 1 .or. size(x, 1) > 1) then
                 allocate(str(merge(num2, num2 + 1, mod(size(x, 1), num1)==0)))
                 
                 do i = 1, size(str) - 1
