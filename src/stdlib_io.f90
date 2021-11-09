@@ -18,11 +18,20 @@ module stdlib_io
   ! Private API that is exposed so that we can test it in tests
   public :: parse_mode
 
-
+  ! Format strings with edit descriptors for each type and kind
+  character(*), parameter :: &
+    FMT_INT = '(*(i0,1x))', &
+    FMT_REAL_SP = '(*(es15.8e2,1x))', &
+    FMT_REAL_DP = '(*(es24.16e3,1x))', &
+    FMT_REAL_QP = '(*(es44.35e4,1x))', &
+    FMT_COMPLEX_SP = '(*(es15.8e2,1x,es15.8e2))', &
+    FMT_COMPLEX_DP = '(*(es24.16e3,1x,es24.16e3))', &
+    FMT_COMPLEX_QP = '(*(es44.35e4,1x,es44.35e4))'
+    
   !> version: experimental
   !>
   !> Display a scalar, vector or matrix.
-  !> ([Specification](../page/specs/stdlib_io.html#disp-display-your-data-to-the-screen-or-another-output-unit))
+  !> ([Specification](../page/specs/stdlib_io.html#disp-display-your-data))
   interface disp
     module subroutine disp_0_rsp(x, header, unit, brief)
         real(sp), intent(in) :: x
@@ -328,11 +337,11 @@ contains
       ncol = number_of_columns(s)
 
       ! determine number or rows
-      nrow = number_of_rows_numeric(s)
+      nrow = number_of_rows(s)
 
       allocate(d(nrow, ncol))
       do i = 1, nrow
-        read(s, *) d(i, :)
+          read(s, FMT_REAL_sp) d(i, :)
       end do
       close(s)
 
@@ -375,11 +384,11 @@ contains
       ncol = number_of_columns(s)
 
       ! determine number or rows
-      nrow = number_of_rows_numeric(s)
+      nrow = number_of_rows(s)
 
       allocate(d(nrow, ncol))
       do i = 1, nrow
-        read(s, *) d(i, :)
+          read(s, FMT_REAL_dp) d(i, :)
       end do
       close(s)
 
@@ -422,11 +431,11 @@ contains
       ncol = number_of_columns(s)
 
       ! determine number or rows
-      nrow = number_of_rows_numeric(s)
+      nrow = number_of_rows(s)
 
       allocate(d(nrow, ncol))
       do i = 1, nrow
-        read(s, *) d(i, :)
+          read(s, FMT_REAL_qp) d(i, :)
       end do
       close(s)
 
@@ -469,11 +478,11 @@ contains
       ncol = number_of_columns(s)
 
       ! determine number or rows
-      nrow = number_of_rows_numeric(s)
+      nrow = number_of_rows(s)
 
       allocate(d(nrow, ncol))
       do i = 1, nrow
-        read(s, *) d(i, :)
+          read(s, *) d(i, :)
       end do
       close(s)
 
@@ -516,11 +525,11 @@ contains
       ncol = number_of_columns(s)
 
       ! determine number or rows
-      nrow = number_of_rows_numeric(s)
+      nrow = number_of_rows(s)
 
       allocate(d(nrow, ncol))
       do i = 1, nrow
-        read(s, *) d(i, :)
+          read(s, *) d(i, :)
       end do
       close(s)
 
@@ -563,11 +572,11 @@ contains
       ncol = number_of_columns(s)
 
       ! determine number or rows
-      nrow = number_of_rows_numeric(s)
+      nrow = number_of_rows(s)
 
       allocate(d(nrow, ncol))
       do i = 1, nrow
-        read(s, *) d(i, :)
+          read(s, *) d(i, :)
       end do
       close(s)
 
@@ -610,11 +619,11 @@ contains
       ncol = number_of_columns(s)
 
       ! determine number or rows
-      nrow = number_of_rows_numeric(s)
+      nrow = number_of_rows(s)
 
       allocate(d(nrow, ncol))
       do i = 1, nrow
-        read(s, *) d(i, :)
+          read(s, *) d(i, :)
       end do
       close(s)
 
@@ -655,13 +664,14 @@ contains
 
       ! determine number of columns
       ncol = number_of_columns(s)
+      ncol = ncol / 2
 
       ! determine number or rows
-      nrow = number_of_rows_numeric(s)
+      nrow = number_of_rows(s)
 
       allocate(d(nrow, ncol))
       do i = 1, nrow
-        read(s, *) d(i, :)
+          read(s, FMT_COMPLEX_sp) d(i, :)
       end do
       close(s)
 
@@ -702,13 +712,14 @@ contains
 
       ! determine number of columns
       ncol = number_of_columns(s)
+      ncol = ncol / 2
 
       ! determine number or rows
-      nrow = number_of_rows_numeric(s)
+      nrow = number_of_rows(s)
 
       allocate(d(nrow, ncol))
       do i = 1, nrow
-        read(s, *) d(i, :)
+          read(s, FMT_COMPLEX_dp) d(i, :)
       end do
       close(s)
 
@@ -749,13 +760,14 @@ contains
 
       ! determine number of columns
       ncol = number_of_columns(s)
+      ncol = ncol / 2
 
       ! determine number or rows
-      nrow = number_of_rows_numeric(s)
+      nrow = number_of_rows(s)
 
       allocate(d(nrow, ncol))
       do i = 1, nrow
-        read(s, *) d(i, :)
+          read(s, FMT_COMPLEX_qp) d(i, :)
       end do
       close(s)
 
@@ -785,7 +797,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-        write(s, *) d(i, :)
+          write(s, FMT_REAL_sp) d(i, :)
       end do
       close(s)
     end subroutine savetxt_rsp
@@ -812,7 +824,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-        write(s, *) d(i, :)
+          write(s, FMT_REAL_dp) d(i, :)
       end do
       close(s)
     end subroutine savetxt_rdp
@@ -839,7 +851,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-        write(s, *) d(i, :)
+          write(s, FMT_REAL_qp) d(i, :)
       end do
       close(s)
     end subroutine savetxt_rqp
@@ -866,7 +878,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-        write(s, *) d(i, :)
+          write(s, FMT_INT) d(i, :)
       end do
       close(s)
     end subroutine savetxt_iint8
@@ -893,7 +905,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-        write(s, *) d(i, :)
+          write(s, FMT_INT) d(i, :)
       end do
       close(s)
     end subroutine savetxt_iint16
@@ -920,7 +932,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-        write(s, *) d(i, :)
+          write(s, FMT_INT) d(i, :)
       end do
       close(s)
     end subroutine savetxt_iint32
@@ -947,7 +959,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-        write(s, *) d(i, :)
+          write(s, FMT_INT) d(i, :)
       end do
       close(s)
     end subroutine savetxt_iint64
@@ -974,7 +986,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-        write(s, *) d(i, :)
+          write(s, FMT_COMPLEX_sp) d(i, :)
       end do
       close(s)
     end subroutine savetxt_csp
@@ -1001,7 +1013,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-        write(s, *) d(i, :)
+          write(s, FMT_COMPLEX_dp) d(i, :)
       end do
       close(s)
     end subroutine savetxt_cdp
@@ -1028,7 +1040,7 @@ contains
       integer :: s, i
       s = open(filename, "w")
       do i = 1, size(d, 1)
-        write(s, *) d(i, :)
+          write(s, FMT_COMPLEX_qp) d(i, :)
       end do
       close(s)
     end subroutine savetxt_cqp
@@ -1058,36 +1070,24 @@ contains
   end function number_of_columns
 
 
-  integer function number_of_rows_numeric(s) result(nrows)
+  integer function number_of_rows(s) result(nrows)
     !! version: experimental
     !!
-    !! determine number or rows
-    integer,intent(in)::s
+    !! Determine the number or rows in a file
+    integer, intent(in)::s
     integer :: ios
-
-    real :: r
-    complex :: z
 
     rewind(s)
     nrows = 0
     do
-      read(s, *, iostat=ios) r
+      read(s, *, iostat=ios)
       if (ios /= 0) exit
       nrows = nrows + 1
     end do
 
     rewind(s)
 
-    ! If there are no rows of real numbers, it may be that they are complex
-    if( nrows == 0) then
-      do
-        read(s, *, iostat=ios) z
-        if (ios /= 0) exit
-        nrows = nrows + 1
-      end do
-      rewind(s)
-    end if
-  end function number_of_rows_numeric
+  end function number_of_rows
 
 
   integer function open(filename, mode, iostat) result(u)
@@ -1225,4 +1225,4 @@ contains
 
   end function parse_mode
 
-end module
+end module stdlib_io

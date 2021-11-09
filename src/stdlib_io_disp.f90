@@ -5,17 +5,17 @@ submodule (stdlib_io) stdlib_io_disp
     use stdlib_strings,     only: to_string
     use stdlib_string_type, only: char
     implicit none
-    
+
     character(len=*), parameter :: rfmt        = '(*(g12.4, 1x))'
     character(len=*), parameter :: cfmt        = '(*(g25.0, 1x))'
     character(len=*), parameter :: fmt_        = 'g0.4'
-    integer,          parameter :: brief_col   = 5
     integer,          parameter :: brief_row   = 5
-    integer,          parameter :: default_col = 10
+    integer,          parameter :: brief_col   = 5
     integer,          parameter :: default_row = 50
-    
+    integer,          parameter :: default_col = 10
+
 contains
-    
+
     module procedure disp_0_rsp
         integer :: unit_
 
@@ -29,18 +29,18 @@ contains
     module procedure disp_1_rsp
         integer :: unit_
         logical :: brief_
-        integer :: m, col
-        
+        integer :: n, col
+
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
         col    = merge(brief_col, default_col, present(brief) .and. brief_)
-        m      = size(x, 1)
+        n      = size(x, 1)
 
         if (present(header)) write(unit_, *) header
-        write(unit_, *) '[vector size: ' // to_string(m) // ']'
+        write(unit_, *) '[vector size: ' // to_string(n) // ']'
 
-        if (brief_ .and. m > col) then
-            write(unit_, rfmt) x(1:col-2), '...', x(m)
+        if (brief_ .and. n > col) then
+            write(unit_, rfmt) x(1:col-2), '...', x(n)
         else
             write(unit_, rfmt) x(:)
         end if
@@ -51,34 +51,34 @@ contains
         integer :: unit_
         logical :: brief_
         integer :: i, m, n
-        integer :: col, row
+        integer :: row, col
         character(len=1) :: colon(default_col)
 
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
-        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         row    = merge(brief_row, default_row, present(brief) .and. brief_)
+        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         m      = size(x, 1)
         n      = size(x, 2)
 
         if (present(header)) write(unit_, *) header
         write(unit_, *) '[matrix size: ' // to_string(m) // '×' // to_string(n) // ']'
 
-        if (brief_ .and. (m > col .or. n > row)) then
+        if (brief_ .and. (m > row .or. n > col)) then
             colon = ':'
-            if (m > col .and. n > row) then
+            if (m > row .and. n > col) then
                 do i = 1, row-2
                     write(unit_, rfmt) x(i,1:col-2), '...', x(i,n)
                 end do
                 write(unit_, rfmt) colon(1:col)
                 write(unit_, rfmt) x(m,1:col-2), '...', x(m,n)
-            elseif (m > col .and. n <= row) then
-                do i = 1, 3
+            elseif (m > row .and. n <= col) then
+                do i = 1, row-2
                     write(unit_, rfmt) x(i,:)
                 end do
                 write(unit_, rfmt) colon(1:n)
                 write(unit_, rfmt) x(m,:)
-            elseif (m <= col .and. n > row) then
+            elseif (m <= row .and. n > col) then
                 do i = 1, m
                     write(unit_, rfmt) x(i,1:col-2), '...', x(i,n)
                 end do
@@ -103,18 +103,18 @@ contains
     module procedure disp_1_rdp
         integer :: unit_
         logical :: brief_
-        integer :: m, col
-        
+        integer :: n, col
+
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
         col    = merge(brief_col, default_col, present(brief) .and. brief_)
-        m      = size(x, 1)
+        n      = size(x, 1)
 
         if (present(header)) write(unit_, *) header
-        write(unit_, *) '[vector size: ' // to_string(m) // ']'
+        write(unit_, *) '[vector size: ' // to_string(n) // ']'
 
-        if (brief_ .and. m > col) then
-            write(unit_, rfmt) x(1:col-2), '...', x(m)
+        if (brief_ .and. n > col) then
+            write(unit_, rfmt) x(1:col-2), '...', x(n)
         else
             write(unit_, rfmt) x(:)
         end if
@@ -125,34 +125,34 @@ contains
         integer :: unit_
         logical :: brief_
         integer :: i, m, n
-        integer :: col, row
+        integer :: row, col
         character(len=1) :: colon(default_col)
 
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
-        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         row    = merge(brief_row, default_row, present(brief) .and. brief_)
+        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         m      = size(x, 1)
         n      = size(x, 2)
 
         if (present(header)) write(unit_, *) header
         write(unit_, *) '[matrix size: ' // to_string(m) // '×' // to_string(n) // ']'
 
-        if (brief_ .and. (m > col .or. n > row)) then
+        if (brief_ .and. (m > row .or. n > col)) then
             colon = ':'
-            if (m > col .and. n > row) then
+            if (m > row .and. n > col) then
                 do i = 1, row-2
                     write(unit_, rfmt) x(i,1:col-2), '...', x(i,n)
                 end do
                 write(unit_, rfmt) colon(1:col)
                 write(unit_, rfmt) x(m,1:col-2), '...', x(m,n)
-            elseif (m > col .and. n <= row) then
-                do i = 1, 3
+            elseif (m > row .and. n <= col) then
+                do i = 1, row-2
                     write(unit_, rfmt) x(i,:)
                 end do
                 write(unit_, rfmt) colon(1:n)
                 write(unit_, rfmt) x(m,:)
-            elseif (m <= col .and. n > row) then
+            elseif (m <= row .and. n > col) then
                 do i = 1, m
                     write(unit_, rfmt) x(i,1:col-2), '...', x(i,n)
                 end do
@@ -177,18 +177,18 @@ contains
     module procedure disp_1_rqp
         integer :: unit_
         logical :: brief_
-        integer :: m, col
-        
+        integer :: n, col
+
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
         col    = merge(brief_col, default_col, present(brief) .and. brief_)
-        m      = size(x, 1)
+        n      = size(x, 1)
 
         if (present(header)) write(unit_, *) header
-        write(unit_, *) '[vector size: ' // to_string(m) // ']'
+        write(unit_, *) '[vector size: ' // to_string(n) // ']'
 
-        if (brief_ .and. m > col) then
-            write(unit_, rfmt) x(1:col-2), '...', x(m)
+        if (brief_ .and. n > col) then
+            write(unit_, rfmt) x(1:col-2), '...', x(n)
         else
             write(unit_, rfmt) x(:)
         end if
@@ -199,34 +199,34 @@ contains
         integer :: unit_
         logical :: brief_
         integer :: i, m, n
-        integer :: col, row
+        integer :: row, col
         character(len=1) :: colon(default_col)
 
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
-        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         row    = merge(brief_row, default_row, present(brief) .and. brief_)
+        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         m      = size(x, 1)
         n      = size(x, 2)
 
         if (present(header)) write(unit_, *) header
         write(unit_, *) '[matrix size: ' // to_string(m) // '×' // to_string(n) // ']'
 
-        if (brief_ .and. (m > col .or. n > row)) then
+        if (brief_ .and. (m > row .or. n > col)) then
             colon = ':'
-            if (m > col .and. n > row) then
+            if (m > row .and. n > col) then
                 do i = 1, row-2
                     write(unit_, rfmt) x(i,1:col-2), '...', x(i,n)
                 end do
                 write(unit_, rfmt) colon(1:col)
                 write(unit_, rfmt) x(m,1:col-2), '...', x(m,n)
-            elseif (m > col .and. n <= row) then
-                do i = 1, 3
+            elseif (m > row .and. n <= col) then
+                do i = 1, row-2
                     write(unit_, rfmt) x(i,:)
                 end do
                 write(unit_, rfmt) colon(1:n)
                 write(unit_, rfmt) x(m,:)
-            elseif (m <= col .and. n > row) then
+            elseif (m <= row .and. n > col) then
                 do i = 1, m
                     write(unit_, rfmt) x(i,1:col-2), '...', x(i,n)
                 end do
@@ -251,18 +251,18 @@ contains
     module procedure disp_1_iint8
         integer :: unit_
         logical :: brief_
-        integer :: m, col
-        
+        integer :: n, col
+
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
         col    = merge(brief_col, default_col, present(brief) .and. brief_)
-        m      = size(x, 1)
+        n      = size(x, 1)
 
         if (present(header)) write(unit_, *) header
-        write(unit_, *) '[vector size: ' // to_string(m) // ']'
+        write(unit_, *) '[vector size: ' // to_string(n) // ']'
 
-        if (brief_ .and. m > col) then
-            write(unit_, rfmt) x(1:col-2), '...', x(m)
+        if (brief_ .and. n > col) then
+            write(unit_, rfmt) x(1:col-2), '...', x(n)
         else
             write(unit_, rfmt) x(:)
         end if
@@ -273,34 +273,34 @@ contains
         integer :: unit_
         logical :: brief_
         integer :: i, m, n
-        integer :: col, row
+        integer :: row, col
         character(len=1) :: colon(default_col)
 
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
-        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         row    = merge(brief_row, default_row, present(brief) .and. brief_)
+        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         m      = size(x, 1)
         n      = size(x, 2)
 
         if (present(header)) write(unit_, *) header
         write(unit_, *) '[matrix size: ' // to_string(m) // '×' // to_string(n) // ']'
 
-        if (brief_ .and. (m > col .or. n > row)) then
+        if (brief_ .and. (m > row .or. n > col)) then
             colon = ':'
-            if (m > col .and. n > row) then
+            if (m > row .and. n > col) then
                 do i = 1, row-2
                     write(unit_, rfmt) x(i,1:col-2), '...', x(i,n)
                 end do
                 write(unit_, rfmt) colon(1:col)
                 write(unit_, rfmt) x(m,1:col-2), '...', x(m,n)
-            elseif (m > col .and. n <= row) then
-                do i = 1, 3
+            elseif (m > row .and. n <= col) then
+                do i = 1, row-2
                     write(unit_, rfmt) x(i,:)
                 end do
                 write(unit_, rfmt) colon(1:n)
                 write(unit_, rfmt) x(m,:)
-            elseif (m <= col .and. n > row) then
+            elseif (m <= row .and. n > col) then
                 do i = 1, m
                     write(unit_, rfmt) x(i,1:col-2), '...', x(i,n)
                 end do
@@ -325,18 +325,18 @@ contains
     module procedure disp_1_iint16
         integer :: unit_
         logical :: brief_
-        integer :: m, col
-        
+        integer :: n, col
+
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
         col    = merge(brief_col, default_col, present(brief) .and. brief_)
-        m      = size(x, 1)
+        n      = size(x, 1)
 
         if (present(header)) write(unit_, *) header
-        write(unit_, *) '[vector size: ' // to_string(m) // ']'
+        write(unit_, *) '[vector size: ' // to_string(n) // ']'
 
-        if (brief_ .and. m > col) then
-            write(unit_, rfmt) x(1:col-2), '...', x(m)
+        if (brief_ .and. n > col) then
+            write(unit_, rfmt) x(1:col-2), '...', x(n)
         else
             write(unit_, rfmt) x(:)
         end if
@@ -347,34 +347,34 @@ contains
         integer :: unit_
         logical :: brief_
         integer :: i, m, n
-        integer :: col, row
+        integer :: row, col
         character(len=1) :: colon(default_col)
 
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
-        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         row    = merge(brief_row, default_row, present(brief) .and. brief_)
+        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         m      = size(x, 1)
         n      = size(x, 2)
 
         if (present(header)) write(unit_, *) header
         write(unit_, *) '[matrix size: ' // to_string(m) // '×' // to_string(n) // ']'
 
-        if (brief_ .and. (m > col .or. n > row)) then
+        if (brief_ .and. (m > row .or. n > col)) then
             colon = ':'
-            if (m > col .and. n > row) then
+            if (m > row .and. n > col) then
                 do i = 1, row-2
                     write(unit_, rfmt) x(i,1:col-2), '...', x(i,n)
                 end do
                 write(unit_, rfmt) colon(1:col)
                 write(unit_, rfmt) x(m,1:col-2), '...', x(m,n)
-            elseif (m > col .and. n <= row) then
-                do i = 1, 3
+            elseif (m > row .and. n <= col) then
+                do i = 1, row-2
                     write(unit_, rfmt) x(i,:)
                 end do
                 write(unit_, rfmt) colon(1:n)
                 write(unit_, rfmt) x(m,:)
-            elseif (m <= col .and. n > row) then
+            elseif (m <= row .and. n > col) then
                 do i = 1, m
                     write(unit_, rfmt) x(i,1:col-2), '...', x(i,n)
                 end do
@@ -399,18 +399,18 @@ contains
     module procedure disp_1_iint32
         integer :: unit_
         logical :: brief_
-        integer :: m, col
-        
+        integer :: n, col
+
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
         col    = merge(brief_col, default_col, present(brief) .and. brief_)
-        m      = size(x, 1)
+        n      = size(x, 1)
 
         if (present(header)) write(unit_, *) header
-        write(unit_, *) '[vector size: ' // to_string(m) // ']'
+        write(unit_, *) '[vector size: ' // to_string(n) // ']'
 
-        if (brief_ .and. m > col) then
-            write(unit_, rfmt) x(1:col-2), '...', x(m)
+        if (brief_ .and. n > col) then
+            write(unit_, rfmt) x(1:col-2), '...', x(n)
         else
             write(unit_, rfmt) x(:)
         end if
@@ -421,34 +421,34 @@ contains
         integer :: unit_
         logical :: brief_
         integer :: i, m, n
-        integer :: col, row
+        integer :: row, col
         character(len=1) :: colon(default_col)
 
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
-        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         row    = merge(brief_row, default_row, present(brief) .and. brief_)
+        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         m      = size(x, 1)
         n      = size(x, 2)
 
         if (present(header)) write(unit_, *) header
         write(unit_, *) '[matrix size: ' // to_string(m) // '×' // to_string(n) // ']'
 
-        if (brief_ .and. (m > col .or. n > row)) then
+        if (brief_ .and. (m > row .or. n > col)) then
             colon = ':'
-            if (m > col .and. n > row) then
+            if (m > row .and. n > col) then
                 do i = 1, row-2
                     write(unit_, rfmt) x(i,1:col-2), '...', x(i,n)
                 end do
                 write(unit_, rfmt) colon(1:col)
                 write(unit_, rfmt) x(m,1:col-2), '...', x(m,n)
-            elseif (m > col .and. n <= row) then
-                do i = 1, 3
+            elseif (m > row .and. n <= col) then
+                do i = 1, row-2
                     write(unit_, rfmt) x(i,:)
                 end do
                 write(unit_, rfmt) colon(1:n)
                 write(unit_, rfmt) x(m,:)
-            elseif (m <= col .and. n > row) then
+            elseif (m <= row .and. n > col) then
                 do i = 1, m
                     write(unit_, rfmt) x(i,1:col-2), '...', x(i,n)
                 end do
@@ -473,18 +473,18 @@ contains
     module procedure disp_1_iint64
         integer :: unit_
         logical :: brief_
-        integer :: m, col
-        
+        integer :: n, col
+
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
         col    = merge(brief_col, default_col, present(brief) .and. brief_)
-        m      = size(x, 1)
+        n      = size(x, 1)
 
         if (present(header)) write(unit_, *) header
-        write(unit_, *) '[vector size: ' // to_string(m) // ']'
+        write(unit_, *) '[vector size: ' // to_string(n) // ']'
 
-        if (brief_ .and. m > col) then
-            write(unit_, rfmt) x(1:col-2), '...', x(m)
+        if (brief_ .and. n > col) then
+            write(unit_, rfmt) x(1:col-2), '...', x(n)
         else
             write(unit_, rfmt) x(:)
         end if
@@ -495,34 +495,34 @@ contains
         integer :: unit_
         logical :: brief_
         integer :: i, m, n
-        integer :: col, row
+        integer :: row, col
         character(len=1) :: colon(default_col)
 
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
-        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         row    = merge(brief_row, default_row, present(brief) .and. brief_)
+        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         m      = size(x, 1)
         n      = size(x, 2)
 
         if (present(header)) write(unit_, *) header
         write(unit_, *) '[matrix size: ' // to_string(m) // '×' // to_string(n) // ']'
 
-        if (brief_ .and. (m > col .or. n > row)) then
+        if (brief_ .and. (m > row .or. n > col)) then
             colon = ':'
-            if (m > col .and. n > row) then
+            if (m > row .and. n > col) then
                 do i = 1, row-2
                     write(unit_, rfmt) x(i,1:col-2), '...', x(i,n)
                 end do
                 write(unit_, rfmt) colon(1:col)
                 write(unit_, rfmt) x(m,1:col-2), '...', x(m,n)
-            elseif (m > col .and. n <= row) then
-                do i = 1, 3
+            elseif (m > row .and. n <= col) then
+                do i = 1, row-2
                     write(unit_, rfmt) x(i,:)
                 end do
                 write(unit_, rfmt) colon(1:n)
                 write(unit_, rfmt) x(m,:)
-            elseif (m <= col .and. n > row) then
+            elseif (m <= row .and. n > col) then
                 do i = 1, m
                     write(unit_, rfmt) x(i,1:col-2), '...', x(i,n)
                 end do
@@ -547,18 +547,18 @@ contains
     module procedure disp_1_llk
         integer :: unit_
         logical :: brief_
-        integer :: m, col
-        
+        integer :: n, col
+
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
         col    = merge(brief_col, default_col, present(brief) .and. brief_)
-        m      = size(x, 1)
+        n      = size(x, 1)
 
         if (present(header)) write(unit_, *) header
-        write(unit_, *) '[vector size: ' // to_string(m) // ']'
+        write(unit_, *) '[vector size: ' // to_string(n) // ']'
 
-        if (brief_ .and. m > col) then
-            write(unit_, rfmt) x(1:col-2), '...', x(m)
+        if (brief_ .and. n > col) then
+            write(unit_, rfmt) x(1:col-2), '...', x(n)
         else
             write(unit_, rfmt) x(:)
         end if
@@ -569,34 +569,34 @@ contains
         integer :: unit_
         logical :: brief_
         integer :: i, m, n
-        integer :: col, row
+        integer :: row, col
         character(len=1) :: colon(default_col)
 
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
-        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         row    = merge(brief_row, default_row, present(brief) .and. brief_)
+        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         m      = size(x, 1)
         n      = size(x, 2)
 
         if (present(header)) write(unit_, *) header
         write(unit_, *) '[matrix size: ' // to_string(m) // '×' // to_string(n) // ']'
 
-        if (brief_ .and. (m > col .or. n > row)) then
+        if (brief_ .and. (m > row .or. n > col)) then
             colon = ':'
-            if (m > col .and. n > row) then
+            if (m > row .and. n > col) then
                 do i = 1, row-2
                     write(unit_, rfmt) x(i,1:col-2), '...', x(i,n)
                 end do
                 write(unit_, rfmt) colon(1:col)
                 write(unit_, rfmt) x(m,1:col-2), '...', x(m,n)
-            elseif (m > col .and. n <= row) then
-                do i = 1, 3
+            elseif (m > row .and. n <= col) then
+                do i = 1, row-2
                     write(unit_, rfmt) x(i,:)
                 end do
                 write(unit_, rfmt) colon(1:n)
                 write(unit_, rfmt) x(m,:)
-            elseif (m <= col .and. n > row) then
+            elseif (m <= row .and. n > col) then
                 do i = 1, m
                     write(unit_, rfmt) x(i,1:col-2), '...', x(i,n)
                 end do
@@ -621,18 +621,18 @@ contains
     module procedure disp_1_lc_bool
         integer :: unit_
         logical :: brief_
-        integer :: m, col
-        
+        integer :: n, col
+
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
         col    = merge(brief_col, default_col, present(brief) .and. brief_)
-        m      = size(x, 1)
+        n      = size(x, 1)
 
         if (present(header)) write(unit_, *) header
-        write(unit_, *) '[vector size: ' // to_string(m) // ']'
+        write(unit_, *) '[vector size: ' // to_string(n) // ']'
 
-        if (brief_ .and. m > col) then
-            write(unit_, rfmt) x(1:col-2), '...', x(m)
+        if (brief_ .and. n > col) then
+            write(unit_, rfmt) x(1:col-2), '...', x(n)
         else
             write(unit_, rfmt) x(:)
         end if
@@ -643,34 +643,34 @@ contains
         integer :: unit_
         logical :: brief_
         integer :: i, m, n
-        integer :: col, row
+        integer :: row, col
         character(len=1) :: colon(default_col)
 
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
-        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         row    = merge(brief_row, default_row, present(brief) .and. brief_)
+        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         m      = size(x, 1)
         n      = size(x, 2)
 
         if (present(header)) write(unit_, *) header
         write(unit_, *) '[matrix size: ' // to_string(m) // '×' // to_string(n) // ']'
 
-        if (brief_ .and. (m > col .or. n > row)) then
+        if (brief_ .and. (m > row .or. n > col)) then
             colon = ':'
-            if (m > col .and. n > row) then
+            if (m > row .and. n > col) then
                 do i = 1, row-2
                     write(unit_, rfmt) x(i,1:col-2), '...', x(i,n)
                 end do
                 write(unit_, rfmt) colon(1:col)
                 write(unit_, rfmt) x(m,1:col-2), '...', x(m,n)
-            elseif (m > col .and. n <= row) then
-                do i = 1, 3
+            elseif (m > row .and. n <= col) then
+                do i = 1, row-2
                     write(unit_, rfmt) x(i,:)
                 end do
                 write(unit_, rfmt) colon(1:n)
                 write(unit_, rfmt) x(m,:)
-            elseif (m <= col .and. n > row) then
+            elseif (m <= row .and. n > col) then
                 do i = 1, m
                     write(unit_, rfmt) x(i,1:col-2), '...', x(i,n)
                 end do
@@ -696,20 +696,20 @@ contains
     module procedure disp_1_csp
         integer :: unit_
         logical :: brief_
-        integer :: i, m, col
+        integer :: i, n, col
 
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
         col    = merge(brief_col, default_col, present(brief) .and. brief_)
-        m      = size(x, 1)
+        n      = size(x, 1)
 
         if (present(header)) write(unit_, *) header
-        write(unit_, *) '[vector size: ' // to_string(m) // ']'
+        write(unit_, *) '[vector size: ' // to_string(n) // ']'
 
-        if (brief_ .and. m > col) then
-            write(unit_, cfmt) (to_string(x(i), fmt_), i=1, col-2), '...', to_string(x(m), fmt_)
+        if (brief_ .and. n > col) then
+            write(unit_, cfmt) (to_string(x(i), fmt_), i=1, col-2), '...', to_string(x(n), fmt_)
         else
-            write(unit_, cfmt) (to_string(x(i), fmt_), i=1, m)
+            write(unit_, cfmt) (to_string(x(i), fmt_), i=1, n)
         end if
 
     end procedure disp_1_csp
@@ -718,34 +718,34 @@ contains
         integer :: unit_
         logical :: brief_
         integer :: i, j, m, n
-        integer :: col, row
+        integer :: row, col
         character(len=1) :: colon(default_col)
 
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
-        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         row    = merge(brief_row, default_row, present(brief) .and. brief_)
+        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         m      = size(x, 1)
         n      = size(x, 2)
 
         if (present(header)) write(unit_, *) header
         write(unit_, *) '[matrix size: ' // to_string(m) // '×' // to_string(n) // ']'
 
-        if (brief_ .and. (m > col .or. n > row)) then
+        if (brief_ .and. (m > row .or. n > col)) then
             colon = ':'
-            if (m > col .and. n > row) then
-                do i = 1, col-2
+            if (m > row .and. n > col) then
+                do i = 1, row-2
                     write(unit_, cfmt) (to_string(x(i,j), fmt_), j=1, col-2), '...', to_string(x(i,n), fmt_)
                 end do
                 write(unit_, cfmt) colon(1:col)
                 write(unit_, cfmt) (to_string(x(m,j), fmt_), j=1, col-2), '...', to_string(x(m,n), fmt_)
-            elseif (m > col .and. n <= row) then
-                do i = 1, col-2
+            elseif (m > row .and. n <= col) then
+                do i = 1, row-2
                     write(unit_, cfmt) (to_string(x(i,j), fmt_), j=1, n)
                 end do
                 write(unit_, cfmt) colon(1:n)
                 write(unit_, cfmt) (to_string(x(m,j), fmt_), j=1, n)
-            elseif (m <= col .and. n > row) then
+            elseif (m <= row .and. n > col) then
                 do i = 1, m
                     write(unit_, cfmt) (to_string(x(m,j), fmt_), j=1, col-2), '...', to_string(x(m,n), fmt_)
                 end do
@@ -770,20 +770,20 @@ contains
     module procedure disp_1_cdp
         integer :: unit_
         logical :: brief_
-        integer :: i, m, col
+        integer :: i, n, col
 
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
         col    = merge(brief_col, default_col, present(brief) .and. brief_)
-        m      = size(x, 1)
+        n      = size(x, 1)
 
         if (present(header)) write(unit_, *) header
-        write(unit_, *) '[vector size: ' // to_string(m) // ']'
+        write(unit_, *) '[vector size: ' // to_string(n) // ']'
 
-        if (brief_ .and. m > col) then
-            write(unit_, cfmt) (to_string(x(i), fmt_), i=1, col-2), '...', to_string(x(m), fmt_)
+        if (brief_ .and. n > col) then
+            write(unit_, cfmt) (to_string(x(i), fmt_), i=1, col-2), '...', to_string(x(n), fmt_)
         else
-            write(unit_, cfmt) (to_string(x(i), fmt_), i=1, m)
+            write(unit_, cfmt) (to_string(x(i), fmt_), i=1, n)
         end if
 
     end procedure disp_1_cdp
@@ -792,34 +792,34 @@ contains
         integer :: unit_
         logical :: brief_
         integer :: i, j, m, n
-        integer :: col, row
+        integer :: row, col
         character(len=1) :: colon(default_col)
 
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
-        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         row    = merge(brief_row, default_row, present(brief) .and. brief_)
+        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         m      = size(x, 1)
         n      = size(x, 2)
 
         if (present(header)) write(unit_, *) header
         write(unit_, *) '[matrix size: ' // to_string(m) // '×' // to_string(n) // ']'
 
-        if (brief_ .and. (m > col .or. n > row)) then
+        if (brief_ .and. (m > row .or. n > col)) then
             colon = ':'
-            if (m > col .and. n > row) then
-                do i = 1, col-2
+            if (m > row .and. n > col) then
+                do i = 1, row-2
                     write(unit_, cfmt) (to_string(x(i,j), fmt_), j=1, col-2), '...', to_string(x(i,n), fmt_)
                 end do
                 write(unit_, cfmt) colon(1:col)
                 write(unit_, cfmt) (to_string(x(m,j), fmt_), j=1, col-2), '...', to_string(x(m,n), fmt_)
-            elseif (m > col .and. n <= row) then
-                do i = 1, col-2
+            elseif (m > row .and. n <= col) then
+                do i = 1, row-2
                     write(unit_, cfmt) (to_string(x(i,j), fmt_), j=1, n)
                 end do
                 write(unit_, cfmt) colon(1:n)
                 write(unit_, cfmt) (to_string(x(m,j), fmt_), j=1, n)
-            elseif (m <= col .and. n > row) then
+            elseif (m <= row .and. n > col) then
                 do i = 1, m
                     write(unit_, cfmt) (to_string(x(m,j), fmt_), j=1, col-2), '...', to_string(x(m,n), fmt_)
                 end do
@@ -844,20 +844,20 @@ contains
     module procedure disp_1_cqp
         integer :: unit_
         logical :: brief_
-        integer :: i, m, col
+        integer :: i, n, col
 
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
         col    = merge(brief_col, default_col, present(brief) .and. brief_)
-        m      = size(x, 1)
+        n      = size(x, 1)
 
         if (present(header)) write(unit_, *) header
-        write(unit_, *) '[vector size: ' // to_string(m) // ']'
+        write(unit_, *) '[vector size: ' // to_string(n) // ']'
 
-        if (brief_ .and. m > col) then
-            write(unit_, cfmt) (to_string(x(i), fmt_), i=1, col-2), '...', to_string(x(m), fmt_)
+        if (brief_ .and. n > col) then
+            write(unit_, cfmt) (to_string(x(i), fmt_), i=1, col-2), '...', to_string(x(n), fmt_)
         else
-            write(unit_, cfmt) (to_string(x(i), fmt_), i=1, m)
+            write(unit_, cfmt) (to_string(x(i), fmt_), i=1, n)
         end if
 
     end procedure disp_1_cqp
@@ -866,34 +866,34 @@ contains
         integer :: unit_
         logical :: brief_
         integer :: i, j, m, n
-        integer :: col, row
+        integer :: row, col
         character(len=1) :: colon(default_col)
 
         unit_  = optval(unit, output_unit)
         brief_ = optval(brief, .true.)
-        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         row    = merge(brief_row, default_row, present(brief) .and. brief_)
+        col    = merge(brief_col, default_col, present(brief) .and. brief_)
         m      = size(x, 1)
         n      = size(x, 2)
 
         if (present(header)) write(unit_, *) header
         write(unit_, *) '[matrix size: ' // to_string(m) // '×' // to_string(n) // ']'
 
-        if (brief_ .and. (m > col .or. n > row)) then
+        if (brief_ .and. (m > row .or. n > col)) then
             colon = ':'
-            if (m > col .and. n > row) then
-                do i = 1, col-2
+            if (m > row .and. n > col) then
+                do i = 1, row-2
                     write(unit_, cfmt) (to_string(x(i,j), fmt_), j=1, col-2), '...', to_string(x(i,n), fmt_)
                 end do
                 write(unit_, cfmt) colon(1:col)
                 write(unit_, cfmt) (to_string(x(m,j), fmt_), j=1, col-2), '...', to_string(x(m,n), fmt_)
-            elseif (m > col .and. n <= row) then
-                do i = 1, col-2
+            elseif (m > row .and. n <= col) then
+                do i = 1, row-2
                     write(unit_, cfmt) (to_string(x(i,j), fmt_), j=1, n)
                 end do
                 write(unit_, cfmt) colon(1:n)
                 write(unit_, cfmt) (to_string(x(m,j), fmt_), j=1, n)
-            elseif (m <= col .and. n > row) then
+            elseif (m <= row .and. n > col) then
                 do i = 1, m
                     write(unit_, cfmt) (to_string(x(m,j), fmt_), j=1, col-2), '...', to_string(x(m,n), fmt_)
                 end do
