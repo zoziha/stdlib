@@ -40,7 +40,7 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
@@ -80,7 +80,7 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
@@ -120,7 +120,7 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
@@ -160,7 +160,7 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
@@ -200,7 +200,7 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
@@ -240,7 +240,7 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
@@ -280,7 +280,7 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
@@ -320,7 +320,7 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
@@ -360,7 +360,7 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
@@ -400,7 +400,7 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
@@ -440,7 +440,7 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
@@ -480,7 +480,7 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
@@ -520,7 +520,7 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
@@ -558,12 +558,12 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
                 array_info = array_info_maker(size(x, 1))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
             
                 allocate(x_str(size(x, 1)))
                 do i = 1, size(x, 1)
@@ -603,12 +603,12 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
                 array_info = array_info_maker(size(x, 1))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
             
                 allocate(x_str(size(x, 1)))
                 do i = 1, size(x, 1)
@@ -648,12 +648,12 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
                 array_info = array_info_maker(size(x, 1))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
             
                 allocate(x_str(size(x, 1)))
                 do i = 1, size(x, 1)
@@ -693,12 +693,12 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
                 array_info = array_info_maker(size(x, 1))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
             
                 allocate(x_str(size(x, 1)))
                 do i = 1, size(x, 1)
@@ -738,12 +738,12 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
                 array_info = array_info_maker(size(x, 1))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
             
                 allocate(x_str(size(x, 1)))
                 do i = 1, size(x, 1)
@@ -783,12 +783,12 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
                 array_info = array_info_maker(size(x, 1))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
             
                 allocate(x_str(size(x, 1)))
                 do i = 1, size(x, 1)
@@ -828,12 +828,12 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
                 array_info = array_info_maker(size(x, 1))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
             
                 allocate(x_str(size(x, 1)))
                 do i = 1, size(x, 1)
@@ -873,12 +873,12 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
                 array_info = array_info_maker(size(x, 1))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
             
                 allocate(x_str(size(x, 1)))
                 do i = 1, size(x, 1)
@@ -918,12 +918,12 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
                 array_info = array_info_maker(size(x, 1))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
             
                 allocate(x_str(size(x, 1)))
                 do i = 1, size(x, 1)
@@ -963,12 +963,12 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
                 array_info = array_info_maker(size(x, 1))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
             
                 allocate(x_str(size(x, 1)))
                 do i = 1, size(x, 1)
@@ -1008,12 +1008,12 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
                 array_info = array_info_maker(size(x, 1))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
             
                 allocate(x_str(size(x, 1)))
                 do i = 1, size(x, 1)
@@ -1053,12 +1053,12 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
                 array_info = array_info_maker(size(x, 1))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
             
                 allocate(x_str(size(x, 1)))
                 do i = 1, size(x, 1)
@@ -1098,12 +1098,12 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
                 array_info = array_info_maker(size(x, 1))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
                 
                 write(unit_, "(*(A))") format_output_string(x, width_, brief_, sep_, maxval(len(x)))
                 
@@ -1139,13 +1139,13 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
             
                 array_info = array_info_maker(size(x, 1), size(x, 2))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
                 
                 allocate(x_str(size(x, 1), size(x, 2)))
                 do i = 1, size(x, 1)
@@ -1203,13 +1203,13 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
             
                 array_info = array_info_maker(size(x, 1), size(x, 2))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
                 
                 allocate(x_str(size(x, 1), size(x, 2)))
                 do i = 1, size(x, 1)
@@ -1267,13 +1267,13 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
             
                 array_info = array_info_maker(size(x, 1), size(x, 2))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
                 
                 allocate(x_str(size(x, 1), size(x, 2)))
                 do i = 1, size(x, 1)
@@ -1331,13 +1331,13 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
             
                 array_info = array_info_maker(size(x, 1), size(x, 2))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
                 
                 allocate(x_str(size(x, 1), size(x, 2)))
                 do i = 1, size(x, 1)
@@ -1395,13 +1395,13 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
             
                 array_info = array_info_maker(size(x, 1), size(x, 2))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
                 
                 allocate(x_str(size(x, 1), size(x, 2)))
                 do i = 1, size(x, 1)
@@ -1459,13 +1459,13 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
             
                 array_info = array_info_maker(size(x, 1), size(x, 2))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
                 
                 allocate(x_str(size(x, 1), size(x, 2)))
                 do i = 1, size(x, 1)
@@ -1523,13 +1523,13 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
             
                 array_info = array_info_maker(size(x, 1), size(x, 2))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
                 
                 allocate(x_str(size(x, 1), size(x, 2)))
                 do i = 1, size(x, 1)
@@ -1587,13 +1587,13 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
             
                 array_info = array_info_maker(size(x, 1), size(x, 2))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
                 
                 allocate(x_str(size(x, 1), size(x, 2)))
                 do i = 1, size(x, 1)
@@ -1651,13 +1651,13 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
             
                 array_info = array_info_maker(size(x, 1), size(x, 2))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
                 
                 allocate(x_str(size(x, 1), size(x, 2)))
                 do i = 1, size(x, 1)
@@ -1715,13 +1715,13 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
             
                 array_info = array_info_maker(size(x, 1), size(x, 2))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
                 
                 allocate(x_str(size(x, 1), size(x, 2)))
                 do i = 1, size(x, 1)
@@ -1779,13 +1779,13 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
             
                 array_info = array_info_maker(size(x, 1), size(x, 2))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
                 
                 allocate(x_str(size(x, 1), size(x, 2)))
                 do i = 1, size(x, 1)
@@ -1843,13 +1843,13 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
             
                 array_info = array_info_maker(size(x, 1), size(x, 2))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
                 
                 allocate(x_str(size(x, 1), size(x, 2)))
                 do i = 1, size(x, 1)
@@ -1907,13 +1907,13 @@ contains
         coloum  = string_type(":")
             
         if (present(header)) then
-            write(unit_, *) format_output_string([string_type(header)], width_, brief_, "", len(header))
+            write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
         
             
                 array_info = array_info_maker(size(x, 1), size(x, 2))
-                write(unit_, *) format_output_string([array_info], width_, brief_, "", len(array_info))
+                write(unit_, "(A)") format_output_string([array_info], width_, brief_, "", len(array_info))
                 
                 max_elem_len = maxval(len(x))
                 
