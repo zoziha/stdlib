@@ -6,8 +6,6 @@ submodule (stdlib_io) stdlib_io_disp
     use stdlib_strings, only: to_string
     implicit none
 
-    type(string_type) :: coloum(5)
-
 contains
 
 
@@ -37,7 +35,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -77,7 +74,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -117,7 +113,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -157,7 +152,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -197,7 +191,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -237,7 +230,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -277,7 +269,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -317,7 +308,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -357,7 +347,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -397,7 +386,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -437,7 +425,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -477,7 +464,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -517,7 +503,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -555,7 +540,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -600,7 +584,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -645,7 +628,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -690,7 +672,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -735,7 +716,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -780,7 +760,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -825,7 +804,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -870,7 +848,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -915,7 +892,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -960,7 +936,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -1005,7 +980,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -1050,7 +1024,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -1095,7 +1068,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -1136,7 +1108,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -1161,7 +1132,8 @@ contains
                         write(unit_, "(*(A))") format_output_string(x_str(i, :), width_, brief_, sep_, max_elem_len)
                     end do
                     
-                    write(unit_, "(*(A))") format_output_string(coloum(1:merge(size(x, 2), 5, size(x, 2)<=5)), &
+                    write(unit_, "(*(A))") format_output_string( &
+                        string_type(spread(":", 1, merge(size(x, 2), 5, size(x, 2) < 5))), &
                         width_, brief_, sep_, max_elem_len)
                     write(unit_, "(*(A))") format_output_string(x_str(size(x, 1), :), width_, brief_, sep_, max_elem_len)
                 
@@ -1200,7 +1172,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -1225,7 +1196,8 @@ contains
                         write(unit_, "(*(A))") format_output_string(x_str(i, :), width_, brief_, sep_, max_elem_len)
                     end do
                     
-                    write(unit_, "(*(A))") format_output_string(coloum(1:merge(size(x, 2), 5, size(x, 2)<=5)), &
+                    write(unit_, "(*(A))") format_output_string( &
+                        string_type(spread(":", 1, merge(size(x, 2), 5, size(x, 2) < 5))), &
                         width_, brief_, sep_, max_elem_len)
                     write(unit_, "(*(A))") format_output_string(x_str(size(x, 1), :), width_, brief_, sep_, max_elem_len)
                 
@@ -1264,7 +1236,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -1289,7 +1260,8 @@ contains
                         write(unit_, "(*(A))") format_output_string(x_str(i, :), width_, brief_, sep_, max_elem_len)
                     end do
                     
-                    write(unit_, "(*(A))") format_output_string(coloum(1:merge(size(x, 2), 5, size(x, 2)<=5)), &
+                    write(unit_, "(*(A))") format_output_string( &
+                        string_type(spread(":", 1, merge(size(x, 2), 5, size(x, 2) < 5))), &
                         width_, brief_, sep_, max_elem_len)
                     write(unit_, "(*(A))") format_output_string(x_str(size(x, 1), :), width_, brief_, sep_, max_elem_len)
                 
@@ -1328,7 +1300,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -1353,7 +1324,8 @@ contains
                         write(unit_, "(*(A))") format_output_string(x_str(i, :), width_, brief_, sep_, max_elem_len)
                     end do
                     
-                    write(unit_, "(*(A))") format_output_string(coloum(1:merge(size(x, 2), 5, size(x, 2)<=5)), &
+                    write(unit_, "(*(A))") format_output_string( &
+                        string_type(spread(":", 1, merge(size(x, 2), 5, size(x, 2) < 5))), &
                         width_, brief_, sep_, max_elem_len)
                     write(unit_, "(*(A))") format_output_string(x_str(size(x, 1), :), width_, brief_, sep_, max_elem_len)
                 
@@ -1392,7 +1364,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -1417,7 +1388,8 @@ contains
                         write(unit_, "(*(A))") format_output_string(x_str(i, :), width_, brief_, sep_, max_elem_len)
                     end do
                     
-                    write(unit_, "(*(A))") format_output_string(coloum(1:merge(size(x, 2), 5, size(x, 2)<=5)), &
+                    write(unit_, "(*(A))") format_output_string( &
+                        string_type(spread(":", 1, merge(size(x, 2), 5, size(x, 2) < 5))), &
                         width_, brief_, sep_, max_elem_len)
                     write(unit_, "(*(A))") format_output_string(x_str(size(x, 1), :), width_, brief_, sep_, max_elem_len)
                 
@@ -1456,7 +1428,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -1481,7 +1452,8 @@ contains
                         write(unit_, "(*(A))") format_output_string(x_str(i, :), width_, brief_, sep_, max_elem_len)
                     end do
                     
-                    write(unit_, "(*(A))") format_output_string(coloum(1:merge(size(x, 2), 5, size(x, 2)<=5)), &
+                    write(unit_, "(*(A))") format_output_string( &
+                        string_type(spread(":", 1, merge(size(x, 2), 5, size(x, 2) < 5))), &
                         width_, brief_, sep_, max_elem_len)
                     write(unit_, "(*(A))") format_output_string(x_str(size(x, 1), :), width_, brief_, sep_, max_elem_len)
                 
@@ -1520,7 +1492,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -1545,7 +1516,8 @@ contains
                         write(unit_, "(*(A))") format_output_string(x_str(i, :), width_, brief_, sep_, max_elem_len)
                     end do
                     
-                    write(unit_, "(*(A))") format_output_string(coloum(1:merge(size(x, 2), 5, size(x, 2)<=5)), &
+                    write(unit_, "(*(A))") format_output_string( &
+                        string_type(spread(":", 1, merge(size(x, 2), 5, size(x, 2) < 5))), &
                         width_, brief_, sep_, max_elem_len)
                     write(unit_, "(*(A))") format_output_string(x_str(size(x, 1), :), width_, brief_, sep_, max_elem_len)
                 
@@ -1584,7 +1556,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -1609,7 +1580,8 @@ contains
                         write(unit_, "(*(A))") format_output_string(x_str(i, :), width_, brief_, sep_, max_elem_len)
                     end do
                     
-                    write(unit_, "(*(A))") format_output_string(coloum(1:merge(size(x, 2), 5, size(x, 2)<=5)), &
+                    write(unit_, "(*(A))") format_output_string( &
+                        string_type(spread(":", 1, merge(size(x, 2), 5, size(x, 2) < 5))), &
                         width_, brief_, sep_, max_elem_len)
                     write(unit_, "(*(A))") format_output_string(x_str(size(x, 1), :), width_, brief_, sep_, max_elem_len)
                 
@@ -1648,7 +1620,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -1673,7 +1644,8 @@ contains
                         write(unit_, "(*(A))") format_output_string(x_str(i, :), width_, brief_, sep_, max_elem_len)
                     end do
                     
-                    write(unit_, "(*(A))") format_output_string(coloum(1:merge(size(x, 2), 5, size(x, 2)<=5)), &
+                    write(unit_, "(*(A))") format_output_string( &
+                        string_type(spread(":", 1, merge(size(x, 2), 5, size(x, 2) < 5))), &
                         width_, brief_, sep_, max_elem_len)
                     write(unit_, "(*(A))") format_output_string(x_str(size(x, 1), :), width_, brief_, sep_, max_elem_len)
                 
@@ -1712,7 +1684,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -1737,7 +1708,8 @@ contains
                         write(unit_, "(*(A))") format_output_string(x_str(i, :), width_, brief_, sep_, max_elem_len)
                     end do
                     
-                    write(unit_, "(*(A))") format_output_string(coloum(1:merge(size(x, 2), 5, size(x, 2)<=5)), &
+                    write(unit_, "(*(A))") format_output_string( &
+                        string_type(spread(":", 1, merge(size(x, 2), 5, size(x, 2) < 5))), &
                         width_, brief_, sep_, max_elem_len)
                     write(unit_, "(*(A))") format_output_string(x_str(size(x, 1), :), width_, brief_, sep_, max_elem_len)
                 
@@ -1776,7 +1748,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -1801,7 +1772,8 @@ contains
                         write(unit_, "(*(A))") format_output_string(x_str(i, :), width_, brief_, sep_, max_elem_len)
                     end do
                     
-                    write(unit_, "(*(A))") format_output_string(coloum(1:merge(size(x, 2), 5, size(x, 2)<=5)), &
+                    write(unit_, "(*(A))") format_output_string( &
+                        string_type(spread(":", 1, merge(size(x, 2), 5, size(x, 2) < 5))), &
                         width_, brief_, sep_, max_elem_len)
                     write(unit_, "(*(A))") format_output_string(x_str(size(x, 1), :), width_, brief_, sep_, max_elem_len)
                 
@@ -1840,7 +1812,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -1865,7 +1836,8 @@ contains
                         write(unit_, "(*(A))") format_output_string(x_str(i, :), width_, brief_, sep_, max_elem_len)
                     end do
                     
-                    write(unit_, "(*(A))") format_output_string(coloum(1:merge(size(x, 2), 5, size(x, 2)<=5)), &
+                    write(unit_, "(*(A))") format_output_string( &
+                        string_type(spread(":", 1, merge(size(x, 2), 5, size(x, 2) < 5))), &
                         width_, brief_, sep_, max_elem_len)
                     write(unit_, "(*(A))") format_output_string(x_str(size(x, 1), :), width_, brief_, sep_, max_elem_len)
                 
@@ -1904,7 +1876,6 @@ contains
         width_  = merge(width_, 80, width_ > 80)
         
         sep_    = optval(sep, "  ")
-        coloum  = string_type(":")
             
         if (present(header)) then
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
@@ -1922,7 +1893,8 @@ contains
                         write(unit_, "(*(A))") format_output_string(x(i, :), width_, brief_, sep_, max_elem_len)
                     end do
                     
-                    write(unit_, "(*(A))") format_output_string(coloum(1:merge(size(x, 2), 5, size(x, 2)<=5)), &
+                    write(unit_, "(*(A))") format_output_string( &
+                        string_type(spread(":", 1, merge(size(x, 2), 5, size(x, 2) < 5))), &
                         width_, brief_, sep_, max_elem_len)
                     write(unit_, "(*(A))") format_output_string(x(size(x, 1), :), width_, brief_, sep_, max_elem_len)
                     
@@ -2083,8 +2055,7 @@ contains
             write(unit_, "(A)") format_output_string([string_type(header)], width_, brief_, "", len(header))
         end if
         
-        coloum(1) = string_type(x_)
-        write(unit_, "(A)") format_output_string(coloum(1:1), width_, brief_, sep_, len(coloum(1)))
+        write(unit_, "(A)") format_output_string([string_type(x_)], width_, brief_, sep_, len(x_))
         
     end subroutine disp_char
 
