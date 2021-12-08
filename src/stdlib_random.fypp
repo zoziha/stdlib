@@ -131,7 +131,11 @@ module stdlib_random
     ! Values are converted from C unsigned integer of 0x9e3779b97f4a7c15,
     ! 0xbf58476d1ce4e5b9, 0x94d049bb133111eb
 
-        res = optval(s, si)
+        if (present(s)) then
+            res = s
+        else
+            res = si
+        end if
         
         si = res + int01
         res = ieor(res, shiftr(res, 30)) * int02
