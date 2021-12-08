@@ -23,6 +23,9 @@ module stdlib_random
         #:for k1, t1 in INT_KINDS_TYPES
         module procedure dist_rand_${t1[0]}$${k1}$
         #:endfor
+        #:if "int64" not in INT_KINDS
+        module procedure dist_rand_iint64
+        #:endif
     end interface dist_rand
 
     interface random_seed
@@ -58,6 +61,15 @@ module stdlib_random
     end function dist_rand_${t1[0]}$${k1}$
 
     #:endfor
+    
+    #:if "int64" not in INT_KINDS
+    function dist_rand_iint64(n) result(res)
+        integer(int64), intent(in) :: n
+        integer(int64) :: res
+        
+        res = shiftr(xoshiro256ss( ), 0)
+    end function dist_rand_iint64
+    #:endif
 
     function xoshiro256ss( ) result (res)
     ! Generate random 64-bit integers
@@ -120,6 +132,7 @@ module stdlib_random
     ! 0xbf58476d1ce4e5b9, 0x94d049bb133111eb
 
         res = optval(s, si)
+        
         si = res + int01
         res = ieor(res, shiftr(res, 30)) * int02
         res = ieor(res, shiftr(res, 27)) * int03
