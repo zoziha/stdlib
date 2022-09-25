@@ -1,14 +1,14 @@
 
 module stdlib_math
-    use stdlib_kinds, only: int8, int16, int32, int64, sp, dp, qp
+    use stdlib_kinds, only: int8, int16, int32, int64, sp, dp, xdp, qp
     use stdlib_optval, only: optval
 
     implicit none
     private
     public :: clip, gcd, linspace, logspace
-    public :: EULERS_NUMBER_SP, EULERS_NUMBER_DP, EULERS_NUMBER_QP
+    public :: EULERS_NUMBER_SP, EULERS_NUMBER_DP
     public :: DEFAULT_LINSPACE_LENGTH, DEFAULT_LOGSPACE_BASE, DEFAULT_LOGSPACE_LENGTH
-    public :: arange
+    public :: arange, arg, argd, argpi, is_close, all_close, diff
 
     integer, parameter :: DEFAULT_LINSPACE_LENGTH = 100
     integer, parameter :: DEFAULT_LOGSPACE_LENGTH = 50
@@ -17,7 +17,10 @@ module stdlib_math
     ! Useful constants for lnspace
     real(sp), parameter :: EULERS_NUMBER_SP = exp(1.0_sp)
     real(dp), parameter :: EULERS_NUMBER_DP = exp(1.0_dp)
-    real(qp), parameter :: EULERS_NUMBER_QP = exp(1.0_qp)
+
+    !> Useful constants `PI` for `argd/argpi`
+    real(kind=sp), parameter :: PI_sp = acos(-1.0_sp)
+    real(kind=dp), parameter :: PI_dp = acos(-1.0_dp)
 
     interface clip
         module procedure clip_int8
@@ -26,7 +29,6 @@ module stdlib_math
         module procedure clip_int64
         module procedure clip_sp
         module procedure clip_dp
-        module procedure clip_qp
     end interface clip
 
     !> Returns the greatest common divisor of two integers
@@ -59,12 +61,6 @@ module stdlib_math
 
         real(dp) :: res(DEFAULT_LINSPACE_LENGTH)
       end function linspace_default_1_rdp_rdp
-      pure module function linspace_default_1_rqp_rqp(start, end) result(res)
-        real(qp), intent(in) :: start
-        real(qp), intent(in) :: end
-
-        real(qp) :: res(DEFAULT_LINSPACE_LENGTH)
-      end function linspace_default_1_rqp_rqp
       pure module function linspace_default_1_csp_csp(start, end) result(res)
         complex(sp), intent(in) :: start
         complex(sp), intent(in) :: end
@@ -77,12 +73,6 @@ module stdlib_math
 
         complex(dp) :: res(DEFAULT_LINSPACE_LENGTH)
       end function linspace_default_1_cdp_cdp
-      pure module function linspace_default_1_cqp_cqp(start, end) result(res)
-        complex(qp), intent(in) :: start
-        complex(qp), intent(in) :: end
-
-        complex(qp) :: res(DEFAULT_LINSPACE_LENGTH)
-      end function linspace_default_1_cqp_cqp
 
       pure module function linspace_n_1_rsp_rsp(start, end, n) result(res)
         real(sp), intent(in) :: start
@@ -98,13 +88,6 @@ module stdlib_math
 
         real(dp) :: res(max(n, 0))
       end function linspace_n_1_rdp_rdp
-      pure module function linspace_n_1_rqp_rqp(start, end, n) result(res)
-        real(qp), intent(in) :: start
-        real(qp), intent(in) :: end
-        integer, intent(in) :: n
-
-        real(qp) :: res(max(n, 0))
-      end function linspace_n_1_rqp_rqp
       pure module function linspace_n_1_csp_csp(start, end, n) result(res)
         complex(sp), intent(in) :: start
         complex(sp), intent(in) :: end
@@ -119,13 +102,6 @@ module stdlib_math
 
         complex(dp) :: res(max(n, 0))
       end function linspace_n_1_cdp_cdp
-      pure module function linspace_n_1_cqp_cqp(start, end, n) result(res)
-        complex(qp), intent(in) :: start
-        complex(qp), intent(in) :: end
-        integer, intent(in) :: n
-
-        complex(qp) :: res(max(n, 0))
-      end function linspace_n_1_cqp_cqp
 
 
     ! Add support for integer linspace
@@ -212,14 +188,6 @@ module stdlib_math
       real(dp) :: res(DEFAULT_LOGSPACE_LENGTH)
 
     end function logspace_1_rdp_default
-    pure module function logspace_1_rqp_default(start, end) result(res)
-
-      real(qp), intent(in) :: start
-      real(qp), intent(in) :: end
-
-      real(qp) :: res(DEFAULT_LOGSPACE_LENGTH)
-
-    end function logspace_1_rqp_default
     pure module function logspace_1_csp_default(start, end) result(res)
 
       complex(sp), intent(in) :: start
@@ -236,14 +204,6 @@ module stdlib_math
       complex(dp) :: res(DEFAULT_LOGSPACE_LENGTH)
 
     end function logspace_1_cdp_default
-    pure module function logspace_1_cqp_default(start, end) result(res)
-
-      complex(qp), intent(in) :: start
-      complex(qp), intent(in) :: end
-
-      complex(qp) :: res(DEFAULT_LOGSPACE_LENGTH)
-
-    end function logspace_1_cqp_default
     pure module function logspace_1_iint32_default(start, end) result(res)
 
       integer, intent(in) :: start
@@ -267,13 +227,6 @@ module stdlib_math
 
       real(dp) :: res(max(n, 0))
     end function logspace_1_rdp_n
-    pure module function logspace_1_rqp_n(start, end, n) result(res)
-      real(qp), intent(in) :: start
-      real(qp), intent(in) :: end
-      integer, intent(in) :: n
-
-      real(qp) :: res(max(n, 0))
-    end function logspace_1_rqp_n
     pure module function logspace_1_csp_n(start, end, n) result(res)
       complex(sp), intent(in) :: start
       complex(sp), intent(in) :: end
@@ -288,13 +241,6 @@ module stdlib_math
 
       complex(dp) :: res(max(n, 0))
     end function logspace_1_cdp_n
-    pure module function logspace_1_cqp_n(start, end, n) result(res)
-      complex(qp), intent(in) :: start
-      complex(qp), intent(in) :: end
-      integer, intent(in) :: n
-
-      complex(qp) :: res(max(n, 0))
-    end function logspace_1_cqp_n
     pure module function logspace_1_iint32_n(start, end, n) result(res)
       integer, intent(in) :: start
       integer, intent(in) :: end
@@ -363,36 +309,6 @@ module stdlib_math
       ! real(dp) endpoints + integer base = real(dp) result
       real(dp) :: res(max(n, 0))
     end function logspace_1_rdp_n_ibase
-    ! Generate logarithmically spaced sequence from qp base to the powers
-    ! of qp start and end. [base^start, ... , base^end]
-    ! Different combinations of parameter types will lead to different result types.
-    ! Those combinations are indicated in the body of each function.
-    pure module function logspace_1_rqp_n_rbase(start, end, n, base) result(res)
-      real(qp), intent(in) :: start
-      real(qp), intent(in) :: end
-      integer, intent(in) :: n
-      real(qp), intent(in) :: base
-      ! real(qp) endpoints + real(qp) base = real(qp) result
-      real(qp) :: res(max(n, 0))
-    end function logspace_1_rqp_n_rbase
-
-    pure module function logspace_1_rqp_n_cbase(start, end, n, base) result(res)
-      real(qp), intent(in) :: start
-      real(qp), intent(in) :: end
-      integer, intent(in) :: n
-      complex(qp), intent(in) :: base
-      ! real(qp) endpoints + complex(qp) base = complex(qp) result
-      real(qp) :: res(max(n, 0))
-    end function logspace_1_rqp_n_cbase
-
-    pure module function logspace_1_rqp_n_ibase(start, end, n, base) result(res)
-      real(qp), intent(in) :: start
-      real(qp), intent(in) :: end
-      integer, intent(in) :: n
-      integer, intent(in) :: base
-      ! real(qp) endpoints + integer base = real(qp) result
-      real(qp) :: res(max(n, 0))
-    end function logspace_1_rqp_n_ibase
     ! Generate logarithmically spaced sequence from sp base to the powers
     ! of sp start and end. [base^start, ... , base^end]
     ! Different combinations of parameter types will lead to different result types.
@@ -453,38 +369,8 @@ module stdlib_math
       ! complex(dp) endpoints + integer base = complex(dp) result
       complex(dp) :: res(max(n, 0))
     end function logspace_1_cdp_n_ibase
-    ! Generate logarithmically spaced sequence from qp base to the powers
-    ! of qp start and end. [base^start, ... , base^end]
-    ! Different combinations of parameter types will lead to different result types.
-    ! Those combinations are indicated in the body of each function.
-    pure module function logspace_1_cqp_n_rbase(start, end, n, base) result(res)
-      complex(qp), intent(in) :: start
-      complex(qp), intent(in) :: end
-      integer, intent(in) :: n
-      real(qp), intent(in) :: base
-      ! complex(qp) endpoints + real(qp) base = complex(qp) result
-      complex(qp) :: res(max(n, 0))
-    end function logspace_1_cqp_n_rbase
-
-    pure module function logspace_1_cqp_n_cbase(start, end, n, base) result(res)
-      complex(qp), intent(in) :: start
-      complex(qp), intent(in) :: end
-      integer, intent(in) :: n
-      complex(qp), intent(in) :: base
-      ! complex(qp) endpoints + complex(qp) base = complex(qp) result
-      complex(qp) :: res(max(n, 0))
-    end function logspace_1_cqp_n_cbase
-
-    pure module function logspace_1_cqp_n_ibase(start, end, n, base) result(res)
-      complex(qp), intent(in) :: start
-      complex(qp), intent(in) :: end
-      integer, intent(in) :: n
-      integer, intent(in) :: base
-      ! complex(qp) endpoints + integer base = complex(qp) result
-      complex(qp) :: res(max(n, 0))
-    end function logspace_1_cqp_n_ibase
-    ! Generate logarithmically spaced sequence from qp base to the powers
-    ! of qp start and end. [base^start, ... , base^end]
+    ! Generate logarithmically spaced sequence from dp base to the powers
+    ! of dp start and end. [base^start, ... , base^end]
     ! Different combinations of parameter types will lead to different result types.
     ! Those combinations are indicated in the body of each function.
     pure module function logspace_1_iint32_n_rspbase(start, end, n, base) result(res)
@@ -521,23 +407,6 @@ module stdlib_math
       ! integer endpoints + complex(dp) base = complex(dp) result
       complex(dp) :: res(max(n, 0))
     end function logspace_1_iint32_n_cdpbase
-    pure module function logspace_1_iint32_n_rqpbase(start, end, n, base) result(res)
-      integer, intent(in) :: start
-      integer, intent(in) :: end
-      integer, intent(in) :: n
-      real(qp), intent(in) :: base
-      ! integer endpoints + real(qp) base = real(qp) result
-      real(qp) :: res(max(n, 0))
-    end function logspace_1_iint32_n_rqpbase
-
-    pure module function logspace_1_iint32_n_cqpbase(start, end, n, base) result(res)
-      integer, intent(in) :: start
-      integer, intent(in) :: end
-      integer, intent(in) :: n
-      complex(qp), intent(in) :: base
-      ! integer endpoints + complex(qp) base = complex(qp) result
-      complex(qp) :: res(max(n, 0))
-    end function logspace_1_iint32_n_cqpbase
 
     pure module function logspace_1_iint32_n_ibase(start, end, n, base) result(res)
       integer, intent(in) :: start
@@ -555,7 +424,7 @@ module stdlib_math
     !>
     !> `arange` creates a one-dimensional `array` of the `integer/real` type 
     !>  with fixed-spaced values of given spacing, within a given interval.
-    !> ([Specification](../page/specs/stdlib_math.html#arange))
+    !> ([Specification](../page/specs/stdlib_math.html#arange-function))
     interface arange
         pure module function arange_r_sp(start, end, step) result(result)
             real(sp), intent(in) :: start
@@ -567,11 +436,6 @@ module stdlib_math
             real(dp), intent(in), optional :: end, step
             real(dp), allocatable :: result(:)
         end function arange_r_dp
-        pure module function arange_r_qp(start, end, step) result(result)
-            real(qp), intent(in) :: start
-            real(qp), intent(in), optional :: end, step
-            real(qp), allocatable :: result(:)
-        end function arange_r_qp
         pure module function arange_i_int8(start, end, step) result(result)
             integer(int8), intent(in) :: start
             integer(int8), intent(in), optional :: end, step
@@ -593,6 +457,224 @@ module stdlib_math
             integer(int64), allocatable :: result(:)
         end function arange_i_int64
     end interface arange
+
+    !> Version: experimental
+    !>
+    !> `arg` computes the phase angle in the interval (-π,π].
+    !> ([Specification](../page/specs/stdlib_math.html#arg-function))
+    interface arg
+        procedure :: arg_sp
+        procedure :: arg_dp
+    end interface arg
+
+    !> Version: experimental
+    !>
+    !> `argd` computes the phase angle of degree version in the interval (-180.0,180.0].
+    !> ([Specification](../page/specs/stdlib_math.html#argd-function))
+    interface argd
+        procedure :: argd_sp
+        procedure :: argd_dp
+    end interface argd
+
+    !> Version: experimental
+    !>
+    !> `argpi` computes the phase angle of circular version in the interval (-1.0,1.0].
+    !> ([Specification](../page/specs/stdlib_math.html#argpi-function))
+    interface argpi
+        procedure :: argpi_sp
+        procedure :: argpi_dp
+    end interface argpi
+    
+    !> Returns a boolean scalar/array where two scalar/arrays are element-wise equal within a tolerance.
+    !> ([Specification](../page/specs/stdlib_math.html#is_close-function))
+    interface is_close
+        elemental module logical function is_close_rsp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            real(sp), intent(in) :: a, b
+            real(sp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function is_close_rsp
+        elemental module logical function is_close_rdp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            real(dp), intent(in) :: a, b
+            real(dp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function is_close_rdp
+        elemental module logical function is_close_csp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            complex(sp), intent(in) :: a, b
+            real(sp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function is_close_csp
+        elemental module logical function is_close_cdp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            complex(dp), intent(in) :: a, b
+            real(dp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function is_close_cdp
+    end interface is_close
+
+    !> Version: experimental
+    !>
+    !> Returns a boolean scalar where two arrays are element-wise equal within a tolerance.
+    !> ([Specification](../page/specs/stdlib_math.html#all_close-function))
+    interface all_close
+        logical pure module function all_close_1_rsp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            real(sp), intent(in) :: a(:), b(:)
+            real(sp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_1_rsp
+        logical pure module function all_close_2_rsp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            real(sp), intent(in) :: a(:,:), b(:,:)
+            real(sp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_2_rsp
+        logical pure module function all_close_3_rsp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            real(sp), intent(in) :: a(:,:,:), b(:,:,:)
+            real(sp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_3_rsp
+        logical pure module function all_close_4_rsp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            real(sp), intent(in) :: a(:,:,:,:), b(:,:,:,:)
+            real(sp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_4_rsp
+        logical pure module function all_close_1_rdp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            real(dp), intent(in) :: a(:), b(:)
+            real(dp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_1_rdp
+        logical pure module function all_close_2_rdp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            real(dp), intent(in) :: a(:,:), b(:,:)
+            real(dp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_2_rdp
+        logical pure module function all_close_3_rdp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            real(dp), intent(in) :: a(:,:,:), b(:,:,:)
+            real(dp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_3_rdp
+        logical pure module function all_close_4_rdp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            real(dp), intent(in) :: a(:,:,:,:), b(:,:,:,:)
+            real(dp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_4_rdp
+        logical pure module function all_close_1_csp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            complex(sp), intent(in) :: a(:), b(:)
+            real(sp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_1_csp
+        logical pure module function all_close_2_csp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            complex(sp), intent(in) :: a(:,:), b(:,:)
+            real(sp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_2_csp
+        logical pure module function all_close_3_csp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            complex(sp), intent(in) :: a(:,:,:), b(:,:,:)
+            real(sp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_3_csp
+        logical pure module function all_close_4_csp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            complex(sp), intent(in) :: a(:,:,:,:), b(:,:,:,:)
+            real(sp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_4_csp
+        logical pure module function all_close_1_cdp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            complex(dp), intent(in) :: a(:), b(:)
+            real(dp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_1_cdp
+        logical pure module function all_close_2_cdp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            complex(dp), intent(in) :: a(:,:), b(:,:)
+            real(dp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_2_cdp
+        logical pure module function all_close_3_cdp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            complex(dp), intent(in) :: a(:,:,:), b(:,:,:)
+            real(dp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_3_cdp
+        logical pure module function all_close_4_cdp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            complex(dp), intent(in) :: a(:,:,:,:), b(:,:,:,:)
+            real(dp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_4_cdp
+    end interface all_close
+    
+    !> Version: experimental
+    !>
+    !> Computes differences between adjacent elements of an array.
+    !> ([Specification](../page/specs/stdlib_math.html#diff-function))
+    interface diff
+        pure module function diff_1_sp(x, n, prepend, append) result(y)
+            real(sp), intent(in) :: x(:)
+            integer, intent(in), optional :: n
+            real(sp), intent(in), optional :: prepend(:), append(:)
+            real(sp), allocatable :: y(:)
+        end function diff_1_sp
+        pure module function diff_2_sp(X, n, dim, prepend, append) result(y)
+            real(sp), intent(in) :: x(:, :)
+            integer, intent(in), optional :: n, dim
+            real(sp), intent(in), optional :: prepend(:, :), append(:, :)
+            real(sp), allocatable :: y(:, :)
+        end function diff_2_sp
+        pure module function diff_1_dp(x, n, prepend, append) result(y)
+            real(dp), intent(in) :: x(:)
+            integer, intent(in), optional :: n
+            real(dp), intent(in), optional :: prepend(:), append(:)
+            real(dp), allocatable :: y(:)
+        end function diff_1_dp
+        pure module function diff_2_dp(X, n, dim, prepend, append) result(y)
+            real(dp), intent(in) :: x(:, :)
+            integer, intent(in), optional :: n, dim
+            real(dp), intent(in), optional :: prepend(:, :), append(:, :)
+            real(dp), allocatable :: y(:, :)
+        end function diff_2_dp
+        pure module function diff_1_int8(x, n, prepend, append) result(y)
+            integer(int8), intent(in) :: x(:)
+            integer, intent(in), optional :: n
+            integer(int8), intent(in), optional :: prepend(:), append(:)
+            integer(int8), allocatable :: y(:)
+        end function diff_1_int8
+        pure module function diff_2_int8(X, n, dim, prepend, append) result(y)
+            integer(int8), intent(in) :: x(:, :)
+            integer, intent(in), optional :: n, dim
+            integer(int8), intent(in), optional :: prepend(:, :), append(:, :)
+            integer(int8), allocatable :: y(:, :)
+        end function diff_2_int8
+        pure module function diff_1_int16(x, n, prepend, append) result(y)
+            integer(int16), intent(in) :: x(:)
+            integer, intent(in), optional :: n
+            integer(int16), intent(in), optional :: prepend(:), append(:)
+            integer(int16), allocatable :: y(:)
+        end function diff_1_int16
+        pure module function diff_2_int16(X, n, dim, prepend, append) result(y)
+            integer(int16), intent(in) :: x(:, :)
+            integer, intent(in), optional :: n, dim
+            integer(int16), intent(in), optional :: prepend(:, :), append(:, :)
+            integer(int16), allocatable :: y(:, :)
+        end function diff_2_int16
+        pure module function diff_1_int32(x, n, prepend, append) result(y)
+            integer(int32), intent(in) :: x(:)
+            integer, intent(in), optional :: n
+            integer(int32), intent(in), optional :: prepend(:), append(:)
+            integer(int32), allocatable :: y(:)
+        end function diff_1_int32
+        pure module function diff_2_int32(X, n, dim, prepend, append) result(y)
+            integer(int32), intent(in) :: x(:, :)
+            integer, intent(in), optional :: n, dim
+            integer(int32), intent(in), optional :: prepend(:, :), append(:, :)
+            integer(int32), allocatable :: y(:, :)
+        end function diff_2_int32
+        pure module function diff_1_int64(x, n, prepend, append) result(y)
+            integer(int64), intent(in) :: x(:)
+            integer, intent(in), optional :: n
+            integer(int64), intent(in), optional :: prepend(:), append(:)
+            integer(int64), allocatable :: y(:)
+        end function diff_1_int64
+        pure module function diff_2_int64(X, n, dim, prepend, append) result(y)
+            integer(int64), intent(in) :: x(:, :)
+            integer, intent(in), optional :: n, dim
+            integer(int64), intent(in), optional :: prepend(:, :), append(:, :)
+            integer(int64), allocatable :: y(:, :)
+        end function diff_2_int64
+    end interface diff
 
 contains
 
@@ -650,15 +732,59 @@ contains
         res = max(min(x, xmax), xmin)
     end function clip_dp
 
-    elemental function clip_qp(x, xmin, xmax) result(res)
-        real(qp), intent(in) :: x
-        real(qp), intent(in) :: xmin
-        real(qp), intent(in) :: xmax
-        real(qp) :: res
 
-        res = max(min(x, xmax), xmin)
-    end function clip_qp
+    elemental function arg_sp(z) result(result) 
+        complex(sp), intent(in) :: z
+        real(sp) :: result
 
+        result = merge(0.0_sp, atan2(z%im, z%re), z == (0.0_sp, 0.0_sp))
+
+    end function arg_sp
+
+    elemental function argd_sp(z) result(result) 
+        complex(sp), intent(in) :: z
+        real(sp) :: result
+
+        result = merge(0.0_sp, atan2(z%im, z%re)*180.0_sp/PI_sp, &
+                 z == (0.0_sp, 0.0_sp))
+
+    end function argd_sp
+
+    elemental function argpi_sp(z) result(result) 
+        complex(sp), intent(in) :: z
+        real(sp) :: result
+
+        result = merge(0.0_sp, atan2(z%im, z%re)/PI_sp, &
+                 z == (0.0_sp, 0.0_sp))
+                 
+
+    end function argpi_sp
+    elemental function arg_dp(z) result(result) 
+        complex(dp), intent(in) :: z
+        real(dp) :: result
+
+        result = merge(0.0_dp, atan2(z%im, z%re), z == (0.0_dp, 0.0_dp))
+
+    end function arg_dp
+
+    elemental function argd_dp(z) result(result) 
+        complex(dp), intent(in) :: z
+        real(dp) :: result
+
+        result = merge(0.0_dp, atan2(z%im, z%re)*180.0_dp/PI_dp, &
+                 z == (0.0_dp, 0.0_dp))
+
+    end function argd_dp
+
+    elemental function argpi_dp(z) result(result) 
+        complex(dp), intent(in) :: z
+        real(dp) :: result
+
+        result = merge(0.0_dp, atan2(z%im, z%re)/PI_dp, &
+                 z == (0.0_dp, 0.0_dp))
+                 
+
+    end function argpi_dp
 
     !> Returns the greatest common divisor of two integers of kind int8
     !> using the Euclidean algorithm.
@@ -732,4 +858,5 @@ contains
         end do
     end function gcd_int64
 
+    
 end module stdlib_math
