@@ -16,7 +16,7 @@ module stdlib_io
   implicit none
   private
   ! Public API
-  public :: loadtxt, savetxt, open, getline
+  public :: loadtxt, savetxt, open, getline, read_whole_file
 
   ! Private API that is exposed so that we can test it in tests
   public :: parse_mode
@@ -57,6 +57,14 @@ module stdlib_io
     module procedure :: getline_input_char
     module procedure :: getline_input_string
   end interface getline
+
+  !> Version: experimental
+  !>
+  !> Read a whole line from a file into a string variable
+  interface read_whole_file
+    module procedure :: read_whole_file_char
+    module procedure :: read_whole_file_string
+  end interface read_whole_file
 
   interface loadtxt
     !! version: experimental
@@ -516,5 +524,59 @@ contains
 
     call getline(input_unit, line, iostat, iomsg)
   end subroutine getline_input_string
+
+  !> Version: experimental
+  !>
+  !> Read a whole line from a file into a deferred length character variable
+  subroutine read_whole_file_char(file, line, iostat, iomsg)
+    !> File to read
+    character(len=*), intent(in) :: file
+    !> Line to read
+    character(len=:), allocatable, intent(out) :: line
+    !> Status of operation
+    integer, intent(out), optional :: iostat
+    !> Error message
+    character(len=:), allocatable, optional :: iomsg
+    integer :: stat, unit, length
+    character(len=:), allocatable :: msg
+
+    open (newunit=unit, file=file, status='old', action='read', access='stream', form='unformatted', &
+          iostat=stat, iomsg=msg)
+    
+    if (stat == 0) then
+      inquire(unit, size=length)
+      allocate(character(length) :: line)
+      read(unit) line
+      close(unit)
+    else
+      if (present(iomsg)) iomsg = trim(msg)
+    end if
+
+    if (present(iostat)) then
+      iostat = stat
+    else if (stat /= 0) then
+      call error_stop(trim(msg))
+    end if
+
+  end subroutine read_whole_file_char
+
+  !> Version: experimental
+  !>
+  !> Read a whole line from a file into a string variable
+  subroutine read_whole_file_string(file, line, iostat, iomsg)
+    !> File to read
+    character(len=*), intent(in) :: file
+    !> Line to read
+    type(string_type), intent(out) :: line
+    !> Status of operation
+    integer, intent(out), optional :: iostat
+    !> Error message
+    character(len=:), allocatable, optional :: iomsg
+    character(:), allocatable :: buffer
+
+    call read_whole_file_char(file, buffer, iostat, iomsg)
+    line = string_type(buffer)
+
+  end subroutine read_whole_file_string
 
 end module stdlib_io
