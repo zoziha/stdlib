@@ -8,7 +8,8 @@ module stdlib_math
     public :: clip, gcd, linspace, logspace
     public :: EULERS_NUMBER_SP, EULERS_NUMBER_DP
     public :: DEFAULT_LINSPACE_LENGTH, DEFAULT_LOGSPACE_BASE, DEFAULT_LOGSPACE_LENGTH
-    public :: arange, arg, argd, argpi, is_close, all_close, diff
+    public :: stdlib_meshgrid_ij, stdlib_meshgrid_xy
+    public :: arange, arg, argd, argpi, is_close, all_close, diff, meshgrid
 
     integer, parameter :: DEFAULT_LINSPACE_LENGTH = 100
     integer, parameter :: DEFAULT_LOGSPACE_LENGTH = 50
@@ -21,6 +22,9 @@ module stdlib_math
     !> Useful constants `PI` for `argd/argpi`
     real(kind=sp), parameter :: PI_sp = acos(-1.0_sp)
     real(kind=dp), parameter :: PI_dp = acos(-1.0_dp)
+
+    !> Values for optional argument `indexing` of `meshgrid`
+    integer, parameter :: stdlib_meshgrid_xy = 0, stdlib_meshgrid_ij = 1
 
     interface clip
         module procedure clip_int8
@@ -535,6 +539,21 @@ module stdlib_math
             real(sp), intent(in), optional :: rel_tol, abs_tol
             logical, intent(in), optional :: equal_nan
         end function all_close_4_rsp
+        logical pure module function all_close_5_rsp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            real(sp), intent(in) :: a(:,:,:,:,:), b(:,:,:,:,:)
+            real(sp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_5_rsp
+        logical pure module function all_close_6_rsp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            real(sp), intent(in) :: a(:,:,:,:,:,:), b(:,:,:,:,:,:)
+            real(sp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_6_rsp
+        logical pure module function all_close_7_rsp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            real(sp), intent(in) :: a(:,:,:,:,:,:,:), b(:,:,:,:,:,:,:)
+            real(sp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_7_rsp
         logical pure module function all_close_1_rdp(a, b, rel_tol, abs_tol, equal_nan) result(close)
             real(dp), intent(in) :: a(:), b(:)
             real(dp), intent(in), optional :: rel_tol, abs_tol
@@ -555,6 +574,21 @@ module stdlib_math
             real(dp), intent(in), optional :: rel_tol, abs_tol
             logical, intent(in), optional :: equal_nan
         end function all_close_4_rdp
+        logical pure module function all_close_5_rdp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            real(dp), intent(in) :: a(:,:,:,:,:), b(:,:,:,:,:)
+            real(dp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_5_rdp
+        logical pure module function all_close_6_rdp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            real(dp), intent(in) :: a(:,:,:,:,:,:), b(:,:,:,:,:,:)
+            real(dp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_6_rdp
+        logical pure module function all_close_7_rdp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            real(dp), intent(in) :: a(:,:,:,:,:,:,:), b(:,:,:,:,:,:,:)
+            real(dp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_7_rdp
         logical pure module function all_close_1_csp(a, b, rel_tol, abs_tol, equal_nan) result(close)
             complex(sp), intent(in) :: a(:), b(:)
             real(sp), intent(in), optional :: rel_tol, abs_tol
@@ -575,6 +609,21 @@ module stdlib_math
             real(sp), intent(in), optional :: rel_tol, abs_tol
             logical, intent(in), optional :: equal_nan
         end function all_close_4_csp
+        logical pure module function all_close_5_csp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            complex(sp), intent(in) :: a(:,:,:,:,:), b(:,:,:,:,:)
+            real(sp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_5_csp
+        logical pure module function all_close_6_csp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            complex(sp), intent(in) :: a(:,:,:,:,:,:), b(:,:,:,:,:,:)
+            real(sp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_6_csp
+        logical pure module function all_close_7_csp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            complex(sp), intent(in) :: a(:,:,:,:,:,:,:), b(:,:,:,:,:,:,:)
+            real(sp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_7_csp
         logical pure module function all_close_1_cdp(a, b, rel_tol, abs_tol, equal_nan) result(close)
             complex(dp), intent(in) :: a(:), b(:)
             real(dp), intent(in), optional :: rel_tol, abs_tol
@@ -595,6 +644,21 @@ module stdlib_math
             real(dp), intent(in), optional :: rel_tol, abs_tol
             logical, intent(in), optional :: equal_nan
         end function all_close_4_cdp
+        logical pure module function all_close_5_cdp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            complex(dp), intent(in) :: a(:,:,:,:,:), b(:,:,:,:,:)
+            real(dp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_5_cdp
+        logical pure module function all_close_6_cdp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            complex(dp), intent(in) :: a(:,:,:,:,:,:), b(:,:,:,:,:,:)
+            real(dp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_6_cdp
+        logical pure module function all_close_7_cdp(a, b, rel_tol, abs_tol, equal_nan) result(close)
+            complex(dp), intent(in) :: a(:,:,:,:,:,:,:), b(:,:,:,:,:,:,:)
+            real(dp), intent(in), optional :: rel_tol, abs_tol
+            logical, intent(in), optional :: equal_nan
+        end function all_close_7_cdp
     end interface all_close
     
     !> Version: experimental
@@ -676,6 +740,643 @@ module stdlib_math
         end function diff_2_int64
     end interface diff
 
+
+    !> Version: experimental
+    !>
+    !> Computes a list of coordinate matrices from coordinate vectors.
+    !> ([Specification](../page/specs/stdlib_math.html#meshgrid))
+    interface meshgrid
+        module subroutine meshgrid_1_iint8_iint8(&
+                x1,  &
+                xm1,  &
+                indexing &
+        )
+            integer(int8), intent(in) :: x1(:)
+            integer(int8), intent(out) :: xm1 (:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_1_iint8_iint8
+        module subroutine meshgrid_2_iint8_iint8(&
+                x1, x2,  &
+                xm1, xm2,  &
+                indexing &
+        )
+            integer(int8), intent(in) :: x1(:)
+            integer(int8), intent(out) :: xm1 (:,:)
+            integer(int8), intent(in) :: x2(:)
+            integer(int8), intent(out) :: xm2 (:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_2_iint8_iint8
+        module subroutine meshgrid_3_iint8_iint8(&
+                x1, x2, x3,  &
+                xm1, xm2, xm3,  &
+                indexing &
+        )
+            integer(int8), intent(in) :: x1(:)
+            integer(int8), intent(out) :: xm1 (:,:,:)
+            integer(int8), intent(in) :: x2(:)
+            integer(int8), intent(out) :: xm2 (:,:,:)
+            integer(int8), intent(in) :: x3(:)
+            integer(int8), intent(out) :: xm3 (:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_3_iint8_iint8
+        module subroutine meshgrid_4_iint8_iint8(&
+                x1, x2, x3, x4,  &
+                xm1, xm2, xm3, xm4,  &
+                indexing &
+        )
+            integer(int8), intent(in) :: x1(:)
+            integer(int8), intent(out) :: xm1 (:,:,:,:)
+            integer(int8), intent(in) :: x2(:)
+            integer(int8), intent(out) :: xm2 (:,:,:,:)
+            integer(int8), intent(in) :: x3(:)
+            integer(int8), intent(out) :: xm3 (:,:,:,:)
+            integer(int8), intent(in) :: x4(:)
+            integer(int8), intent(out) :: xm4 (:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_4_iint8_iint8
+        module subroutine meshgrid_5_iint8_iint8(&
+                x1, x2, x3, x4, x5,  &
+                xm1, xm2, xm3, xm4, xm5,  &
+                indexing &
+        )
+            integer(int8), intent(in) :: x1(:)
+            integer(int8), intent(out) :: xm1 (:,:,:,:,:)
+            integer(int8), intent(in) :: x2(:)
+            integer(int8), intent(out) :: xm2 (:,:,:,:,:)
+            integer(int8), intent(in) :: x3(:)
+            integer(int8), intent(out) :: xm3 (:,:,:,:,:)
+            integer(int8), intent(in) :: x4(:)
+            integer(int8), intent(out) :: xm4 (:,:,:,:,:)
+            integer(int8), intent(in) :: x5(:)
+            integer(int8), intent(out) :: xm5 (:,:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_5_iint8_iint8
+        module subroutine meshgrid_6_iint8_iint8(&
+                x1, x2, x3, x4, x5, x6,  &
+                xm1, xm2, xm3, xm4, xm5, xm6,  &
+                indexing &
+        )
+            integer(int8), intent(in) :: x1(:)
+            integer(int8), intent(out) :: xm1 (:,:,:,:,:,:)
+            integer(int8), intent(in) :: x2(:)
+            integer(int8), intent(out) :: xm2 (:,:,:,:,:,:)
+            integer(int8), intent(in) :: x3(:)
+            integer(int8), intent(out) :: xm3 (:,:,:,:,:,:)
+            integer(int8), intent(in) :: x4(:)
+            integer(int8), intent(out) :: xm4 (:,:,:,:,:,:)
+            integer(int8), intent(in) :: x5(:)
+            integer(int8), intent(out) :: xm5 (:,:,:,:,:,:)
+            integer(int8), intent(in) :: x6(:)
+            integer(int8), intent(out) :: xm6 (:,:,:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_6_iint8_iint8
+        module subroutine meshgrid_7_iint8_iint8(&
+                x1, x2, x3, x4, x5, x6, x7,  &
+                xm1, xm2, xm3, xm4, xm5, xm6, xm7,  &
+                indexing &
+        )
+            integer(int8), intent(in) :: x1(:)
+            integer(int8), intent(out) :: xm1 (:,:,:,:,:,:,:)
+            integer(int8), intent(in) :: x2(:)
+            integer(int8), intent(out) :: xm2 (:,:,:,:,:,:,:)
+            integer(int8), intent(in) :: x3(:)
+            integer(int8), intent(out) :: xm3 (:,:,:,:,:,:,:)
+            integer(int8), intent(in) :: x4(:)
+            integer(int8), intent(out) :: xm4 (:,:,:,:,:,:,:)
+            integer(int8), intent(in) :: x5(:)
+            integer(int8), intent(out) :: xm5 (:,:,:,:,:,:,:)
+            integer(int8), intent(in) :: x6(:)
+            integer(int8), intent(out) :: xm6 (:,:,:,:,:,:,:)
+            integer(int8), intent(in) :: x7(:)
+            integer(int8), intent(out) :: xm7 (:,:,:,:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_7_iint8_iint8
+        module subroutine meshgrid_1_iint16_iint16(&
+                x1,  &
+                xm1,  &
+                indexing &
+        )
+            integer(int16), intent(in) :: x1(:)
+            integer(int16), intent(out) :: xm1 (:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_1_iint16_iint16
+        module subroutine meshgrid_2_iint16_iint16(&
+                x1, x2,  &
+                xm1, xm2,  &
+                indexing &
+        )
+            integer(int16), intent(in) :: x1(:)
+            integer(int16), intent(out) :: xm1 (:,:)
+            integer(int16), intent(in) :: x2(:)
+            integer(int16), intent(out) :: xm2 (:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_2_iint16_iint16
+        module subroutine meshgrid_3_iint16_iint16(&
+                x1, x2, x3,  &
+                xm1, xm2, xm3,  &
+                indexing &
+        )
+            integer(int16), intent(in) :: x1(:)
+            integer(int16), intent(out) :: xm1 (:,:,:)
+            integer(int16), intent(in) :: x2(:)
+            integer(int16), intent(out) :: xm2 (:,:,:)
+            integer(int16), intent(in) :: x3(:)
+            integer(int16), intent(out) :: xm3 (:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_3_iint16_iint16
+        module subroutine meshgrid_4_iint16_iint16(&
+                x1, x2, x3, x4,  &
+                xm1, xm2, xm3, xm4,  &
+                indexing &
+        )
+            integer(int16), intent(in) :: x1(:)
+            integer(int16), intent(out) :: xm1 (:,:,:,:)
+            integer(int16), intent(in) :: x2(:)
+            integer(int16), intent(out) :: xm2 (:,:,:,:)
+            integer(int16), intent(in) :: x3(:)
+            integer(int16), intent(out) :: xm3 (:,:,:,:)
+            integer(int16), intent(in) :: x4(:)
+            integer(int16), intent(out) :: xm4 (:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_4_iint16_iint16
+        module subroutine meshgrid_5_iint16_iint16(&
+                x1, x2, x3, x4, x5,  &
+                xm1, xm2, xm3, xm4, xm5,  &
+                indexing &
+        )
+            integer(int16), intent(in) :: x1(:)
+            integer(int16), intent(out) :: xm1 (:,:,:,:,:)
+            integer(int16), intent(in) :: x2(:)
+            integer(int16), intent(out) :: xm2 (:,:,:,:,:)
+            integer(int16), intent(in) :: x3(:)
+            integer(int16), intent(out) :: xm3 (:,:,:,:,:)
+            integer(int16), intent(in) :: x4(:)
+            integer(int16), intent(out) :: xm4 (:,:,:,:,:)
+            integer(int16), intent(in) :: x5(:)
+            integer(int16), intent(out) :: xm5 (:,:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_5_iint16_iint16
+        module subroutine meshgrid_6_iint16_iint16(&
+                x1, x2, x3, x4, x5, x6,  &
+                xm1, xm2, xm3, xm4, xm5, xm6,  &
+                indexing &
+        )
+            integer(int16), intent(in) :: x1(:)
+            integer(int16), intent(out) :: xm1 (:,:,:,:,:,:)
+            integer(int16), intent(in) :: x2(:)
+            integer(int16), intent(out) :: xm2 (:,:,:,:,:,:)
+            integer(int16), intent(in) :: x3(:)
+            integer(int16), intent(out) :: xm3 (:,:,:,:,:,:)
+            integer(int16), intent(in) :: x4(:)
+            integer(int16), intent(out) :: xm4 (:,:,:,:,:,:)
+            integer(int16), intent(in) :: x5(:)
+            integer(int16), intent(out) :: xm5 (:,:,:,:,:,:)
+            integer(int16), intent(in) :: x6(:)
+            integer(int16), intent(out) :: xm6 (:,:,:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_6_iint16_iint16
+        module subroutine meshgrid_7_iint16_iint16(&
+                x1, x2, x3, x4, x5, x6, x7,  &
+                xm1, xm2, xm3, xm4, xm5, xm6, xm7,  &
+                indexing &
+        )
+            integer(int16), intent(in) :: x1(:)
+            integer(int16), intent(out) :: xm1 (:,:,:,:,:,:,:)
+            integer(int16), intent(in) :: x2(:)
+            integer(int16), intent(out) :: xm2 (:,:,:,:,:,:,:)
+            integer(int16), intent(in) :: x3(:)
+            integer(int16), intent(out) :: xm3 (:,:,:,:,:,:,:)
+            integer(int16), intent(in) :: x4(:)
+            integer(int16), intent(out) :: xm4 (:,:,:,:,:,:,:)
+            integer(int16), intent(in) :: x5(:)
+            integer(int16), intent(out) :: xm5 (:,:,:,:,:,:,:)
+            integer(int16), intent(in) :: x6(:)
+            integer(int16), intent(out) :: xm6 (:,:,:,:,:,:,:)
+            integer(int16), intent(in) :: x7(:)
+            integer(int16), intent(out) :: xm7 (:,:,:,:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_7_iint16_iint16
+        module subroutine meshgrid_1_iint32_iint32(&
+                x1,  &
+                xm1,  &
+                indexing &
+        )
+            integer(int32), intent(in) :: x1(:)
+            integer(int32), intent(out) :: xm1 (:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_1_iint32_iint32
+        module subroutine meshgrid_2_iint32_iint32(&
+                x1, x2,  &
+                xm1, xm2,  &
+                indexing &
+        )
+            integer(int32), intent(in) :: x1(:)
+            integer(int32), intent(out) :: xm1 (:,:)
+            integer(int32), intent(in) :: x2(:)
+            integer(int32), intent(out) :: xm2 (:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_2_iint32_iint32
+        module subroutine meshgrid_3_iint32_iint32(&
+                x1, x2, x3,  &
+                xm1, xm2, xm3,  &
+                indexing &
+        )
+            integer(int32), intent(in) :: x1(:)
+            integer(int32), intent(out) :: xm1 (:,:,:)
+            integer(int32), intent(in) :: x2(:)
+            integer(int32), intent(out) :: xm2 (:,:,:)
+            integer(int32), intent(in) :: x3(:)
+            integer(int32), intent(out) :: xm3 (:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_3_iint32_iint32
+        module subroutine meshgrid_4_iint32_iint32(&
+                x1, x2, x3, x4,  &
+                xm1, xm2, xm3, xm4,  &
+                indexing &
+        )
+            integer(int32), intent(in) :: x1(:)
+            integer(int32), intent(out) :: xm1 (:,:,:,:)
+            integer(int32), intent(in) :: x2(:)
+            integer(int32), intent(out) :: xm2 (:,:,:,:)
+            integer(int32), intent(in) :: x3(:)
+            integer(int32), intent(out) :: xm3 (:,:,:,:)
+            integer(int32), intent(in) :: x4(:)
+            integer(int32), intent(out) :: xm4 (:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_4_iint32_iint32
+        module subroutine meshgrid_5_iint32_iint32(&
+                x1, x2, x3, x4, x5,  &
+                xm1, xm2, xm3, xm4, xm5,  &
+                indexing &
+        )
+            integer(int32), intent(in) :: x1(:)
+            integer(int32), intent(out) :: xm1 (:,:,:,:,:)
+            integer(int32), intent(in) :: x2(:)
+            integer(int32), intent(out) :: xm2 (:,:,:,:,:)
+            integer(int32), intent(in) :: x3(:)
+            integer(int32), intent(out) :: xm3 (:,:,:,:,:)
+            integer(int32), intent(in) :: x4(:)
+            integer(int32), intent(out) :: xm4 (:,:,:,:,:)
+            integer(int32), intent(in) :: x5(:)
+            integer(int32), intent(out) :: xm5 (:,:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_5_iint32_iint32
+        module subroutine meshgrid_6_iint32_iint32(&
+                x1, x2, x3, x4, x5, x6,  &
+                xm1, xm2, xm3, xm4, xm5, xm6,  &
+                indexing &
+        )
+            integer(int32), intent(in) :: x1(:)
+            integer(int32), intent(out) :: xm1 (:,:,:,:,:,:)
+            integer(int32), intent(in) :: x2(:)
+            integer(int32), intent(out) :: xm2 (:,:,:,:,:,:)
+            integer(int32), intent(in) :: x3(:)
+            integer(int32), intent(out) :: xm3 (:,:,:,:,:,:)
+            integer(int32), intent(in) :: x4(:)
+            integer(int32), intent(out) :: xm4 (:,:,:,:,:,:)
+            integer(int32), intent(in) :: x5(:)
+            integer(int32), intent(out) :: xm5 (:,:,:,:,:,:)
+            integer(int32), intent(in) :: x6(:)
+            integer(int32), intent(out) :: xm6 (:,:,:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_6_iint32_iint32
+        module subroutine meshgrid_7_iint32_iint32(&
+                x1, x2, x3, x4, x5, x6, x7,  &
+                xm1, xm2, xm3, xm4, xm5, xm6, xm7,  &
+                indexing &
+        )
+            integer(int32), intent(in) :: x1(:)
+            integer(int32), intent(out) :: xm1 (:,:,:,:,:,:,:)
+            integer(int32), intent(in) :: x2(:)
+            integer(int32), intent(out) :: xm2 (:,:,:,:,:,:,:)
+            integer(int32), intent(in) :: x3(:)
+            integer(int32), intent(out) :: xm3 (:,:,:,:,:,:,:)
+            integer(int32), intent(in) :: x4(:)
+            integer(int32), intent(out) :: xm4 (:,:,:,:,:,:,:)
+            integer(int32), intent(in) :: x5(:)
+            integer(int32), intent(out) :: xm5 (:,:,:,:,:,:,:)
+            integer(int32), intent(in) :: x6(:)
+            integer(int32), intent(out) :: xm6 (:,:,:,:,:,:,:)
+            integer(int32), intent(in) :: x7(:)
+            integer(int32), intent(out) :: xm7 (:,:,:,:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_7_iint32_iint32
+        module subroutine meshgrid_1_iint64_iint64(&
+                x1,  &
+                xm1,  &
+                indexing &
+        )
+            integer(int64), intent(in) :: x1(:)
+            integer(int64), intent(out) :: xm1 (:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_1_iint64_iint64
+        module subroutine meshgrid_2_iint64_iint64(&
+                x1, x2,  &
+                xm1, xm2,  &
+                indexing &
+        )
+            integer(int64), intent(in) :: x1(:)
+            integer(int64), intent(out) :: xm1 (:,:)
+            integer(int64), intent(in) :: x2(:)
+            integer(int64), intent(out) :: xm2 (:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_2_iint64_iint64
+        module subroutine meshgrid_3_iint64_iint64(&
+                x1, x2, x3,  &
+                xm1, xm2, xm3,  &
+                indexing &
+        )
+            integer(int64), intent(in) :: x1(:)
+            integer(int64), intent(out) :: xm1 (:,:,:)
+            integer(int64), intent(in) :: x2(:)
+            integer(int64), intent(out) :: xm2 (:,:,:)
+            integer(int64), intent(in) :: x3(:)
+            integer(int64), intent(out) :: xm3 (:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_3_iint64_iint64
+        module subroutine meshgrid_4_iint64_iint64(&
+                x1, x2, x3, x4,  &
+                xm1, xm2, xm3, xm4,  &
+                indexing &
+        )
+            integer(int64), intent(in) :: x1(:)
+            integer(int64), intent(out) :: xm1 (:,:,:,:)
+            integer(int64), intent(in) :: x2(:)
+            integer(int64), intent(out) :: xm2 (:,:,:,:)
+            integer(int64), intent(in) :: x3(:)
+            integer(int64), intent(out) :: xm3 (:,:,:,:)
+            integer(int64), intent(in) :: x4(:)
+            integer(int64), intent(out) :: xm4 (:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_4_iint64_iint64
+        module subroutine meshgrid_5_iint64_iint64(&
+                x1, x2, x3, x4, x5,  &
+                xm1, xm2, xm3, xm4, xm5,  &
+                indexing &
+        )
+            integer(int64), intent(in) :: x1(:)
+            integer(int64), intent(out) :: xm1 (:,:,:,:,:)
+            integer(int64), intent(in) :: x2(:)
+            integer(int64), intent(out) :: xm2 (:,:,:,:,:)
+            integer(int64), intent(in) :: x3(:)
+            integer(int64), intent(out) :: xm3 (:,:,:,:,:)
+            integer(int64), intent(in) :: x4(:)
+            integer(int64), intent(out) :: xm4 (:,:,:,:,:)
+            integer(int64), intent(in) :: x5(:)
+            integer(int64), intent(out) :: xm5 (:,:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_5_iint64_iint64
+        module subroutine meshgrid_6_iint64_iint64(&
+                x1, x2, x3, x4, x5, x6,  &
+                xm1, xm2, xm3, xm4, xm5, xm6,  &
+                indexing &
+        )
+            integer(int64), intent(in) :: x1(:)
+            integer(int64), intent(out) :: xm1 (:,:,:,:,:,:)
+            integer(int64), intent(in) :: x2(:)
+            integer(int64), intent(out) :: xm2 (:,:,:,:,:,:)
+            integer(int64), intent(in) :: x3(:)
+            integer(int64), intent(out) :: xm3 (:,:,:,:,:,:)
+            integer(int64), intent(in) :: x4(:)
+            integer(int64), intent(out) :: xm4 (:,:,:,:,:,:)
+            integer(int64), intent(in) :: x5(:)
+            integer(int64), intent(out) :: xm5 (:,:,:,:,:,:)
+            integer(int64), intent(in) :: x6(:)
+            integer(int64), intent(out) :: xm6 (:,:,:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_6_iint64_iint64
+        module subroutine meshgrid_7_iint64_iint64(&
+                x1, x2, x3, x4, x5, x6, x7,  &
+                xm1, xm2, xm3, xm4, xm5, xm6, xm7,  &
+                indexing &
+        )
+            integer(int64), intent(in) :: x1(:)
+            integer(int64), intent(out) :: xm1 (:,:,:,:,:,:,:)
+            integer(int64), intent(in) :: x2(:)
+            integer(int64), intent(out) :: xm2 (:,:,:,:,:,:,:)
+            integer(int64), intent(in) :: x3(:)
+            integer(int64), intent(out) :: xm3 (:,:,:,:,:,:,:)
+            integer(int64), intent(in) :: x4(:)
+            integer(int64), intent(out) :: xm4 (:,:,:,:,:,:,:)
+            integer(int64), intent(in) :: x5(:)
+            integer(int64), intent(out) :: xm5 (:,:,:,:,:,:,:)
+            integer(int64), intent(in) :: x6(:)
+            integer(int64), intent(out) :: xm6 (:,:,:,:,:,:,:)
+            integer(int64), intent(in) :: x7(:)
+            integer(int64), intent(out) :: xm7 (:,:,:,:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_7_iint64_iint64
+        module subroutine meshgrid_1_rsp_rsp(&
+                x1,  &
+                xm1,  &
+                indexing &
+        )
+            real(sp), intent(in) :: x1(:)
+            real(sp), intent(out) :: xm1 (:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_1_rsp_rsp
+        module subroutine meshgrid_2_rsp_rsp(&
+                x1, x2,  &
+                xm1, xm2,  &
+                indexing &
+        )
+            real(sp), intent(in) :: x1(:)
+            real(sp), intent(out) :: xm1 (:,:)
+            real(sp), intent(in) :: x2(:)
+            real(sp), intent(out) :: xm2 (:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_2_rsp_rsp
+        module subroutine meshgrid_3_rsp_rsp(&
+                x1, x2, x3,  &
+                xm1, xm2, xm3,  &
+                indexing &
+        )
+            real(sp), intent(in) :: x1(:)
+            real(sp), intent(out) :: xm1 (:,:,:)
+            real(sp), intent(in) :: x2(:)
+            real(sp), intent(out) :: xm2 (:,:,:)
+            real(sp), intent(in) :: x3(:)
+            real(sp), intent(out) :: xm3 (:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_3_rsp_rsp
+        module subroutine meshgrid_4_rsp_rsp(&
+                x1, x2, x3, x4,  &
+                xm1, xm2, xm3, xm4,  &
+                indexing &
+        )
+            real(sp), intent(in) :: x1(:)
+            real(sp), intent(out) :: xm1 (:,:,:,:)
+            real(sp), intent(in) :: x2(:)
+            real(sp), intent(out) :: xm2 (:,:,:,:)
+            real(sp), intent(in) :: x3(:)
+            real(sp), intent(out) :: xm3 (:,:,:,:)
+            real(sp), intent(in) :: x4(:)
+            real(sp), intent(out) :: xm4 (:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_4_rsp_rsp
+        module subroutine meshgrid_5_rsp_rsp(&
+                x1, x2, x3, x4, x5,  &
+                xm1, xm2, xm3, xm4, xm5,  &
+                indexing &
+        )
+            real(sp), intent(in) :: x1(:)
+            real(sp), intent(out) :: xm1 (:,:,:,:,:)
+            real(sp), intent(in) :: x2(:)
+            real(sp), intent(out) :: xm2 (:,:,:,:,:)
+            real(sp), intent(in) :: x3(:)
+            real(sp), intent(out) :: xm3 (:,:,:,:,:)
+            real(sp), intent(in) :: x4(:)
+            real(sp), intent(out) :: xm4 (:,:,:,:,:)
+            real(sp), intent(in) :: x5(:)
+            real(sp), intent(out) :: xm5 (:,:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_5_rsp_rsp
+        module subroutine meshgrid_6_rsp_rsp(&
+                x1, x2, x3, x4, x5, x6,  &
+                xm1, xm2, xm3, xm4, xm5, xm6,  &
+                indexing &
+        )
+            real(sp), intent(in) :: x1(:)
+            real(sp), intent(out) :: xm1 (:,:,:,:,:,:)
+            real(sp), intent(in) :: x2(:)
+            real(sp), intent(out) :: xm2 (:,:,:,:,:,:)
+            real(sp), intent(in) :: x3(:)
+            real(sp), intent(out) :: xm3 (:,:,:,:,:,:)
+            real(sp), intent(in) :: x4(:)
+            real(sp), intent(out) :: xm4 (:,:,:,:,:,:)
+            real(sp), intent(in) :: x5(:)
+            real(sp), intent(out) :: xm5 (:,:,:,:,:,:)
+            real(sp), intent(in) :: x6(:)
+            real(sp), intent(out) :: xm6 (:,:,:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_6_rsp_rsp
+        module subroutine meshgrid_7_rsp_rsp(&
+                x1, x2, x3, x4, x5, x6, x7,  &
+                xm1, xm2, xm3, xm4, xm5, xm6, xm7,  &
+                indexing &
+        )
+            real(sp), intent(in) :: x1(:)
+            real(sp), intent(out) :: xm1 (:,:,:,:,:,:,:)
+            real(sp), intent(in) :: x2(:)
+            real(sp), intent(out) :: xm2 (:,:,:,:,:,:,:)
+            real(sp), intent(in) :: x3(:)
+            real(sp), intent(out) :: xm3 (:,:,:,:,:,:,:)
+            real(sp), intent(in) :: x4(:)
+            real(sp), intent(out) :: xm4 (:,:,:,:,:,:,:)
+            real(sp), intent(in) :: x5(:)
+            real(sp), intent(out) :: xm5 (:,:,:,:,:,:,:)
+            real(sp), intent(in) :: x6(:)
+            real(sp), intent(out) :: xm6 (:,:,:,:,:,:,:)
+            real(sp), intent(in) :: x7(:)
+            real(sp), intent(out) :: xm7 (:,:,:,:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_7_rsp_rsp
+        module subroutine meshgrid_1_rdp_rdp(&
+                x1,  &
+                xm1,  &
+                indexing &
+        )
+            real(dp), intent(in) :: x1(:)
+            real(dp), intent(out) :: xm1 (:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_1_rdp_rdp
+        module subroutine meshgrid_2_rdp_rdp(&
+                x1, x2,  &
+                xm1, xm2,  &
+                indexing &
+        )
+            real(dp), intent(in) :: x1(:)
+            real(dp), intent(out) :: xm1 (:,:)
+            real(dp), intent(in) :: x2(:)
+            real(dp), intent(out) :: xm2 (:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_2_rdp_rdp
+        module subroutine meshgrid_3_rdp_rdp(&
+                x1, x2, x3,  &
+                xm1, xm2, xm3,  &
+                indexing &
+        )
+            real(dp), intent(in) :: x1(:)
+            real(dp), intent(out) :: xm1 (:,:,:)
+            real(dp), intent(in) :: x2(:)
+            real(dp), intent(out) :: xm2 (:,:,:)
+            real(dp), intent(in) :: x3(:)
+            real(dp), intent(out) :: xm3 (:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_3_rdp_rdp
+        module subroutine meshgrid_4_rdp_rdp(&
+                x1, x2, x3, x4,  &
+                xm1, xm2, xm3, xm4,  &
+                indexing &
+        )
+            real(dp), intent(in) :: x1(:)
+            real(dp), intent(out) :: xm1 (:,:,:,:)
+            real(dp), intent(in) :: x2(:)
+            real(dp), intent(out) :: xm2 (:,:,:,:)
+            real(dp), intent(in) :: x3(:)
+            real(dp), intent(out) :: xm3 (:,:,:,:)
+            real(dp), intent(in) :: x4(:)
+            real(dp), intent(out) :: xm4 (:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_4_rdp_rdp
+        module subroutine meshgrid_5_rdp_rdp(&
+                x1, x2, x3, x4, x5,  &
+                xm1, xm2, xm3, xm4, xm5,  &
+                indexing &
+        )
+            real(dp), intent(in) :: x1(:)
+            real(dp), intent(out) :: xm1 (:,:,:,:,:)
+            real(dp), intent(in) :: x2(:)
+            real(dp), intent(out) :: xm2 (:,:,:,:,:)
+            real(dp), intent(in) :: x3(:)
+            real(dp), intent(out) :: xm3 (:,:,:,:,:)
+            real(dp), intent(in) :: x4(:)
+            real(dp), intent(out) :: xm4 (:,:,:,:,:)
+            real(dp), intent(in) :: x5(:)
+            real(dp), intent(out) :: xm5 (:,:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_5_rdp_rdp
+        module subroutine meshgrid_6_rdp_rdp(&
+                x1, x2, x3, x4, x5, x6,  &
+                xm1, xm2, xm3, xm4, xm5, xm6,  &
+                indexing &
+        )
+            real(dp), intent(in) :: x1(:)
+            real(dp), intent(out) :: xm1 (:,:,:,:,:,:)
+            real(dp), intent(in) :: x2(:)
+            real(dp), intent(out) :: xm2 (:,:,:,:,:,:)
+            real(dp), intent(in) :: x3(:)
+            real(dp), intent(out) :: xm3 (:,:,:,:,:,:)
+            real(dp), intent(in) :: x4(:)
+            real(dp), intent(out) :: xm4 (:,:,:,:,:,:)
+            real(dp), intent(in) :: x5(:)
+            real(dp), intent(out) :: xm5 (:,:,:,:,:,:)
+            real(dp), intent(in) :: x6(:)
+            real(dp), intent(out) :: xm6 (:,:,:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_6_rdp_rdp
+        module subroutine meshgrid_7_rdp_rdp(&
+                x1, x2, x3, x4, x5, x6, x7,  &
+                xm1, xm2, xm3, xm4, xm5, xm6, xm7,  &
+                indexing &
+        )
+            real(dp), intent(in) :: x1(:)
+            real(dp), intent(out) :: xm1 (:,:,:,:,:,:,:)
+            real(dp), intent(in) :: x2(:)
+            real(dp), intent(out) :: xm2 (:,:,:,:,:,:,:)
+            real(dp), intent(in) :: x3(:)
+            real(dp), intent(out) :: xm3 (:,:,:,:,:,:,:)
+            real(dp), intent(in) :: x4(:)
+            real(dp), intent(out) :: xm4 (:,:,:,:,:,:,:)
+            real(dp), intent(in) :: x5(:)
+            real(dp), intent(out) :: xm5 (:,:,:,:,:,:,:)
+            real(dp), intent(in) :: x6(:)
+            real(dp), intent(out) :: xm6 (:,:,:,:,:,:,:)
+            real(dp), intent(in) :: x7(:)
+            real(dp), intent(out) :: xm7 (:,:,:,:,:,:,:)
+            integer, intent(in), optional :: indexing
+        end subroutine meshgrid_7_rdp_rdp
+    end interface meshgrid
 contains
 
     elemental function clip_int8(x, xmin, xmax) result(res)
