@@ -1,3 +1,4 @@
+ADD_EXAMPLE(exists)
 ADD_EXAMPLE(fmt_constants)
 #ADD_EXAMPLE(getline)
 ADD_EXAMPLE(loadnpy)

@@ -17,6 +17,9 @@ exclude: src/stdlib_linalg_lapack.fypp
          src/stdlib_linalg_lapack_w.fypp
          src/stdlib_linalg_lapack_z.fypp
 fpp_extensions: fypp
+extensions: f90
+            F90
+            fypp
 preprocess: true
 macro: MAXRANK=3
        PROJECT_VERSION_MAJOR=0

@@ -108,6 +108,7 @@ set(SRC
     stdlib_hashmaps.f90
     stdlib_hashmap_chaining.f90
     stdlib_hashmap_open.f90
+    stdlib_io_path.F90
     stdlib_logger.f90
     stdlib_sorting_radix_sort.f90
     stdlib_system.F90

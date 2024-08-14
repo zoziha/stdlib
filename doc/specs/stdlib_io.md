@@ -260,3 +260,32 @@ Provides formats for all kinds as defined in the `stdlib_kinds` module.
 ```fortran
 {!example/io/example_fmt_constants.f90!}
 ```
+
+## `exists`
+
+### Status
+
+Experimental
+
+### Description
+
+Check if a file or directory exists.
+Returns `.true.` if the file or directory exists, `.false.` otherwise.
+
+### Syntax
+
+`exists = ` [[stdlib_io_path(module):exists(function)]] `(path)`
+
+### Arguments
+
+`path`: Shall be a character expression containing the path to the file or directory to check.
+
+### Return value
+
+The result is a scalar of type `logical`. `.true.` if the file or directory exists, `.false.` otherwise.
+
+### Example
+
+```fortran
+{!example/io/example_exists.f90!}
+```
