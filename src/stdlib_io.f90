@@ -110,7 +110,7 @@ module stdlib_io
 
 contains
 
-    subroutine  loadtxt_rsp(filename, d, skiprows, max_rows, fmt)
+    subroutine  loadtxt_rsp(filename, d, skiprows, max_rows, fmt, delimiter)
       !! version: experimental
       !!
       !! Loads a 2D array from a text file.
@@ -130,7 +130,9 @@ contains
       !! The default value is -1.
       integer, intent(in), optional :: max_rows
       character(len=*), intent(in), optional :: fmt
+      character(len=1), intent(in), optional :: delimiter
       character(len=:), allocatable :: fmt_
+      character(len=1) :: delimiter_
       !!
       !! Example
       !! -------
@@ -154,6 +156,7 @@ contains
 
       skiprows_ = max(optval(skiprows, 0), 0)
       max_rows_ = optval(max_rows, -1)
+      delimiter_ = optval(delimiter, " ")
 
       s = open(filename)
 
@@ -164,7 +167,7 @@ contains
 
       ! determine number of columns
       ncol = 0
-      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_)
+      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_, delimiter=delimiter_)
 
       allocate(d(max_rows_, ncol))
 
@@ -211,7 +214,7 @@ contains
       2 format('loadtxt: error <',a,'> reading ',i0,' values from line ',i0,' of ',a,'.')
 
     end subroutine loadtxt_rsp
-    subroutine  loadtxt_rdp(filename, d, skiprows, max_rows, fmt)
+    subroutine  loadtxt_rdp(filename, d, skiprows, max_rows, fmt, delimiter)
       !! version: experimental
       !!
       !! Loads a 2D array from a text file.
@@ -231,7 +234,9 @@ contains
       !! The default value is -1.
       integer, intent(in), optional :: max_rows
       character(len=*), intent(in), optional :: fmt
+      character(len=1), intent(in), optional :: delimiter
       character(len=:), allocatable :: fmt_
+      character(len=1) :: delimiter_
       !!
       !! Example
       !! -------
@@ -255,6 +260,7 @@ contains
 
       skiprows_ = max(optval(skiprows, 0), 0)
       max_rows_ = optval(max_rows, -1)
+      delimiter_ = optval(delimiter, " ")
 
       s = open(filename)
 
@@ -265,7 +271,7 @@ contains
 
       ! determine number of columns
       ncol = 0
-      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_)
+      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_, delimiter=delimiter_)
 
       allocate(d(max_rows_, ncol))
 
@@ -312,7 +318,7 @@ contains
       2 format('loadtxt: error <',a,'> reading ',i0,' values from line ',i0,' of ',a,'.')
 
     end subroutine loadtxt_rdp
-    subroutine  loadtxt_iint8(filename, d, skiprows, max_rows, fmt)
+    subroutine  loadtxt_iint8(filename, d, skiprows, max_rows, fmt, delimiter)
       !! version: experimental
       !!
       !! Loads a 2D array from a text file.
@@ -332,7 +338,9 @@ contains
       !! The default value is -1.
       integer, intent(in), optional :: max_rows
       character(len=*), intent(in), optional :: fmt
+      character(len=1), intent(in), optional :: delimiter
       character(len=:), allocatable :: fmt_
+      character(len=1) :: delimiter_
       !!
       !! Example
       !! -------
@@ -356,6 +364,7 @@ contains
 
       skiprows_ = max(optval(skiprows, 0), 0)
       max_rows_ = optval(max_rows, -1)
+      delimiter_ = optval(delimiter, " ")
 
       s = open(filename)
 
@@ -366,7 +375,7 @@ contains
 
       ! determine number of columns
       ncol = 0
-      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_)
+      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_, delimiter=delimiter_)
 
       allocate(d(max_rows_, ncol))
 
@@ -413,7 +422,7 @@ contains
       2 format('loadtxt: error <',a,'> reading ',i0,' values from line ',i0,' of ',a,'.')
 
     end subroutine loadtxt_iint8
-    subroutine  loadtxt_iint16(filename, d, skiprows, max_rows, fmt)
+    subroutine  loadtxt_iint16(filename, d, skiprows, max_rows, fmt, delimiter)
       !! version: experimental
       !!
       !! Loads a 2D array from a text file.
@@ -433,7 +442,9 @@ contains
       !! The default value is -1.
       integer, intent(in), optional :: max_rows
       character(len=*), intent(in), optional :: fmt
+      character(len=1), intent(in), optional :: delimiter
       character(len=:), allocatable :: fmt_
+      character(len=1) :: delimiter_
       !!
       !! Example
       !! -------
@@ -457,6 +468,7 @@ contains
 
       skiprows_ = max(optval(skiprows, 0), 0)
       max_rows_ = optval(max_rows, -1)
+      delimiter_ = optval(delimiter, " ")
 
       s = open(filename)
 
@@ -467,7 +479,7 @@ contains
 
       ! determine number of columns
       ncol = 0
-      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_)
+      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_, delimiter=delimiter_)
 
       allocate(d(max_rows_, ncol))
 
@@ -514,7 +526,7 @@ contains
       2 format('loadtxt: error <',a,'> reading ',i0,' values from line ',i0,' of ',a,'.')
 
     end subroutine loadtxt_iint16
-    subroutine  loadtxt_iint32(filename, d, skiprows, max_rows, fmt)
+    subroutine  loadtxt_iint32(filename, d, skiprows, max_rows, fmt, delimiter)
       !! version: experimental
       !!
       !! Loads a 2D array from a text file.
@@ -534,7 +546,9 @@ contains
       !! The default value is -1.
       integer, intent(in), optional :: max_rows
       character(len=*), intent(in), optional :: fmt
+      character(len=1), intent(in), optional :: delimiter
       character(len=:), allocatable :: fmt_
+      character(len=1) :: delimiter_
       !!
       !! Example
       !! -------
@@ -558,6 +572,7 @@ contains
 
       skiprows_ = max(optval(skiprows, 0), 0)
       max_rows_ = optval(max_rows, -1)
+      delimiter_ = optval(delimiter, " ")
 
       s = open(filename)
 
@@ -568,7 +583,7 @@ contains
 
       ! determine number of columns
       ncol = 0
-      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_)
+      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_, delimiter=delimiter_)
 
       allocate(d(max_rows_, ncol))
 
@@ -615,7 +630,7 @@ contains
       2 format('loadtxt: error <',a,'> reading ',i0,' values from line ',i0,' of ',a,'.')
 
     end subroutine loadtxt_iint32
-    subroutine  loadtxt_iint64(filename, d, skiprows, max_rows, fmt)
+    subroutine  loadtxt_iint64(filename, d, skiprows, max_rows, fmt, delimiter)
       !! version: experimental
       !!
       !! Loads a 2D array from a text file.
@@ -635,7 +650,9 @@ contains
       !! The default value is -1.
       integer, intent(in), optional :: max_rows
       character(len=*), intent(in), optional :: fmt
+      character(len=1), intent(in), optional :: delimiter
       character(len=:), allocatable :: fmt_
+      character(len=1) :: delimiter_
       !!
       !! Example
       !! -------
@@ -659,6 +676,7 @@ contains
 
       skiprows_ = max(optval(skiprows, 0), 0)
       max_rows_ = optval(max_rows, -1)
+      delimiter_ = optval(delimiter, " ")
 
       s = open(filename)
 
@@ -669,7 +687,7 @@ contains
 
       ! determine number of columns
       ncol = 0
-      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_)
+      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_, delimiter=delimiter_)
 
       allocate(d(max_rows_, ncol))
 
@@ -716,7 +734,7 @@ contains
       2 format('loadtxt: error <',a,'> reading ',i0,' values from line ',i0,' of ',a,'.')
 
     end subroutine loadtxt_iint64
-    subroutine  loadtxt_csp(filename, d, skiprows, max_rows, fmt)
+    subroutine  loadtxt_csp(filename, d, skiprows, max_rows, fmt, delimiter)
       !! version: experimental
       !!
       !! Loads a 2D array from a text file.
@@ -736,7 +754,9 @@ contains
       !! The default value is -1.
       integer, intent(in), optional :: max_rows
       character(len=*), intent(in), optional :: fmt
+      character(len=1), intent(in), optional :: delimiter
       character(len=:), allocatable :: fmt_
+      character(len=1) :: delimiter_
       !!
       !! Example
       !! -------
@@ -760,6 +780,7 @@ contains
 
       skiprows_ = max(optval(skiprows, 0), 0)
       max_rows_ = optval(max_rows, -1)
+      delimiter_ = optval(delimiter, " ")
 
       s = open(filename)
 
@@ -770,8 +791,8 @@ contains
 
       ! determine number of columns
       ncol = 0
-      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_)
-      ncol = ncol / 2
+      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_, delimiter=delimiter_)
+      if (is_blank(delimiter_)) ncol = ncol / 2
 
       allocate(d(max_rows_, ncol))
 
@@ -818,7 +839,7 @@ contains
       2 format('loadtxt: error <',a,'> reading ',i0,' values from line ',i0,' of ',a,'.')
 
     end subroutine loadtxt_csp
-    subroutine  loadtxt_cdp(filename, d, skiprows, max_rows, fmt)
+    subroutine  loadtxt_cdp(filename, d, skiprows, max_rows, fmt, delimiter)
       !! version: experimental
       !!
       !! Loads a 2D array from a text file.
@@ -838,7 +859,9 @@ contains
       !! The default value is -1.
       integer, intent(in), optional :: max_rows
       character(len=*), intent(in), optional :: fmt
+      character(len=1), intent(in), optional :: delimiter
       character(len=:), allocatable :: fmt_
+      character(len=1) :: delimiter_
       !!
       !! Example
       !! -------
@@ -862,6 +885,7 @@ contains
 
       skiprows_ = max(optval(skiprows, 0), 0)
       max_rows_ = optval(max_rows, -1)
+      delimiter_ = optval(delimiter, " ")
 
       s = open(filename)
 
@@ -872,8 +896,8 @@ contains
 
       ! determine number of columns
       ncol = 0
-      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_)
-      ncol = ncol / 2
+      if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_, delimiter=delimiter_)
+      if (is_blank(delimiter_)) ncol = ncol / 2
 
       allocate(d(max_rows_, ncol))
 
@@ -922,7 +946,7 @@ contains
     end subroutine loadtxt_cdp
 
 
-    subroutine savetxt_rsp(filename, d)
+    subroutine savetxt_rsp(filename, d, delimiter)
       !! version: experimental
       !!
       !! Saves a 2D array into a text file.
@@ -932,6 +956,7 @@ contains
       !!
       character(len=*), intent(in) :: filename  ! File to save the array to
       real(sp), intent(in) :: d(:,:)           ! The 2D array to save
+      character(len=1), intent(in), optional :: delimiter  ! Column delimiter. Default is a space.
       !!
       !! Example
       !! -------
@@ -941,12 +966,20 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-
+      
       integer :: s, i, ios
+      character(len=1) :: delimiter_
+      character(len=3) :: delim_str
+      character(len=:), allocatable :: fmt_
       character(len=1024) :: iomsg, msgout
+
+      delimiter_ = optval(delimiter, " ")
+      delim_str = "'"//delimiter_//"'"
+        fmt_ = "(*"//FMT_REAL_sp(1:len(FMT_REAL_sp)-1)//",:,"//delim_str//"))"
+
       s = open(filename, "w")
       do i = 1, size(d, 1)
-          write(s, "(*"//FMT_REAL_sp(1:len(FMT_REAL_sp)-1)//",:,1x))", &
+          write(s, fmt_, &
                 iostat=ios,iomsg=iomsg) d(i, :)
         
         if (ios/=0) then 
@@ -960,7 +993,7 @@ contains
       1 format('savetxt: error <',a,'> writing ',i0,' values to line ',i0,' of ',a,'.')
       
     end subroutine savetxt_rsp
-    subroutine savetxt_rdp(filename, d)
+    subroutine savetxt_rdp(filename, d, delimiter)
       !! version: experimental
       !!
       !! Saves a 2D array into a text file.
@@ -970,6 +1003,7 @@ contains
       !!
       character(len=*), intent(in) :: filename  ! File to save the array to
       real(dp), intent(in) :: d(:,:)           ! The 2D array to save
+      character(len=1), intent(in), optional :: delimiter  ! Column delimiter. Default is a space.
       !!
       !! Example
       !! -------
@@ -979,12 +1013,20 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-
+      
       integer :: s, i, ios
+      character(len=1) :: delimiter_
+      character(len=3) :: delim_str
+      character(len=:), allocatable :: fmt_
       character(len=1024) :: iomsg, msgout
+
+      delimiter_ = optval(delimiter, " ")
+      delim_str = "'"//delimiter_//"'"
+        fmt_ = "(*"//FMT_REAL_dp(1:len(FMT_REAL_dp)-1)//",:,"//delim_str//"))"
+
       s = open(filename, "w")
       do i = 1, size(d, 1)
-          write(s, "(*"//FMT_REAL_dp(1:len(FMT_REAL_dp)-1)//",:,1x))", &
+          write(s, fmt_, &
                 iostat=ios,iomsg=iomsg) d(i, :)
         
         if (ios/=0) then 
@@ -998,7 +1040,7 @@ contains
       1 format('savetxt: error <',a,'> writing ',i0,' values to line ',i0,' of ',a,'.')
       
     end subroutine savetxt_rdp
-    subroutine savetxt_iint8(filename, d)
+    subroutine savetxt_iint8(filename, d, delimiter)
       !! version: experimental
       !!
       !! Saves a 2D array into a text file.
@@ -1008,6 +1050,7 @@ contains
       !!
       character(len=*), intent(in) :: filename  ! File to save the array to
       integer(int8), intent(in) :: d(:,:)           ! The 2D array to save
+      character(len=1), intent(in), optional :: delimiter  ! Column delimiter. Default is a space.
       !!
       !! Example
       !! -------
@@ -1017,12 +1060,20 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-
+      
       integer :: s, i, ios
+      character(len=1) :: delimiter_
+      character(len=3) :: delim_str
+      character(len=:), allocatable :: fmt_
       character(len=1024) :: iomsg, msgout
+
+      delimiter_ = optval(delimiter, " ")
+      delim_str = "'"//delimiter_//"'"
+        fmt_ = "(*"//FMT_INT(1:len(FMT_INT)-1)//",:,"//delim_str//"))"
+
       s = open(filename, "w")
       do i = 1, size(d, 1)
-          write(s, "(*"//FMT_INT(1:len(FMT_INT)-1)//",:,1x))", &
+          write(s, fmt_, &
                 iostat=ios,iomsg=iomsg) d(i, :)
         
         if (ios/=0) then 
@@ -1036,7 +1087,7 @@ contains
       1 format('savetxt: error <',a,'> writing ',i0,' values to line ',i0,' of ',a,'.')
       
     end subroutine savetxt_iint8
-    subroutine savetxt_iint16(filename, d)
+    subroutine savetxt_iint16(filename, d, delimiter)
       !! version: experimental
       !!
       !! Saves a 2D array into a text file.
@@ -1046,6 +1097,7 @@ contains
       !!
       character(len=*), intent(in) :: filename  ! File to save the array to
       integer(int16), intent(in) :: d(:,:)           ! The 2D array to save
+      character(len=1), intent(in), optional :: delimiter  ! Column delimiter. Default is a space.
       !!
       !! Example
       !! -------
@@ -1055,12 +1107,20 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-
+      
       integer :: s, i, ios
+      character(len=1) :: delimiter_
+      character(len=3) :: delim_str
+      character(len=:), allocatable :: fmt_
       character(len=1024) :: iomsg, msgout
+
+      delimiter_ = optval(delimiter, " ")
+      delim_str = "'"//delimiter_//"'"
+        fmt_ = "(*"//FMT_INT(1:len(FMT_INT)-1)//",:,"//delim_str//"))"
+
       s = open(filename, "w")
       do i = 1, size(d, 1)
-          write(s, "(*"//FMT_INT(1:len(FMT_INT)-1)//",:,1x))", &
+          write(s, fmt_, &
                 iostat=ios,iomsg=iomsg) d(i, :)
         
         if (ios/=0) then 
@@ -1074,7 +1134,7 @@ contains
       1 format('savetxt: error <',a,'> writing ',i0,' values to line ',i0,' of ',a,'.')
       
     end subroutine savetxt_iint16
-    subroutine savetxt_iint32(filename, d)
+    subroutine savetxt_iint32(filename, d, delimiter)
       !! version: experimental
       !!
       !! Saves a 2D array into a text file.
@@ -1084,6 +1144,7 @@ contains
       !!
       character(len=*), intent(in) :: filename  ! File to save the array to
       integer(int32), intent(in) :: d(:,:)           ! The 2D array to save
+      character(len=1), intent(in), optional :: delimiter  ! Column delimiter. Default is a space.
       !!
       !! Example
       !! -------
@@ -1093,12 +1154,20 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-
+      
       integer :: s, i, ios
+      character(len=1) :: delimiter_
+      character(len=3) :: delim_str
+      character(len=:), allocatable :: fmt_
       character(len=1024) :: iomsg, msgout
+
+      delimiter_ = optval(delimiter, " ")
+      delim_str = "'"//delimiter_//"'"
+        fmt_ = "(*"//FMT_INT(1:len(FMT_INT)-1)//",:,"//delim_str//"))"
+
       s = open(filename, "w")
       do i = 1, size(d, 1)
-          write(s, "(*"//FMT_INT(1:len(FMT_INT)-1)//",:,1x))", &
+          write(s, fmt_, &
                 iostat=ios,iomsg=iomsg) d(i, :)
         
         if (ios/=0) then 
@@ -1112,7 +1181,7 @@ contains
       1 format('savetxt: error <',a,'> writing ',i0,' values to line ',i0,' of ',a,'.')
       
     end subroutine savetxt_iint32
-    subroutine savetxt_iint64(filename, d)
+    subroutine savetxt_iint64(filename, d, delimiter)
       !! version: experimental
       !!
       !! Saves a 2D array into a text file.
@@ -1122,6 +1191,7 @@ contains
       !!
       character(len=*), intent(in) :: filename  ! File to save the array to
       integer(int64), intent(in) :: d(:,:)           ! The 2D array to save
+      character(len=1), intent(in), optional :: delimiter  ! Column delimiter. Default is a space.
       !!
       !! Example
       !! -------
@@ -1131,12 +1201,20 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-
+      
       integer :: s, i, ios
+      character(len=1) :: delimiter_
+      character(len=3) :: delim_str
+      character(len=:), allocatable :: fmt_
       character(len=1024) :: iomsg, msgout
+
+      delimiter_ = optval(delimiter, " ")
+      delim_str = "'"//delimiter_//"'"
+        fmt_ = "(*"//FMT_INT(1:len(FMT_INT)-1)//",:,"//delim_str//"))"
+
       s = open(filename, "w")
       do i = 1, size(d, 1)
-          write(s, "(*"//FMT_INT(1:len(FMT_INT)-1)//",:,1x))", &
+          write(s, fmt_, &
                 iostat=ios,iomsg=iomsg) d(i, :)
         
         if (ios/=0) then 
@@ -1150,7 +1228,7 @@ contains
       1 format('savetxt: error <',a,'> writing ',i0,' values to line ',i0,' of ',a,'.')
       
     end subroutine savetxt_iint64
-    subroutine savetxt_csp(filename, d)
+    subroutine savetxt_csp(filename, d, delimiter)
       !! version: experimental
       !!
       !! Saves a 2D array into a text file.
@@ -1160,6 +1238,7 @@ contains
       !!
       character(len=*), intent(in) :: filename  ! File to save the array to
       complex(sp), intent(in) :: d(:,:)           ! The 2D array to save
+      character(len=1), intent(in), optional :: delimiter  ! Column delimiter. Default is a space.
       !!
       !! Example
       !! -------
@@ -1169,12 +1248,20 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-
+      
       integer :: s, i, ios
+      character(len=1) :: delimiter_
+      character(len=3) :: delim_str
+      character(len=:), allocatable :: fmt_
       character(len=1024) :: iomsg, msgout
+
+      delimiter_ = optval(delimiter, " ")
+      delim_str = "'"//delimiter_//"'"
+        fmt_ = "(*"//FMT_COMPLEX_sp(1:len(FMT_COMPLEX_sp)-1)//",:,"//delim_str//"))"
+
       s = open(filename, "w")
       do i = 1, size(d, 1)
-          write(s, "(*"//FMT_COMPLEX_sp(1:len(FMT_COMPLEX_sp)-1)//",:,1x))", &
+          write(s, fmt_, &
                 iostat=ios,iomsg=iomsg) d(i, :)
         
         if (ios/=0) then 
@@ -1188,7 +1275,7 @@ contains
       1 format('savetxt: error <',a,'> writing ',i0,' values to line ',i0,' of ',a,'.')
       
     end subroutine savetxt_csp
-    subroutine savetxt_cdp(filename, d)
+    subroutine savetxt_cdp(filename, d, delimiter)
       !! version: experimental
       !!
       !! Saves a 2D array into a text file.
@@ -1198,6 +1285,7 @@ contains
       !!
       character(len=*), intent(in) :: filename  ! File to save the array to
       complex(dp), intent(in) :: d(:,:)           ! The 2D array to save
+      character(len=1), intent(in), optional :: delimiter  ! Column delimiter. Default is a space.
       !!
       !! Example
       !! -------
@@ -1207,12 +1295,20 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-
+      
       integer :: s, i, ios
+      character(len=1) :: delimiter_
+      character(len=3) :: delim_str
+      character(len=:), allocatable :: fmt_
       character(len=1024) :: iomsg, msgout
+
+      delimiter_ = optval(delimiter, " ")
+      delim_str = "'"//delimiter_//"'"
+        fmt_ = "(*"//FMT_COMPLEX_dp(1:len(FMT_COMPLEX_dp)-1)//",:,"//delim_str//"))"
+
       s = open(filename, "w")
       do i = 1, size(d, 1)
-          write(s, "(*"//FMT_COMPLEX_dp(1:len(FMT_COMPLEX_dp)-1)//",:,1x))", &
+          write(s, fmt_, &
                 iostat=ios,iomsg=iomsg) d(i, :)
         
         if (ios/=0) then 
@@ -1228,19 +1324,22 @@ contains
     end subroutine savetxt_cdp
 
 
-  integer function number_of_columns(s, skiprows)
+  integer function number_of_columns(s, skiprows, delimiter)
     !! version: experimental
     !!
     !! determine number of columns
     integer,intent(in) :: s
     integer, intent(in), optional :: skiprows
+    character(len=1), intent(in), optional :: delimiter
 
     integer :: ios, skiprows_, i
     character :: c
     character(len=:), allocatable :: line
-    logical :: lastblank
+    character(len=1) :: delimiter_
+    logical :: last_delim
 
     skiprows_ = optval(skiprows, 0)
+    delimiter_ = optval(delimiter, " ")
 
     rewind(s)
 
@@ -1253,12 +1352,23 @@ contains
     call get_line(s, line, ios)
     if (ios/=0 .or. .not.allocated(line)) return
 
-    lastblank = .true.
-    do i = 1,len(line)
-      c = line(i:i)
-      if (lastblank .and. .not. is_blank(c)) number_of_columns = number_of_columns + 1
-      lastblank = is_blank(c)
-    end do
+    last_delim = .true.
+    if (delimiter_ == " ") then
+      do i = 1,len(line)
+        c = line(i:i)
+        if (last_delim .and. .not. is_blank(c)) number_of_columns = number_of_columns + 1
+        last_delim = is_blank(c)
+      end do
+    else
+      do i = 1,len(line)
+        if (line(i:i) == delimiter_) number_of_columns = number_of_columns + 1
+      end do
+      if (number_of_columns == 0) then
+        if (len_trim(line) /= 0) number_of_columns = 1
+      else
+        number_of_columns = number_of_columns + 1
+      end if
+    end if
     rewind(s)
 
   end function number_of_columns
