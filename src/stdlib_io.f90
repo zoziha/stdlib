@@ -1492,7 +1492,7 @@ contains
 
       delimiter_ = optval(delimiter, delimiter_default)
       delim_str = "'"//delimiter_//"'"
-        fmt_ = "(*"//FMT_COMPLEX_sp(1:10)//",:,"//delim_str//"))"
+        fmt_ = "(*"//FMT_COMPLEX_sp(1:11)//delim_str//FMT_COMPLEX_sp(14:23)//",:,"//delim_str//"))"
 
       s = open(filename, "w")
       do i = 1, size(d, 1)
@@ -1538,7 +1538,7 @@ contains
 
       delimiter_ = optval(delimiter, delimiter_default)
       delim_str = "'"//delimiter_//"'"
-        fmt_ = "(*"//FMT_COMPLEX_dp(1:10)//",:,"//delim_str//"))"
+        fmt_ = "(*"//FMT_COMPLEX_dp(1:11)//delim_str//FMT_COMPLEX_dp(14:23)//",:,"//delim_str//"))"
 
       s = open(filename, "w")
       do i = 1, size(d, 1)
