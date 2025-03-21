@@ -201,6 +201,7 @@ contains
             end if          
             
           enddo
+        ! Otherwise read each value separately
         else
           do i = 1, max_rows_
             call get_line(s, line, ios, iomsg_)
@@ -335,6 +336,7 @@ contains
             end if          
             
           enddo
+        ! Otherwise read each value separately
         else
           do i = 1, max_rows_
             call get_line(s, line, ios, iomsg_)
@@ -469,6 +471,7 @@ contains
             end if          
             
           enddo
+        ! Otherwise read each value separately
         else
           do i = 1, max_rows_
             call get_line(s, line, ios, iomsg_)
@@ -603,6 +606,7 @@ contains
             end if          
             
           enddo
+        ! Otherwise read each value separately
         else
           do i = 1, max_rows_
             call get_line(s, line, ios, iomsg_)
@@ -737,6 +741,7 @@ contains
             end if          
             
           enddo
+        ! Otherwise read each value separately
         else
           do i = 1, max_rows_
             call get_line(s, line, ios, iomsg_)
@@ -871,6 +876,7 @@ contains
             end if          
             
           enddo
+        ! Otherwise read each value separately
         else
           do i = 1, max_rows_
             call get_line(s, line, ios, iomsg_)
@@ -975,7 +981,7 @@ contains
       ! determine number of columns
       ncol = 0
       if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_, delimiter=delimiter_)
-      if (is_blank(delimiter_)) ncol = ncol / 2
+      ncol = ncol / 2
 
       allocate(d(max_rows_, ncol))
       if (max_rows_ == 0 .or. ncol == 0) return
@@ -1006,6 +1012,7 @@ contains
             end if          
             
           enddo
+        ! Otherwise read each value separately
         else
           do i = 1, max_rows_
             call get_line(s, line, ios, iomsg_)
@@ -1110,7 +1117,7 @@ contains
       ! determine number of columns
       ncol = 0
       if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_, delimiter=delimiter_)
-      if (is_blank(delimiter_)) ncol = ncol / 2
+      ncol = ncol / 2
 
       allocate(d(max_rows_, ncol))
       if (max_rows_ == 0 .or. ncol == 0) return
@@ -1141,6 +1148,7 @@ contains
             end if          
             
           enddo
+        ! Otherwise read each value separately
         else
           do i = 1, max_rows_
             call get_line(s, line, ios, iomsg_)
