@@ -57,13 +57,15 @@ module stdlib_io
     !> Format string for quadruple precision real numbers
     FMT_REAL_QP = '(es44.35e4)', &
     !> Format string for single precision complex numbers
-    FMT_COMPLEX_SP = '(es15.8e2,1x,es15.8e2)', &
+    FMT_COMPLEX_SP = '(es15.08e2,1x,es15.08e2)', &
     !> Format string for double precision complex numbers
     FMT_COMPLEX_DP = '(es24.16e3,1x,es24.16e3)', &
     !> Format string for extended double precision complex numbers
     FMT_COMPLEX_XDP = '(es26.18e3,1x,es26.18e3)', &
     !> Format string for quadruple precision complex numbers
     FMT_COMPLEX_QP = '(es44.35e4,1x,es44.35e4)'
+  !> Default delimiter for loadtxt, savetxt and number_of_columns
+  character(len=1), parameter :: delimiter_default = " "
 
   public :: FMT_INT, FMT_REAL_SP, FMT_REAL_DP, FMT_REAL_XDP, FMT_REAL_QP
   public :: FMT_COMPLEX_SP, FMT_COMPLEX_DP, FMT_COMPLEX_XDP, FMT_COMPLEX_QP
@@ -150,9 +152,9 @@ contains
       !!     11 12 13
       !!     ...
       !!
-      character(len=1), parameter :: delimiter_default = " "
       integer :: s
-      integer :: nrow, ncol, i, ios, skiprows_, max_rows_
+      integer :: nrow, ncol, i, j, ios, skiprows_, max_rows_, istart, iend
+      character(len=:), allocatable :: line, iomsg_
       character(len=1024) :: iomsg, msgout
 
       skiprows_ = max(optval(skiprows, 0), 0)
@@ -171,6 +173,7 @@ contains
       if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_, delimiter=delimiter_)
 
       allocate(d(max_rows_, ncol))
+      if (max_rows_ == 0 .or. ncol == 0) return
 
       do i = 1, skiprows_
         read(s, *, iostat=ios, iomsg=iomsg)
@@ -188,15 +191,43 @@ contains
 
       if ( fmt_ == '*' ) then
         ! Use list directed read if user has specified fmt='*'
-        do i = 1, max_rows_
-          read (s,*,iostat=ios,iomsg=iomsg) d(i, :)
-          
-          if (ios/=0) then 
-             write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
-             call error_stop(msg=trim(msgout))
-          end if          
-          
-        enddo
+        if (is_blank(delimiter_) .or. delimiter_ == ",") then
+          do i = 1, max_rows_
+            read (s,*,iostat=ios,iomsg=iomsg) d(i, :)
+            
+            if (ios/=0) then 
+              write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+              call error_stop(msg=trim(msgout))
+            end if          
+            
+          enddo
+        else
+          do i = 1, max_rows_
+            call get_line(s, line, ios, iomsg_)
+            if (ios/=0) then 
+               write(msgout,2) trim(iomsg_),size(d,2),i,trim(filename)
+               call error_stop(msg=trim(msgout))
+            end if
+  
+            istart = 0
+            do j = 1, ncol - 1
+              iend = index(line(istart+1:), delimiter_)
+              read (line(istart+1:istart+iend-1),*,iostat=ios,iomsg=iomsg) d(i, j)
+              if (ios/=0) then 
+                 write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+                 call error_stop(msg=trim(msgout))
+              end if
+              istart = istart + iend
+            end do
+  
+            read (line(istart+1:),*,iostat=ios,iomsg=iomsg) d(i, ncol)
+            if (ios/=0) then 
+               write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+               call error_stop(msg=trim(msgout))
+            end if          
+            
+          enddo
+        end if
       else
         ! Otherwise pass default or user specified fmt string.
         do i = 1, max_rows_
@@ -255,9 +286,9 @@ contains
       !!     11 12 13
       !!     ...
       !!
-      character(len=1), parameter :: delimiter_default = " "
       integer :: s
-      integer :: nrow, ncol, i, ios, skiprows_, max_rows_
+      integer :: nrow, ncol, i, j, ios, skiprows_, max_rows_, istart, iend
+      character(len=:), allocatable :: line, iomsg_
       character(len=1024) :: iomsg, msgout
 
       skiprows_ = max(optval(skiprows, 0), 0)
@@ -276,6 +307,7 @@ contains
       if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_, delimiter=delimiter_)
 
       allocate(d(max_rows_, ncol))
+      if (max_rows_ == 0 .or. ncol == 0) return
 
       do i = 1, skiprows_
         read(s, *, iostat=ios, iomsg=iomsg)
@@ -293,15 +325,43 @@ contains
 
       if ( fmt_ == '*' ) then
         ! Use list directed read if user has specified fmt='*'
-        do i = 1, max_rows_
-          read (s,*,iostat=ios,iomsg=iomsg) d(i, :)
-          
-          if (ios/=0) then 
-             write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
-             call error_stop(msg=trim(msgout))
-          end if          
-          
-        enddo
+        if (is_blank(delimiter_) .or. delimiter_ == ",") then
+          do i = 1, max_rows_
+            read (s,*,iostat=ios,iomsg=iomsg) d(i, :)
+            
+            if (ios/=0) then 
+              write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+              call error_stop(msg=trim(msgout))
+            end if          
+            
+          enddo
+        else
+          do i = 1, max_rows_
+            call get_line(s, line, ios, iomsg_)
+            if (ios/=0) then 
+               write(msgout,2) trim(iomsg_),size(d,2),i,trim(filename)
+               call error_stop(msg=trim(msgout))
+            end if
+  
+            istart = 0
+            do j = 1, ncol - 1
+              iend = index(line(istart+1:), delimiter_)
+              read (line(istart+1:istart+iend-1),*,iostat=ios,iomsg=iomsg) d(i, j)
+              if (ios/=0) then 
+                 write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+                 call error_stop(msg=trim(msgout))
+              end if
+              istart = istart + iend
+            end do
+  
+            read (line(istart+1:),*,iostat=ios,iomsg=iomsg) d(i, ncol)
+            if (ios/=0) then 
+               write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+               call error_stop(msg=trim(msgout))
+            end if          
+            
+          enddo
+        end if
       else
         ! Otherwise pass default or user specified fmt string.
         do i = 1, max_rows_
@@ -360,9 +420,9 @@ contains
       !!     11 12 13
       !!     ...
       !!
-      character(len=1), parameter :: delimiter_default = " "
       integer :: s
-      integer :: nrow, ncol, i, ios, skiprows_, max_rows_
+      integer :: nrow, ncol, i, j, ios, skiprows_, max_rows_, istart, iend
+      character(len=:), allocatable :: line, iomsg_
       character(len=1024) :: iomsg, msgout
 
       skiprows_ = max(optval(skiprows, 0), 0)
@@ -381,6 +441,7 @@ contains
       if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_, delimiter=delimiter_)
 
       allocate(d(max_rows_, ncol))
+      if (max_rows_ == 0 .or. ncol == 0) return
 
       do i = 1, skiprows_
         read(s, *, iostat=ios, iomsg=iomsg)
@@ -398,15 +459,43 @@ contains
 
       if ( fmt_ == '*' ) then
         ! Use list directed read if user has specified fmt='*'
-        do i = 1, max_rows_
-          read (s,*,iostat=ios,iomsg=iomsg) d(i, :)
-          
-          if (ios/=0) then 
-             write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
-             call error_stop(msg=trim(msgout))
-          end if          
-          
-        enddo
+        if (is_blank(delimiter_) .or. delimiter_ == ",") then
+          do i = 1, max_rows_
+            read (s,*,iostat=ios,iomsg=iomsg) d(i, :)
+            
+            if (ios/=0) then 
+              write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+              call error_stop(msg=trim(msgout))
+            end if          
+            
+          enddo
+        else
+          do i = 1, max_rows_
+            call get_line(s, line, ios, iomsg_)
+            if (ios/=0) then 
+               write(msgout,2) trim(iomsg_),size(d,2),i,trim(filename)
+               call error_stop(msg=trim(msgout))
+            end if
+  
+            istart = 0
+            do j = 1, ncol - 1
+              iend = index(line(istart+1:), delimiter_)
+              read (line(istart+1:istart+iend-1),*,iostat=ios,iomsg=iomsg) d(i, j)
+              if (ios/=0) then 
+                 write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+                 call error_stop(msg=trim(msgout))
+              end if
+              istart = istart + iend
+            end do
+  
+            read (line(istart+1:),*,iostat=ios,iomsg=iomsg) d(i, ncol)
+            if (ios/=0) then 
+               write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+               call error_stop(msg=trim(msgout))
+            end if          
+            
+          enddo
+        end if
       else
         ! Otherwise pass default or user specified fmt string.
         do i = 1, max_rows_
@@ -465,9 +554,9 @@ contains
       !!     11 12 13
       !!     ...
       !!
-      character(len=1), parameter :: delimiter_default = " "
       integer :: s
-      integer :: nrow, ncol, i, ios, skiprows_, max_rows_
+      integer :: nrow, ncol, i, j, ios, skiprows_, max_rows_, istart, iend
+      character(len=:), allocatable :: line, iomsg_
       character(len=1024) :: iomsg, msgout
 
       skiprows_ = max(optval(skiprows, 0), 0)
@@ -486,6 +575,7 @@ contains
       if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_, delimiter=delimiter_)
 
       allocate(d(max_rows_, ncol))
+      if (max_rows_ == 0 .or. ncol == 0) return
 
       do i = 1, skiprows_
         read(s, *, iostat=ios, iomsg=iomsg)
@@ -503,15 +593,43 @@ contains
 
       if ( fmt_ == '*' ) then
         ! Use list directed read if user has specified fmt='*'
-        do i = 1, max_rows_
-          read (s,*,iostat=ios,iomsg=iomsg) d(i, :)
-          
-          if (ios/=0) then 
-             write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
-             call error_stop(msg=trim(msgout))
-          end if          
-          
-        enddo
+        if (is_blank(delimiter_) .or. delimiter_ == ",") then
+          do i = 1, max_rows_
+            read (s,*,iostat=ios,iomsg=iomsg) d(i, :)
+            
+            if (ios/=0) then 
+              write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+              call error_stop(msg=trim(msgout))
+            end if          
+            
+          enddo
+        else
+          do i = 1, max_rows_
+            call get_line(s, line, ios, iomsg_)
+            if (ios/=0) then 
+               write(msgout,2) trim(iomsg_),size(d,2),i,trim(filename)
+               call error_stop(msg=trim(msgout))
+            end if
+  
+            istart = 0
+            do j = 1, ncol - 1
+              iend = index(line(istart+1:), delimiter_)
+              read (line(istart+1:istart+iend-1),*,iostat=ios,iomsg=iomsg) d(i, j)
+              if (ios/=0) then 
+                 write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+                 call error_stop(msg=trim(msgout))
+              end if
+              istart = istart + iend
+            end do
+  
+            read (line(istart+1:),*,iostat=ios,iomsg=iomsg) d(i, ncol)
+            if (ios/=0) then 
+               write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+               call error_stop(msg=trim(msgout))
+            end if          
+            
+          enddo
+        end if
       else
         ! Otherwise pass default or user specified fmt string.
         do i = 1, max_rows_
@@ -570,9 +688,9 @@ contains
       !!     11 12 13
       !!     ...
       !!
-      character(len=1), parameter :: delimiter_default = " "
       integer :: s
-      integer :: nrow, ncol, i, ios, skiprows_, max_rows_
+      integer :: nrow, ncol, i, j, ios, skiprows_, max_rows_, istart, iend
+      character(len=:), allocatable :: line, iomsg_
       character(len=1024) :: iomsg, msgout
 
       skiprows_ = max(optval(skiprows, 0), 0)
@@ -591,6 +709,7 @@ contains
       if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_, delimiter=delimiter_)
 
       allocate(d(max_rows_, ncol))
+      if (max_rows_ == 0 .or. ncol == 0) return
 
       do i = 1, skiprows_
         read(s, *, iostat=ios, iomsg=iomsg)
@@ -608,15 +727,43 @@ contains
 
       if ( fmt_ == '*' ) then
         ! Use list directed read if user has specified fmt='*'
-        do i = 1, max_rows_
-          read (s,*,iostat=ios,iomsg=iomsg) d(i, :)
-          
-          if (ios/=0) then 
-             write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
-             call error_stop(msg=trim(msgout))
-          end if          
-          
-        enddo
+        if (is_blank(delimiter_) .or. delimiter_ == ",") then
+          do i = 1, max_rows_
+            read (s,*,iostat=ios,iomsg=iomsg) d(i, :)
+            
+            if (ios/=0) then 
+              write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+              call error_stop(msg=trim(msgout))
+            end if          
+            
+          enddo
+        else
+          do i = 1, max_rows_
+            call get_line(s, line, ios, iomsg_)
+            if (ios/=0) then 
+               write(msgout,2) trim(iomsg_),size(d,2),i,trim(filename)
+               call error_stop(msg=trim(msgout))
+            end if
+  
+            istart = 0
+            do j = 1, ncol - 1
+              iend = index(line(istart+1:), delimiter_)
+              read (line(istart+1:istart+iend-1),*,iostat=ios,iomsg=iomsg) d(i, j)
+              if (ios/=0) then 
+                 write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+                 call error_stop(msg=trim(msgout))
+              end if
+              istart = istart + iend
+            end do
+  
+            read (line(istart+1:),*,iostat=ios,iomsg=iomsg) d(i, ncol)
+            if (ios/=0) then 
+               write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+               call error_stop(msg=trim(msgout))
+            end if          
+            
+          enddo
+        end if
       else
         ! Otherwise pass default or user specified fmt string.
         do i = 1, max_rows_
@@ -675,9 +822,9 @@ contains
       !!     11 12 13
       !!     ...
       !!
-      character(len=1), parameter :: delimiter_default = " "
       integer :: s
-      integer :: nrow, ncol, i, ios, skiprows_, max_rows_
+      integer :: nrow, ncol, i, j, ios, skiprows_, max_rows_, istart, iend
+      character(len=:), allocatable :: line, iomsg_
       character(len=1024) :: iomsg, msgout
 
       skiprows_ = max(optval(skiprows, 0), 0)
@@ -696,6 +843,7 @@ contains
       if ( skiprows_ < nrow ) ncol = number_of_columns(s, skiprows=skiprows_, delimiter=delimiter_)
 
       allocate(d(max_rows_, ncol))
+      if (max_rows_ == 0 .or. ncol == 0) return
 
       do i = 1, skiprows_
         read(s, *, iostat=ios, iomsg=iomsg)
@@ -713,15 +861,43 @@ contains
 
       if ( fmt_ == '*' ) then
         ! Use list directed read if user has specified fmt='*'
-        do i = 1, max_rows_
-          read (s,*,iostat=ios,iomsg=iomsg) d(i, :)
-          
-          if (ios/=0) then 
-             write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
-             call error_stop(msg=trim(msgout))
-          end if          
-          
-        enddo
+        if (is_blank(delimiter_) .or. delimiter_ == ",") then
+          do i = 1, max_rows_
+            read (s,*,iostat=ios,iomsg=iomsg) d(i, :)
+            
+            if (ios/=0) then 
+              write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+              call error_stop(msg=trim(msgout))
+            end if          
+            
+          enddo
+        else
+          do i = 1, max_rows_
+            call get_line(s, line, ios, iomsg_)
+            if (ios/=0) then 
+               write(msgout,2) trim(iomsg_),size(d,2),i,trim(filename)
+               call error_stop(msg=trim(msgout))
+            end if
+  
+            istart = 0
+            do j = 1, ncol - 1
+              iend = index(line(istart+1:), delimiter_)
+              read (line(istart+1:istart+iend-1),*,iostat=ios,iomsg=iomsg) d(i, j)
+              if (ios/=0) then 
+                 write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+                 call error_stop(msg=trim(msgout))
+              end if
+              istart = istart + iend
+            end do
+  
+            read (line(istart+1:),*,iostat=ios,iomsg=iomsg) d(i, ncol)
+            if (ios/=0) then 
+               write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+               call error_stop(msg=trim(msgout))
+            end if          
+            
+          enddo
+        end if
       else
         ! Otherwise pass default or user specified fmt string.
         do i = 1, max_rows_
@@ -780,9 +956,9 @@ contains
       !!     11 12 13
       !!     ...
       !!
-      character(len=1), parameter :: delimiter_default = " "
       integer :: s
-      integer :: nrow, ncol, i, ios, skiprows_, max_rows_
+      integer :: nrow, ncol, i, j, ios, skiprows_, max_rows_, istart, iend
+      character(len=:), allocatable :: line, iomsg_
       character(len=1024) :: iomsg, msgout
 
       skiprows_ = max(optval(skiprows, 0), 0)
@@ -802,6 +978,7 @@ contains
       if (is_blank(delimiter_)) ncol = ncol / 2
 
       allocate(d(max_rows_, ncol))
+      if (max_rows_ == 0 .or. ncol == 0) return
 
       do i = 1, skiprows_
         read(s, *, iostat=ios, iomsg=iomsg)
@@ -819,15 +996,43 @@ contains
 
       if ( fmt_ == '*' ) then
         ! Use list directed read if user has specified fmt='*'
-        do i = 1, max_rows_
-          read (s,*,iostat=ios,iomsg=iomsg) d(i, :)
-          
-          if (ios/=0) then 
-             write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
-             call error_stop(msg=trim(msgout))
-          end if          
-          
-        enddo
+        if (is_blank(delimiter_) .or. delimiter_ == ",") then
+          do i = 1, max_rows_
+            read (s,*,iostat=ios,iomsg=iomsg) d(i, :)
+            
+            if (ios/=0) then 
+              write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+              call error_stop(msg=trim(msgout))
+            end if          
+            
+          enddo
+        else
+          do i = 1, max_rows_
+            call get_line(s, line, ios, iomsg_)
+            if (ios/=0) then 
+               write(msgout,2) trim(iomsg_),size(d,2),i,trim(filename)
+               call error_stop(msg=trim(msgout))
+            end if
+  
+            istart = 0
+            do j = 1, ncol - 1
+              iend = index(line(istart+1:), delimiter_)
+              read (line(istart+1:istart+iend-1),*,iostat=ios,iomsg=iomsg) d(i, j)
+              if (ios/=0) then 
+                 write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+                 call error_stop(msg=trim(msgout))
+              end if
+              istart = istart + iend
+            end do
+  
+            read (line(istart+1:),*,iostat=ios,iomsg=iomsg) d(i, ncol)
+            if (ios/=0) then 
+               write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+               call error_stop(msg=trim(msgout))
+            end if          
+            
+          enddo
+        end if
       else
         ! Otherwise pass default or user specified fmt string.
         do i = 1, max_rows_
@@ -886,9 +1091,9 @@ contains
       !!     11 12 13
       !!     ...
       !!
-      character(len=1), parameter :: delimiter_default = " "
       integer :: s
-      integer :: nrow, ncol, i, ios, skiprows_, max_rows_
+      integer :: nrow, ncol, i, j, ios, skiprows_, max_rows_, istart, iend
+      character(len=:), allocatable :: line, iomsg_
       character(len=1024) :: iomsg, msgout
 
       skiprows_ = max(optval(skiprows, 0), 0)
@@ -908,6 +1113,7 @@ contains
       if (is_blank(delimiter_)) ncol = ncol / 2
 
       allocate(d(max_rows_, ncol))
+      if (max_rows_ == 0 .or. ncol == 0) return
 
       do i = 1, skiprows_
         read(s, *, iostat=ios, iomsg=iomsg)
@@ -925,15 +1131,43 @@ contains
 
       if ( fmt_ == '*' ) then
         ! Use list directed read if user has specified fmt='*'
-        do i = 1, max_rows_
-          read (s,*,iostat=ios,iomsg=iomsg) d(i, :)
-          
-          if (ios/=0) then 
-             write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
-             call error_stop(msg=trim(msgout))
-          end if          
-          
-        enddo
+        if (is_blank(delimiter_) .or. delimiter_ == ",") then
+          do i = 1, max_rows_
+            read (s,*,iostat=ios,iomsg=iomsg) d(i, :)
+            
+            if (ios/=0) then 
+              write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+              call error_stop(msg=trim(msgout))
+            end if          
+            
+          enddo
+        else
+          do i = 1, max_rows_
+            call get_line(s, line, ios, iomsg_)
+            if (ios/=0) then 
+               write(msgout,2) trim(iomsg_),size(d,2),i,trim(filename)
+               call error_stop(msg=trim(msgout))
+            end if
+  
+            istart = 0
+            do j = 1, ncol - 1
+              iend = index(line(istart+1:), delimiter_)
+              read (line(istart+1:istart+iend-1),*,iostat=ios,iomsg=iomsg) d(i, j)
+              if (ios/=0) then 
+                 write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+                 call error_stop(msg=trim(msgout))
+              end if
+              istart = istart + iend
+            end do
+  
+            read (line(istart+1:),*,iostat=ios,iomsg=iomsg) d(i, ncol)
+            if (ios/=0) then 
+               write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+               call error_stop(msg=trim(msgout))
+            end if          
+            
+          enddo
+        end if
       else
         ! Otherwise pass default or user specified fmt string.
         do i = 1, max_rows_
@@ -974,7 +1208,6 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-      character(len=1), parameter :: delimiter_default = " "
       integer :: s, i, ios
       character(len=1) :: delimiter_
       character(len=3) :: delim_str
@@ -1021,7 +1254,6 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-      character(len=1), parameter :: delimiter_default = " "
       integer :: s, i, ios
       character(len=1) :: delimiter_
       character(len=3) :: delim_str
@@ -1068,7 +1300,6 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-      character(len=1), parameter :: delimiter_default = " "
       integer :: s, i, ios
       character(len=1) :: delimiter_
       character(len=3) :: delim_str
@@ -1115,7 +1346,6 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-      character(len=1), parameter :: delimiter_default = " "
       integer :: s, i, ios
       character(len=1) :: delimiter_
       character(len=3) :: delim_str
@@ -1162,7 +1392,6 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-      character(len=1), parameter :: delimiter_default = " "
       integer :: s, i, ios
       character(len=1) :: delimiter_
       character(len=3) :: delim_str
@@ -1209,7 +1438,6 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-      character(len=1), parameter :: delimiter_default = " "
       integer :: s, i, ios
       character(len=1) :: delimiter_
       character(len=3) :: delim_str
@@ -1256,7 +1484,6 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-      character(len=1), parameter :: delimiter_default = " "
       integer :: s, i, ios
       character(len=1) :: delimiter_
       character(len=3) :: delim_str
@@ -1265,7 +1492,7 @@ contains
 
       delimiter_ = optval(delimiter, delimiter_default)
       delim_str = "'"//delimiter_//"'"
-        fmt_ = "(*"//FMT_COMPLEX_sp(1:len(FMT_COMPLEX_sp)-1)//",:,"//delim_str//"))"
+        fmt_ = "(*"//FMT_COMPLEX_sp(1:10)//",:,"//delim_str//"))"
 
       s = open(filename, "w")
       do i = 1, size(d, 1)
@@ -1303,7 +1530,6 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-      character(len=1), parameter :: delimiter_default = " "
       integer :: s, i, ios
       character(len=1) :: delimiter_
       character(len=3) :: delim_str
@@ -1312,7 +1538,7 @@ contains
 
       delimiter_ = optval(delimiter, delimiter_default)
       delim_str = "'"//delimiter_//"'"
-        fmt_ = "(*"//FMT_COMPLEX_dp(1:len(FMT_COMPLEX_dp)-1)//",:,"//delim_str//"))"
+        fmt_ = "(*"//FMT_COMPLEX_dp(1:10)//",:,"//delim_str//"))"
 
       s = open(filename, "w")
       do i = 1, size(d, 1)
@@ -1340,7 +1566,6 @@ contains
     integer, intent(in), optional :: skiprows
     character(len=1), intent(in), optional :: delimiter
 
-    character(len=1), parameter :: delimiter_default = " "
     integer :: ios, skiprows_, i
     character :: c
     character(len=:), allocatable :: line
