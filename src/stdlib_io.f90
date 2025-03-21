@@ -150,13 +150,14 @@ contains
       !!     11 12 13
       !!     ...
       !!
+      character(len=1), parameter :: delimiter_default = " "
       integer :: s
       integer :: nrow, ncol, i, ios, skiprows_, max_rows_
       character(len=1024) :: iomsg, msgout
 
       skiprows_ = max(optval(skiprows, 0), 0)
       max_rows_ = optval(max_rows, -1)
-      delimiter_ = optval(delimiter, " ")
+      delimiter_ = optval(delimiter, delimiter_default)
 
       s = open(filename)
 
@@ -254,13 +255,14 @@ contains
       !!     11 12 13
       !!     ...
       !!
+      character(len=1), parameter :: delimiter_default = " "
       integer :: s
       integer :: nrow, ncol, i, ios, skiprows_, max_rows_
       character(len=1024) :: iomsg, msgout
 
       skiprows_ = max(optval(skiprows, 0), 0)
       max_rows_ = optval(max_rows, -1)
-      delimiter_ = optval(delimiter, " ")
+      delimiter_ = optval(delimiter, delimiter_default)
 
       s = open(filename)
 
@@ -358,13 +360,14 @@ contains
       !!     11 12 13
       !!     ...
       !!
+      character(len=1), parameter :: delimiter_default = " "
       integer :: s
       integer :: nrow, ncol, i, ios, skiprows_, max_rows_
       character(len=1024) :: iomsg, msgout
 
       skiprows_ = max(optval(skiprows, 0), 0)
       max_rows_ = optval(max_rows, -1)
-      delimiter_ = optval(delimiter, " ")
+      delimiter_ = optval(delimiter, delimiter_default)
 
       s = open(filename)
 
@@ -462,13 +465,14 @@ contains
       !!     11 12 13
       !!     ...
       !!
+      character(len=1), parameter :: delimiter_default = " "
       integer :: s
       integer :: nrow, ncol, i, ios, skiprows_, max_rows_
       character(len=1024) :: iomsg, msgout
 
       skiprows_ = max(optval(skiprows, 0), 0)
       max_rows_ = optval(max_rows, -1)
-      delimiter_ = optval(delimiter, " ")
+      delimiter_ = optval(delimiter, delimiter_default)
 
       s = open(filename)
 
@@ -566,13 +570,14 @@ contains
       !!     11 12 13
       !!     ...
       !!
+      character(len=1), parameter :: delimiter_default = " "
       integer :: s
       integer :: nrow, ncol, i, ios, skiprows_, max_rows_
       character(len=1024) :: iomsg, msgout
 
       skiprows_ = max(optval(skiprows, 0), 0)
       max_rows_ = optval(max_rows, -1)
-      delimiter_ = optval(delimiter, " ")
+      delimiter_ = optval(delimiter, delimiter_default)
 
       s = open(filename)
 
@@ -670,13 +675,14 @@ contains
       !!     11 12 13
       !!     ...
       !!
+      character(len=1), parameter :: delimiter_default = " "
       integer :: s
       integer :: nrow, ncol, i, ios, skiprows_, max_rows_
       character(len=1024) :: iomsg, msgout
 
       skiprows_ = max(optval(skiprows, 0), 0)
       max_rows_ = optval(max_rows, -1)
-      delimiter_ = optval(delimiter, " ")
+      delimiter_ = optval(delimiter, delimiter_default)
 
       s = open(filename)
 
@@ -774,13 +780,14 @@ contains
       !!     11 12 13
       !!     ...
       !!
+      character(len=1), parameter :: delimiter_default = " "
       integer :: s
       integer :: nrow, ncol, i, ios, skiprows_, max_rows_
       character(len=1024) :: iomsg, msgout
 
       skiprows_ = max(optval(skiprows, 0), 0)
       max_rows_ = optval(max_rows, -1)
-      delimiter_ = optval(delimiter, " ")
+      delimiter_ = optval(delimiter, delimiter_default)
 
       s = open(filename)
 
@@ -879,13 +886,14 @@ contains
       !!     11 12 13
       !!     ...
       !!
+      character(len=1), parameter :: delimiter_default = " "
       integer :: s
       integer :: nrow, ncol, i, ios, skiprows_, max_rows_
       character(len=1024) :: iomsg, msgout
 
       skiprows_ = max(optval(skiprows, 0), 0)
       max_rows_ = optval(max_rows, -1)
-      delimiter_ = optval(delimiter, " ")
+      delimiter_ = optval(delimiter, delimiter_default)
 
       s = open(filename)
 
@@ -966,14 +974,14 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-      
+      character(len=1), parameter :: delimiter_default = " "
       integer :: s, i, ios
       character(len=1) :: delimiter_
       character(len=3) :: delim_str
       character(len=:), allocatable :: fmt_
       character(len=1024) :: iomsg, msgout
 
-      delimiter_ = optval(delimiter, " ")
+      delimiter_ = optval(delimiter, delimiter_default)
       delim_str = "'"//delimiter_//"'"
         fmt_ = "(*"//FMT_REAL_sp(1:len(FMT_REAL_sp)-1)//",:,"//delim_str//"))"
 
@@ -1013,14 +1021,14 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-      
+      character(len=1), parameter :: delimiter_default = " "
       integer :: s, i, ios
       character(len=1) :: delimiter_
       character(len=3) :: delim_str
       character(len=:), allocatable :: fmt_
       character(len=1024) :: iomsg, msgout
 
-      delimiter_ = optval(delimiter, " ")
+      delimiter_ = optval(delimiter, delimiter_default)
       delim_str = "'"//delimiter_//"'"
         fmt_ = "(*"//FMT_REAL_dp(1:len(FMT_REAL_dp)-1)//",:,"//delim_str//"))"
 
@@ -1060,14 +1068,14 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-      
+      character(len=1), parameter :: delimiter_default = " "
       integer :: s, i, ios
       character(len=1) :: delimiter_
       character(len=3) :: delim_str
       character(len=:), allocatable :: fmt_
       character(len=1024) :: iomsg, msgout
 
-      delimiter_ = optval(delimiter, " ")
+      delimiter_ = optval(delimiter, delimiter_default)
       delim_str = "'"//delimiter_//"'"
         fmt_ = "(*"//FMT_INT(1:len(FMT_INT)-1)//",:,"//delim_str//"))"
 
@@ -1107,14 +1115,14 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-      
+      character(len=1), parameter :: delimiter_default = " "
       integer :: s, i, ios
       character(len=1) :: delimiter_
       character(len=3) :: delim_str
       character(len=:), allocatable :: fmt_
       character(len=1024) :: iomsg, msgout
 
-      delimiter_ = optval(delimiter, " ")
+      delimiter_ = optval(delimiter, delimiter_default)
       delim_str = "'"//delimiter_//"'"
         fmt_ = "(*"//FMT_INT(1:len(FMT_INT)-1)//",:,"//delim_str//"))"
 
@@ -1154,14 +1162,14 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-      
+      character(len=1), parameter :: delimiter_default = " "
       integer :: s, i, ios
       character(len=1) :: delimiter_
       character(len=3) :: delim_str
       character(len=:), allocatable :: fmt_
       character(len=1024) :: iomsg, msgout
 
-      delimiter_ = optval(delimiter, " ")
+      delimiter_ = optval(delimiter, delimiter_default)
       delim_str = "'"//delimiter_//"'"
         fmt_ = "(*"//FMT_INT(1:len(FMT_INT)-1)//",:,"//delim_str//"))"
 
@@ -1201,14 +1209,14 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-      
+      character(len=1), parameter :: delimiter_default = " "
       integer :: s, i, ios
       character(len=1) :: delimiter_
       character(len=3) :: delim_str
       character(len=:), allocatable :: fmt_
       character(len=1024) :: iomsg, msgout
 
-      delimiter_ = optval(delimiter, " ")
+      delimiter_ = optval(delimiter, delimiter_default)
       delim_str = "'"//delimiter_//"'"
         fmt_ = "(*"//FMT_INT(1:len(FMT_INT)-1)//",:,"//delim_str//"))"
 
@@ -1248,14 +1256,14 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-      
+      character(len=1), parameter :: delimiter_default = " "
       integer :: s, i, ios
       character(len=1) :: delimiter_
       character(len=3) :: delim_str
       character(len=:), allocatable :: fmt_
       character(len=1024) :: iomsg, msgout
 
-      delimiter_ = optval(delimiter, " ")
+      delimiter_ = optval(delimiter, delimiter_default)
       delim_str = "'"//delimiter_//"'"
         fmt_ = "(*"//FMT_COMPLEX_sp(1:len(FMT_COMPLEX_sp)-1)//",:,"//delim_str//"))"
 
@@ -1295,14 +1303,14 @@ contains
       !! call savetxt("log.txt", data)
       !!```
       !!
-      
+      character(len=1), parameter :: delimiter_default = " "
       integer :: s, i, ios
       character(len=1) :: delimiter_
       character(len=3) :: delim_str
       character(len=:), allocatable :: fmt_
       character(len=1024) :: iomsg, msgout
 
-      delimiter_ = optval(delimiter, " ")
+      delimiter_ = optval(delimiter, delimiter_default)
       delim_str = "'"//delimiter_//"'"
         fmt_ = "(*"//FMT_COMPLEX_dp(1:len(FMT_COMPLEX_dp)-1)//",:,"//delim_str//"))"
 
@@ -1332,6 +1340,7 @@ contains
     integer, intent(in), optional :: skiprows
     character(len=1), intent(in), optional :: delimiter
 
+    character(len=1), parameter :: delimiter_default = " "
     integer :: ios, skiprows_, i
     character :: c
     character(len=:), allocatable :: line
@@ -1339,7 +1348,7 @@ contains
     logical :: last_delim
 
     skiprows_ = optval(skiprows, 0)
-    delimiter_ = optval(delimiter, " ")
+    delimiter_ = optval(delimiter, delimiter_default)
 
     rewind(s)
 
@@ -1353,7 +1362,7 @@ contains
     if (ios/=0 .or. .not.allocated(line)) return
 
     last_delim = .true.
-    if (delimiter_ == " ") then
+    if (delimiter_ == delimiter_default) then
       do i = 1,len(line)
         c = line(i:i)
         if (last_delim .and. .not. is_blank(c)) number_of_columns = number_of_columns + 1
