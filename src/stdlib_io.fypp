@@ -217,7 +217,7 @@ contains
               iend = index(line(istart+1:), delimiter_)
               read (line(istart+1:istart+iend-1),*,iostat=ios,iomsg=iomsg) d(i, j)
               if (ios/=0) then 
-                 write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+                 write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)//" (column "//trim(j)//")"//": "//line
                  call error_stop(msg=trim(msgout))
               end if
               istart = istart + iend
@@ -225,7 +225,7 @@ contains
   
             read (line(istart+1:),*,iostat=ios,iomsg=iomsg) d(i, ncol)
             if (ios/=0) then 
-               write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)
+               write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)//" (column "//trim(j)//")"//"!: "//line
                call error_stop(msg=trim(msgout))
             end if          
             
