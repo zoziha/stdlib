@@ -207,6 +207,9 @@ contains
         else
           do i = 1, max_rows_
             call get_line(s, line, ios, iomsg_)
+          #:if 'integer' in t1
+            print *, line
+          #:endif
             if (ios/=0) then 
                write(msgout,2) trim(iomsg_),size(d,2),i,trim(filename)
                call error_stop(msg=trim(msgout))
@@ -217,7 +220,7 @@ contains
               iend = index(line(istart+1:), delimiter_)
               read (line(istart+1:istart+iend-1),*,iostat=ios,iomsg=iomsg) d(i, j)
               if (ios/=0) then 
-                 write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)//" (column "//trim(j)//")"//": "//line
+                 write(msgout,2) trim(iomsg),j,i,trim(filename)//line//": "//line(istart+1:istart+iend-1)
                  call error_stop(msg=trim(msgout))
               end if
               istart = istart + iend
@@ -225,7 +228,7 @@ contains
   
             read (line(istart+1:),*,iostat=ios,iomsg=iomsg) d(i, ncol)
             if (ios/=0) then 
-               write(msgout,2) trim(iomsg),size(d,2),i,trim(filename)//" (column "//trim(j)//")"//"!: "//line
+               write(msgout,2) trim(iomsg),j,i,trim(filename)//line//"!: "//line(istart+1:istart+iend-1)
                call error_stop(msg=trim(msgout))
             end if          
             
