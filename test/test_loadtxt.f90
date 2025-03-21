@@ -39,7 +39,7 @@ contains
         allocate(expected(10,10))
         do n = 1, 10
             call random_number(harvest)
-            input = int(harvest * 100)
+            input = int((harvest + 1.0_sp) * 100)
             call savetxt('test_int32.txt', input)
             call loadtxt('test_int32.txt', expected)
             call check(error, all(input == expected),'Default list directed read failed')
