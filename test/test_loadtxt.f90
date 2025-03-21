@@ -47,12 +47,12 @@ contains
             call loadtxt('test_int32.txt', expected, fmt='*')
             call check(error, all(input == expected),'User specified list directed read faile')
             if (allocated(error)) return
-            call savetxt('test_int32.txt', input, delimiter=',')
-            call loadtxt('test_int32.txt', expected, delimiter=',')
+            call savetxt('test_int32_comma.txt', input, delimiter=',')
+            call loadtxt('test_int32_comma.txt', expected, delimiter=',')
             call check(error, all(input == expected),'User specified delimiter `,` read failed')
             if (allocated(error)) return
-            call savetxt('test_int32.txt', input, delimiter='-')
-            call loadtxt('test_int32.txt', expected, delimiter='-')
+            call savetxt('test_int32_dash.txt', input, delimiter='-')
+            call loadtxt('test_int32_dash.txt', expected, delimiter='-')
             call check(error, all(input == expected),'User specified delimiter `-` read failed')
             if (allocated(error)) return
         end do
