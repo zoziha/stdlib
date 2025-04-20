@@ -14,7 +14,7 @@ module stdlib_io
   implicit none
   private
   ! Public API
-  public :: loadtxt, savetxt, open, get_line, get_file
+  public :: loadtxt, savetxt, open, get_line, get_file, print_array
 
   !! version: experimental 
   !!
@@ -108,6 +108,69 @@ module stdlib_io
       module procedure savetxt_iint64
       module procedure savetxt_csp
       module procedure savetxt_cdp
+  end interface
+
+  interface print_array
+    !! version: experimental
+    !!
+    !! Prints a 2D array to an output unit
+    !! ([Specification](../page/specs/stdlib_io.html#print_array))
+      module subroutine print_array_rsp(array, unit, fmt, delimiter, brief)
+        real(sp), intent(in) :: array(:, :)
+        integer, intent(in), optional :: unit
+        character(len=*), intent(in), optional :: fmt
+        character(len=1), intent(in), optional :: delimiter
+        logical, intent(in), optional :: brief
+      end subroutine print_array_rsp
+      module subroutine print_array_rdp(array, unit, fmt, delimiter, brief)
+        real(dp), intent(in) :: array(:, :)
+        integer, intent(in), optional :: unit
+        character(len=*), intent(in), optional :: fmt
+        character(len=1), intent(in), optional :: delimiter
+        logical, intent(in), optional :: brief
+      end subroutine print_array_rdp
+      module subroutine print_array_iint8(array, unit, fmt, delimiter, brief)
+        integer(int8), intent(in) :: array(:, :)
+        integer, intent(in), optional :: unit
+        character(len=*), intent(in), optional :: fmt
+        character(len=1), intent(in), optional :: delimiter
+        logical, intent(in), optional :: brief
+      end subroutine print_array_iint8
+      module subroutine print_array_iint16(array, unit, fmt, delimiter, brief)
+        integer(int16), intent(in) :: array(:, :)
+        integer, intent(in), optional :: unit
+        character(len=*), intent(in), optional :: fmt
+        character(len=1), intent(in), optional :: delimiter
+        logical, intent(in), optional :: brief
+      end subroutine print_array_iint16
+      module subroutine print_array_iint32(array, unit, fmt, delimiter, brief)
+        integer(int32), intent(in) :: array(:, :)
+        integer, intent(in), optional :: unit
+        character(len=*), intent(in), optional :: fmt
+        character(len=1), intent(in), optional :: delimiter
+        logical, intent(in), optional :: brief
+      end subroutine print_array_iint32
+      module subroutine print_array_iint64(array, unit, fmt, delimiter, brief)
+        integer(int64), intent(in) :: array(:, :)
+        integer, intent(in), optional :: unit
+        character(len=*), intent(in), optional :: fmt
+        character(len=1), intent(in), optional :: delimiter
+        logical, intent(in), optional :: brief
+      end subroutine print_array_iint64
+      module subroutine print_array_csp(array, unit, fmt, delimiter, brief)
+        complex(sp), intent(in) :: array(:, :)
+        integer, intent(in), optional :: unit
+        character(len=*), intent(in), optional :: fmt
+        character(len=1), intent(in), optional :: delimiter
+        logical, intent(in), optional :: brief
+      end subroutine print_array_csp
+      module subroutine print_array_cdp(array, unit, fmt, delimiter, brief)
+        complex(dp), intent(in) :: array(:, :)
+        integer, intent(in), optional :: unit
+        character(len=*), intent(in), optional :: fmt
+        character(len=1), intent(in), optional :: delimiter
+        logical, intent(in), optional :: brief
+      end subroutine print_array_cdp
   end interface
 
 contains
