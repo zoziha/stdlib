@@ -83,9 +83,7 @@ public :: wait
 public :: kill
 public :: elapsed
 public :: is_windows
-
-public :: get_console_width
-
+     
 !! version: experimental
 !!
 !! Tests if a given path matches an existing directory.
@@ -549,17 +547,8 @@ interface
         !> Return a process ID
         integer(process_ID) :: ID
     end function process_get_ID
-
-    !! Returns the width of the console window.
-    !!
-    !! ### Returns:
-    !! - **integer**: The width of the console window.
-    !!
-    !! Note: This function performs a detailed runtime inspection, so it has non-negligible overhead.
-    integer function get_console_width() bind(C)
-    end function get_console_width
-
-end interface
+    
+end interface 
 
 contains
 
