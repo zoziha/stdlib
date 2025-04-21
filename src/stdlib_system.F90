@@ -1,9 +1,7 @@
 module stdlib_system
 use, intrinsic :: iso_c_binding, only : c_int, c_long, c_ptr, c_null_ptr, c_int64_t, c_size_t, &
     c_f_pointer
-use stdlib_kinds, only: int64, dp, c_bool, c_char
-use stdlib_strings, only: to_c_char
-use stdlib_error, only: state_type, STDLIB_SUCCESS, STDLIB_FS_ERROR
+use stdlib_kinds, only: int64, dp, c_char
 implicit none
 private
 public :: sleep
@@ -83,42 +81,7 @@ public :: wait
 public :: kill
 public :: elapsed
 public :: is_windows
-
-public :: get_terminal_size
-
-!! version: experimental
-!!
-!! Tests if a given path matches an existing directory.
-!! ([Specification](../page/specs/stdlib_system.html#is_directory-test-if-a-path-is-a-directory))
-!!
-!!### Summary
-!! Function to evaluate whether a specified path corresponds to an existing directory.
-!!
-!!### Description
-!! 
-!! This function checks if a given file system path is a directory. It is cross-platform and utilizes
-!! native system calls. It supports common operating systems such as Linux, macOS, 
-!! Windows, and various UNIX-like environments. On unsupported operating systems, the function will return `.false.`.
-!!
-public :: is_directory
-
-!! version: experimental
-!!
-!! Deletes a specified file from the filesystem.
-!! ([Specification](../page/specs/stdlib_system.html#delete_file-delete-a-file))
-!!
-!!### Summary
-!! Subroutine to safely delete a file from the filesystem. It handles errors gracefully using the library's `state_type`.
-!!
-!!### Description
-!! 
-!! This subroutine deletes a specified file. If the file is a directory or inaccessible, an error is raised.
-!! If the file does not exist, a warning is returned, but no error state. Errors are handled using the 
-!! library's `state_type` mechanism. If the optional `err` argument is not provided, exceptions trigger 
-!! an `error stop`.
-!!
-public :: delete_file
-
+     
 !! version: experimental
 !!
 !! Returns the file path of the null device, which discards all data written to it.
@@ -549,38 +512,10 @@ interface
         !> Return a process ID
         integer(process_ID) :: ID
     end function process_get_ID
-
-end interface
+    
+end interface 
 
 contains
-
-!! Returns terminal window size in characters.
-!!
-!! ### Returns:
-!! - **columns**: The number of columns in the terminal window.
-!! - **lines**: The number of lines in the terminal window.
-!! - **err**: An optional error object.
-!!
-!! Note: This function performs a detailed runtime inspection, so it has non-negligible overhead.
-subroutine get_terminal_size(columns, lines, err)
-    integer, intent(out) :: columns, lines
-    type(state_type), intent(out), optional :: err
-    type(state_type) :: err0
-    integer :: stat
-    interface
-        subroutine c_get_terminal_size(columns, lines, stat) bind(C, name="get_terminal_size")
-            integer, intent(out) :: columns, lines, stat
-        end subroutine c_get_terminal_size
-    end interface
-
-    call c_get_terminal_size(columns, lines, stat)
-    if (stat /= 0) then
-        err0 = state_type('get_terminal_size',STDLIB_FS_ERROR,'Failed to get terminal size,','stat =',stat)
-        call err0%handle(err)
-    end if
-
-end subroutine get_terminal_size
-
 
 integer function get_runtime_os() result(os)
     !! The function identifies the OS by inspecting environment variables and filesystem attributes.
@@ -701,25 +636,6 @@ pure function OS_NAME(os)
     end select
 end function OS_NAME
 
-!! Tests if a given path matches an existing directory.
-!! Cross-platform implementation without using external C libraries.
-logical function is_directory(path)
-    !> Input path to evaluate
-    character(*), intent(in) :: path
-
-    interface
-        
-        logical(c_bool) function stdlib_is_directory(path) bind(c, name="stdlib_is_directory")
-            import c_bool, c_char
-            character(kind=c_char), intent(in) :: path(*)
-        end function stdlib_is_directory
-
-    end interface        
-    
-    is_directory = logical(stdlib_is_directory(to_c_char(trim(path))))
-    
-end function is_directory
-
 !> Returns the file path of the null device for the current operating system.
 !>
 !> Version: Helper function.
@@ -754,50 +670,5 @@ function null_device() result(path)
     end do
         
 end function null_device
-
-!> Delete a file at the given path.
-subroutine delete_file(path, err)
-    character(*), intent(in) :: path
-    type(state_type), optional, intent(out) :: err
-
-    !> Local variables
-    integer :: file_unit, ios        
-    type(state_type) :: err0
-    character(len=512) :: msg
-    logical :: file_exists
-
-    ! Verify the file is not a directory.     
-    if (is_directory(path)) then 
-        ! If unable to open, assume it's a directory or inaccessible
-        err0 = state_type(STDLIB_FS_ERROR,'Cannot delete',path,'- is a directory')
-        call err0%handle(err)
-        return            
-    end if
-
-    ! Check if the path exists
-    ! Because Intel compilers return .false. if path is a directory, this must be tested
-    ! _after_ the directory test
-    inquire(file=path, exist=file_exists)
-    if (.not. file_exists) then
-        ! File does not exist, return non-error status
-        err0 = state_type(STDLIB_SUCCESS,path,' not deleted: file does not exist')
-        call err0%handle(err)
-        return
-    endif
-
-    ! Close and delete the file
-    open(newunit=file_unit, file=path, status='old', iostat=ios, iomsg=msg)
-    if (ios /= 0) then
-        err0 = state_type(STDLIB_FS_ERROR,'Cannot delete',path,'-',msg)
-        call err0%handle(err)
-        return              
-    end if        
-    close(unit=file_unit, status='delete', iostat=ios, iomsg=msg)
-    if (ios /= 0) then
-        err0 = state_type(STDLIB_FS_ERROR,'Cannot delete',path,'-',msg)
-        call err0%handle(err)
-        return              
-    end if
-end subroutine delete_file
 
 end module stdlib_system
