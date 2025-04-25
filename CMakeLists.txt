@@ -42,6 +42,10 @@ if(NOT DEFINED CMAKE_MAXIMUM_RANK)
   set(CMAKE_MAXIMUM_RANK 4 CACHE STRING "Maximum array rank for generated procedures")
 endif()
 
+if(CMAKE_MAXIMUM_RANK LESS 4 OR CMAKE_MAXIMUM_RANK GREATER 15)
+  message(FATAL_ERROR "CMAKE_MAXIMUM_RANK must be between 4 and 15")
+endif()
+
 # --- find preprocessor
 find_program(FYPP fypp)
 if(NOT FYPP)
