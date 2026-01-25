@@ -33,7 +33,9 @@ function(resolve_pc_libs out_var root_target)
             endif()
         else()
             # Plain linker flag or library
-            list(APPEND _result "${target}")
+            if(NOT "${target}" IN_LIST _result)
+                list(APPEND _result "${target}")
+            endif()
         endif()
 
         set(_result "${_result}" PARENT_SCOPE)
@@ -43,7 +45,7 @@ function(resolve_pc_libs out_var root_target)
 
     # Reverse the order
     list(REVERSE _result)
-    #list(REMOVE_DUPLICATES _result)
+    list(REMOVE_DUPLICATES _result)
 
     set(${out_var} "${_result}" PARENT_SCOPE)
 endfunction()
