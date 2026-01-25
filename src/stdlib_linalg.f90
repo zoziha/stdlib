@@ -18,6 +18,7 @@ module stdlib_linalg
   public :: eigh
   public :: eigvals
   public :: eigvalsh
+  public :: expm, matrix_exp
   public :: eye
   public :: inv
   public :: invert
@@ -27,12 +28,15 @@ module stdlib_linalg
   public :: operator(.pinv.)
   public :: lstsq
   public :: lstsq_space
+  public :: constrained_lstsq
+  public :: constrained_lstsq_space
   public :: norm
   public :: mnorm
   public :: get_norm
   public :: solve
   public :: solve_lu  
   public :: solve_lstsq
+  public :: solve_constrained_lstsq
   public :: trace
   public :: svd
   public :: svdvals
@@ -238,74 +242,74 @@ module stdlib_linalg
       !
       ! Vector to matrix
       !
-      module pure function diag_rsp(v) result(res)
+      pure module function diag_rsp(v) result(res)
         real(sp), intent(in) :: v(:)
         real(sp) :: res(size(v),size(v))
       end function diag_rsp
-      module pure function diag_rdp(v) result(res)
+      pure module function diag_rdp(v) result(res)
         real(dp), intent(in) :: v(:)
         real(dp) :: res(size(v),size(v))
       end function diag_rdp
-      module pure function diag_csp(v) result(res)
+      pure module function diag_csp(v) result(res)
         complex(sp), intent(in) :: v(:)
         complex(sp) :: res(size(v),size(v))
       end function diag_csp
-      module pure function diag_cdp(v) result(res)
+      pure module function diag_cdp(v) result(res)
         complex(dp), intent(in) :: v(:)
         complex(dp) :: res(size(v),size(v))
       end function diag_cdp
-      module pure function diag_iint8(v) result(res)
+      pure module function diag_iint8(v) result(res)
         integer(int8), intent(in) :: v(:)
         integer(int8) :: res(size(v),size(v))
       end function diag_iint8
-      module pure function diag_iint16(v) result(res)
+      pure module function diag_iint16(v) result(res)
         integer(int16), intent(in) :: v(:)
         integer(int16) :: res(size(v),size(v))
       end function diag_iint16
-      module pure function diag_iint32(v) result(res)
+      pure module function diag_iint32(v) result(res)
         integer(int32), intent(in) :: v(:)
         integer(int32) :: res(size(v),size(v))
       end function diag_iint32
-      module pure function diag_iint64(v) result(res)
+      pure module function diag_iint64(v) result(res)
         integer(int64), intent(in) :: v(:)
         integer(int64) :: res(size(v),size(v))
       end function diag_iint64
-      module pure function diag_rsp_k(v,k) result(res)
+      pure module function diag_rsp_k(v,k) result(res)
         real(sp), intent(in) :: v(:)
         integer, intent(in) :: k
         real(sp) :: res(size(v)+abs(k),size(v)+abs(k))
       end function diag_rsp_k
-      module pure function diag_rdp_k(v,k) result(res)
+      pure module function diag_rdp_k(v,k) result(res)
         real(dp), intent(in) :: v(:)
         integer, intent(in) :: k
         real(dp) :: res(size(v)+abs(k),size(v)+abs(k))
       end function diag_rdp_k
-      module pure function diag_csp_k(v,k) result(res)
+      pure module function diag_csp_k(v,k) result(res)
         complex(sp), intent(in) :: v(:)
         integer, intent(in) :: k
         complex(sp) :: res(size(v)+abs(k),size(v)+abs(k))
       end function diag_csp_k
-      module pure function diag_cdp_k(v,k) result(res)
+      pure module function diag_cdp_k(v,k) result(res)
         complex(dp), intent(in) :: v(:)
         integer, intent(in) :: k
         complex(dp) :: res(size(v)+abs(k),size(v)+abs(k))
       end function diag_cdp_k
-      module pure function diag_iint8_k(v,k) result(res)
+      pure module function diag_iint8_k(v,k) result(res)
         integer(int8), intent(in) :: v(:)
         integer, intent(in) :: k
         integer(int8) :: res(size(v)+abs(k),size(v)+abs(k))
       end function diag_iint8_k
-      module pure function diag_iint16_k(v,k) result(res)
+      pure module function diag_iint16_k(v,k) result(res)
         integer(int16), intent(in) :: v(:)
         integer, intent(in) :: k
         integer(int16) :: res(size(v)+abs(k),size(v)+abs(k))
       end function diag_iint16_k
-      module pure function diag_iint32_k(v,k) result(res)
+      pure module function diag_iint32_k(v,k) result(res)
         integer(int32), intent(in) :: v(:)
         integer, intent(in) :: k
         integer(int32) :: res(size(v)+abs(k),size(v)+abs(k))
       end function diag_iint32_k
-      module pure function diag_iint64_k(v,k) result(res)
+      pure module function diag_iint64_k(v,k) result(res)
         integer(int64), intent(in) :: v(:)
         integer, intent(in) :: k
         integer(int64) :: res(size(v)+abs(k),size(v)+abs(k))
@@ -314,74 +318,74 @@ module stdlib_linalg
       !
       ! Matrix to vector
       !
-      module pure function diag_rsp_mat(A) result(res)
+      pure module function diag_rsp_mat(A) result(res)
         real(sp), intent(in) :: A(:,:)
         real(sp) :: res(minval(shape(A)))
       end function diag_rsp_mat
-      module pure function diag_rdp_mat(A) result(res)
+      pure module function diag_rdp_mat(A) result(res)
         real(dp), intent(in) :: A(:,:)
         real(dp) :: res(minval(shape(A)))
       end function diag_rdp_mat
-      module pure function diag_csp_mat(A) result(res)
+      pure module function diag_csp_mat(A) result(res)
         complex(sp), intent(in) :: A(:,:)
         complex(sp) :: res(minval(shape(A)))
       end function diag_csp_mat
-      module pure function diag_cdp_mat(A) result(res)
+      pure module function diag_cdp_mat(A) result(res)
         complex(dp), intent(in) :: A(:,:)
         complex(dp) :: res(minval(shape(A)))
       end function diag_cdp_mat
-      module pure function diag_iint8_mat(A) result(res)
+      pure module function diag_iint8_mat(A) result(res)
         integer(int8), intent(in) :: A(:,:)
         integer(int8) :: res(minval(shape(A)))
       end function diag_iint8_mat
-      module pure function diag_iint16_mat(A) result(res)
+      pure module function diag_iint16_mat(A) result(res)
         integer(int16), intent(in) :: A(:,:)
         integer(int16) :: res(minval(shape(A)))
       end function diag_iint16_mat
-      module pure function diag_iint32_mat(A) result(res)
+      pure module function diag_iint32_mat(A) result(res)
         integer(int32), intent(in) :: A(:,:)
         integer(int32) :: res(minval(shape(A)))
       end function diag_iint32_mat
-      module pure function diag_iint64_mat(A) result(res)
+      pure module function diag_iint64_mat(A) result(res)
         integer(int64), intent(in) :: A(:,:)
         integer(int64) :: res(minval(shape(A)))
       end function diag_iint64_mat
-      module pure function diag_rsp_mat_k(A,k) result(res)
+      pure module function diag_rsp_mat_k(A,k) result(res)
         real(sp), intent(in) :: A(:,:)
         integer, intent(in) :: k
         real(sp) :: res(minval(shape(A))-abs(k))
       end function diag_rsp_mat_k
-      module pure function diag_rdp_mat_k(A,k) result(res)
+      pure module function diag_rdp_mat_k(A,k) result(res)
         real(dp), intent(in) :: A(:,:)
         integer, intent(in) :: k
         real(dp) :: res(minval(shape(A))-abs(k))
       end function diag_rdp_mat_k
-      module pure function diag_csp_mat_k(A,k) result(res)
+      pure module function diag_csp_mat_k(A,k) result(res)
         complex(sp), intent(in) :: A(:,:)
         integer, intent(in) :: k
         complex(sp) :: res(minval(shape(A))-abs(k))
       end function diag_csp_mat_k
-      module pure function diag_cdp_mat_k(A,k) result(res)
+      pure module function diag_cdp_mat_k(A,k) result(res)
         complex(dp), intent(in) :: A(:,:)
         integer, intent(in) :: k
         complex(dp) :: res(minval(shape(A))-abs(k))
       end function diag_cdp_mat_k
-      module pure function diag_iint8_mat_k(A,k) result(res)
+      pure module function diag_iint8_mat_k(A,k) result(res)
         integer(int8), intent(in) :: A(:,:)
         integer, intent(in) :: k
         integer(int8) :: res(minval(shape(A))-abs(k))
       end function diag_iint8_mat_k
-      module pure function diag_iint16_mat_k(A,k) result(res)
+      pure module function diag_iint16_mat_k(A,k) result(res)
         integer(int16), intent(in) :: A(:,:)
         integer, intent(in) :: k
         integer(int16) :: res(minval(shape(A))-abs(k))
       end function diag_iint16_mat_k
-      module pure function diag_iint32_mat_k(A,k) result(res)
+      pure module function diag_iint32_mat_k(A,k) result(res)
         integer(int32), intent(in) :: A(:,:)
         integer, intent(in) :: k
         integer(int32) :: res(minval(shape(A))-abs(k))
       end function diag_iint32_mat_k
-      module pure function diag_iint64_mat_k(A,k) result(res)
+      pure module function diag_iint64_mat_k(A,k) result(res)
         integer(int64), intent(in) :: A(:,:)
         integer, intent(in) :: k
         integer(int64) :: res(minval(shape(A))-abs(k))
@@ -1478,6 +1482,202 @@ module stdlib_linalg
       end subroutine stdlib_linalg_z_lstsq_space_many
   end interface lstsq_space
 
+  ! Equality-constrained least-squares, i.e. minimize the sum of squares
+  ! cost || Ax - b ||^2 subject to the equality constraint Cx = d.
+  interface constrained_lstsq
+    !!  version: experimental
+    !!
+    !!  Computes the solution of the equality constrained least-squares problem
+    !!
+    !!  minimize     || Ax - b ||²
+    !!  subject to      Cx = d
+    !!
+    !!  where A is of size `m x n` and C of size `p x n`.
+    !!  ([Specification](../page/specs/stdlib_linalg.html#constrained-lstsq))
+    !!
+    !!  ### Description
+    !!
+    !!  This interface provides methods for computing the solution of an equality-constrained
+    !!  least-squares problem using a function. Supported data types include `real` and
+    !!  `complex`. 
+    !!
+    !!  @note The solution is based on LAPACK's `*GGLSE` methods.
+    module function stdlib_linalg_s_constrained_lstsq(A, b, C, d, overwrite_matrices, err) result(x)
+        !> Least-squares cost
+        real(sp), intent(inout), target :: A(:, :), b(:)
+        !> Equality constraints.
+        real(sp), intent(inout), target :: C(:, :), d(:)
+        !> [optional] Can A and C be overwritten?
+        logical(lk), optional, intent(in) :: overwrite_matrices
+        !> [optional] State return flag.
+        type(linalg_state_type), optional, intent(out) :: err
+        !> Solution of the constrained least-squares problem.
+        real(sp), allocatable, target :: x(:)
+    end function stdlib_linalg_s_constrained_lstsq
+    module function stdlib_linalg_d_constrained_lstsq(A, b, C, d, overwrite_matrices, err) result(x)
+        !> Least-squares cost
+        real(dp), intent(inout), target :: A(:, :), b(:)
+        !> Equality constraints.
+        real(dp), intent(inout), target :: C(:, :), d(:)
+        !> [optional] Can A and C be overwritten?
+        logical(lk), optional, intent(in) :: overwrite_matrices
+        !> [optional] State return flag.
+        type(linalg_state_type), optional, intent(out) :: err
+        !> Solution of the constrained least-squares problem.
+        real(dp), allocatable, target :: x(:)
+    end function stdlib_linalg_d_constrained_lstsq
+    module function stdlib_linalg_c_constrained_lstsq(A, b, C, d, overwrite_matrices, err) result(x)
+        !> Least-squares cost
+        complex(sp), intent(inout), target :: A(:, :), b(:)
+        !> Equality constraints.
+        complex(sp), intent(inout), target :: C(:, :), d(:)
+        !> [optional] Can A and C be overwritten?
+        logical(lk), optional, intent(in) :: overwrite_matrices
+        !> [optional] State return flag.
+        type(linalg_state_type), optional, intent(out) :: err
+        !> Solution of the constrained least-squares problem.
+        complex(sp), allocatable, target :: x(:)
+    end function stdlib_linalg_c_constrained_lstsq
+    module function stdlib_linalg_z_constrained_lstsq(A, b, C, d, overwrite_matrices, err) result(x)
+        !> Least-squares cost
+        complex(dp), intent(inout), target :: A(:, :), b(:)
+        !> Equality constraints.
+        complex(dp), intent(inout), target :: C(:, :), d(:)
+        !> [optional] Can A and C be overwritten?
+        logical(lk), optional, intent(in) :: overwrite_matrices
+        !> [optional] State return flag.
+        type(linalg_state_type), optional, intent(out) :: err
+        !> Solution of the constrained least-squares problem.
+        complex(dp), allocatable, target :: x(:)
+    end function stdlib_linalg_z_constrained_lstsq
+  end interface
+
+  ! Equality-constrained least-squares, i.e. minimize the sum of squares
+  ! cost || Ax - b ||^2 subject to the equality constraint Cx = d.
+  interface solve_constrained_lstsq
+    !!  version: experimental
+    !!
+    !!  Computes the solution of the equality constrained least-squares problem
+    !!
+    !!  minimize     || Ax - b ||²
+    !!  subject to      Cx = d
+    !!
+    !!  where A is of size `m x n` and C of size `p x n`.
+    !!  ([Specification](../page/specs/stdlib_linalg.html#solve-constrained-lstsq))
+    !!
+    !!  ### Description
+    !!
+    !!  This interface provides methods for computing the solution of an equality-constrained
+    !!  least-squares problem using a subroutine. Supported data types include `real` and
+    !!  `complex`. If a pre-allocated workspace is provided, no internal memory allocation takes
+    !!  place.
+    !!
+    !!  @note The solution is based on LAPACK's `*GGLSE` methods.
+    module subroutine stdlib_linalg_s_solve_constrained_lstsq(A, b, C, d, x, storage, overwrite_matrices, err)
+        !> Least-squares cost.
+        real(sp), intent(inout), target :: A(:, :), b(:)
+        !> Equality constraints.
+        real(sp), intent(inout), target :: C(:, :), d(:)
+        !> Solution vector.
+        real(sp), intent(out) :: x(:)
+        !> [optional] Storage.
+        real(sp), optional, intent(out), target :: storage(:)
+        !> [optional] Can A and C be overwritten?
+        logical(lk), optional, intent(in) :: overwrite_matrices
+        !> [optional] State return flag. On error if not requested, the code stops.
+        type(linalg_state_type), optional, intent(out) :: err
+    end subroutine stdlib_linalg_s_solve_constrained_lstsq
+    module subroutine stdlib_linalg_d_solve_constrained_lstsq(A, b, C, d, x, storage, overwrite_matrices, err)
+        !> Least-squares cost.
+        real(dp), intent(inout), target :: A(:, :), b(:)
+        !> Equality constraints.
+        real(dp), intent(inout), target :: C(:, :), d(:)
+        !> Solution vector.
+        real(dp), intent(out) :: x(:)
+        !> [optional] Storage.
+        real(dp), optional, intent(out), target :: storage(:)
+        !> [optional] Can A and C be overwritten?
+        logical(lk), optional, intent(in) :: overwrite_matrices
+        !> [optional] State return flag. On error if not requested, the code stops.
+        type(linalg_state_type), optional, intent(out) :: err
+    end subroutine stdlib_linalg_d_solve_constrained_lstsq
+    module subroutine stdlib_linalg_c_solve_constrained_lstsq(A, b, C, d, x, storage, overwrite_matrices, err)
+        !> Least-squares cost.
+        complex(sp), intent(inout), target :: A(:, :), b(:)
+        !> Equality constraints.
+        complex(sp), intent(inout), target :: C(:, :), d(:)
+        !> Solution vector.
+        complex(sp), intent(out) :: x(:)
+        !> [optional] Storage.
+        complex(sp), optional, intent(out), target :: storage(:)
+        !> [optional] Can A and C be overwritten?
+        logical(lk), optional, intent(in) :: overwrite_matrices
+        !> [optional] State return flag. On error if not requested, the code stops.
+        type(linalg_state_type), optional, intent(out) :: err
+    end subroutine stdlib_linalg_c_solve_constrained_lstsq
+    module subroutine stdlib_linalg_z_solve_constrained_lstsq(A, b, C, d, x, storage, overwrite_matrices, err)
+        !> Least-squares cost.
+        complex(dp), intent(inout), target :: A(:, :), b(:)
+        !> Equality constraints.
+        complex(dp), intent(inout), target :: C(:, :), d(:)
+        !> Solution vector.
+        complex(dp), intent(out) :: x(:)
+        !> [optional] Storage.
+        complex(dp), optional, intent(out), target :: storage(:)
+        !> [optional] Can A and C be overwritten?
+        logical(lk), optional, intent(in) :: overwrite_matrices
+        !> [optional] State return flag. On error if not requested, the code stops.
+        type(linalg_state_type), optional, intent(out) :: err
+    end subroutine stdlib_linalg_z_solve_constrained_lstsq
+  end interface
+
+  interface constrained_lstsq_space
+    !!  version: experimental
+    !!
+    !!  Computes the size of the workspace required by the constrained least-squares solver.
+    !!  ([Specification](../page/specs/stdlib_linalg.html#constrained-lstsq-space))
+    !!
+    !!  ### Description
+    !!
+    !!  This interface provides the size of the workspace array required by the constrained
+    !!  least-squares solver. It can be used to pre-allocate the working array in
+    !!  case several repeated solutions to a same system are sought. If pre-allocated,
+    !!  working arrays are provided, no internal allocation will take place.
+    !!
+    module subroutine stdlib_linalg_s_constrained_lstsq_space(A, C, lwork, err)
+        !> Least-squares cost.
+        real(sp), intent(in) :: A(:, :)
+        !> Equality constraints.
+        real(sp), intent(in) :: C(:, :)
+        integer(ilp), intent(out) :: lwork
+        type(linalg_state_type), optional, intent(out) :: err
+    end subroutine stdlib_linalg_s_constrained_lstsq_space
+    module subroutine stdlib_linalg_d_constrained_lstsq_space(A, C, lwork, err)
+        !> Least-squares cost.
+        real(dp), intent(in) :: A(:, :)
+        !> Equality constraints.
+        real(dp), intent(in) :: C(:, :)
+        integer(ilp), intent(out) :: lwork
+        type(linalg_state_type), optional, intent(out) :: err
+    end subroutine stdlib_linalg_d_constrained_lstsq_space
+    module subroutine stdlib_linalg_c_constrained_lstsq_space(A, C, lwork, err)
+        !> Least-squares cost.
+        complex(sp), intent(in) :: A(:, :)
+        !> Equality constraints.
+        complex(sp), intent(in) :: C(:, :)
+        integer(ilp), intent(out) :: lwork
+        type(linalg_state_type), optional, intent(out) :: err
+    end subroutine stdlib_linalg_c_constrained_lstsq_space
+    module subroutine stdlib_linalg_z_constrained_lstsq_space(A, C, lwork, err)
+        !> Least-squares cost.
+        complex(dp), intent(in) :: A(:, :)
+        !> Equality constraints.
+        complex(dp), intent(in) :: C(:, :)
+        integer(ilp), intent(out) :: lwork
+        type(linalg_state_type), optional, intent(out) :: err
+    end subroutine stdlib_linalg_z_constrained_lstsq_space
+  end interface
+
   ! QR factorization of rank-2 array A
   interface qr
     !! version: experimental 
@@ -1515,6 +1715,23 @@ module stdlib_linalg
          !> [optional] state return flag. On error if not requested, the code will stop
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine stdlib_linalg_s_qr
+
+      pure module subroutine stdlib_linalg_s_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+          !> Input matrix a[m, n]
+          real(sp), intent(inout), target :: a(:, :)
+          !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
+          real(sp), intent(out), contiguous, target :: q(:, :)
+          !> Upper triangular matrix R ([m, n] or [k, n] if reduced)
+          real(sp), intent(out), contiguous, target :: r(:, :)
+          !> Pivots.
+          integer(ilp), intent(out) :: pivots(:)
+          !> [optional] Can A data be overwritten and destroyed?
+          logical(lk), optional, intent(in) :: overwrite_a
+          !> [optional] Provide pre-allocated workspace, size to be checked with qr_space.
+          real(sp), intent(out), optional, target :: storage(:)
+          !> [optional] state return flag. On error if not requested, the code will stop.
+          type(linalg_state_type), optional, intent(out) :: err
+      end subroutine stdlib_linalg_s_pivoting_qr
       pure module subroutine stdlib_linalg_d_qr(a,q,r,overwrite_a,storage,err) 
          !> Input matrix a[m,n]
          real(dp), intent(inout), target :: a(:,:)
@@ -1529,6 +1746,23 @@ module stdlib_linalg
          !> [optional] state return flag. On error if not requested, the code will stop
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine stdlib_linalg_d_qr
+
+      pure module subroutine stdlib_linalg_d_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+          !> Input matrix a[m, n]
+          real(dp), intent(inout), target :: a(:, :)
+          !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
+          real(dp), intent(out), contiguous, target :: q(:, :)
+          !> Upper triangular matrix R ([m, n] or [k, n] if reduced)
+          real(dp), intent(out), contiguous, target :: r(:, :)
+          !> Pivots.
+          integer(ilp), intent(out) :: pivots(:)
+          !> [optional] Can A data be overwritten and destroyed?
+          logical(lk), optional, intent(in) :: overwrite_a
+          !> [optional] Provide pre-allocated workspace, size to be checked with qr_space.
+          real(dp), intent(out), optional, target :: storage(:)
+          !> [optional] state return flag. On error if not requested, the code will stop.
+          type(linalg_state_type), optional, intent(out) :: err
+      end subroutine stdlib_linalg_d_pivoting_qr
       pure module subroutine stdlib_linalg_c_qr(a,q,r,overwrite_a,storage,err) 
          !> Input matrix a[m,n]
          complex(sp), intent(inout), target :: a(:,:)
@@ -1543,6 +1777,23 @@ module stdlib_linalg
          !> [optional] state return flag. On error if not requested, the code will stop
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine stdlib_linalg_c_qr
+
+      pure module subroutine stdlib_linalg_c_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+          !> Input matrix a[m, n]
+          complex(sp), intent(inout), target :: a(:, :)
+          !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
+          complex(sp), intent(out), contiguous, target :: q(:, :)
+          !> Upper triangular matrix R ([m, n] or [k, n] if reduced)
+          complex(sp), intent(out), contiguous, target :: r(:, :)
+          !> Pivots.
+          integer(ilp), intent(out) :: pivots(:)
+          !> [optional] Can A data be overwritten and destroyed?
+          logical(lk), optional, intent(in) :: overwrite_a
+          !> [optional] Provide pre-allocated workspace, size to be checked with qr_space.
+          complex(sp), intent(out), optional, target :: storage(:)
+          !> [optional] state return flag. On error if not requested, the code will stop.
+          type(linalg_state_type), optional, intent(out) :: err
+      end subroutine stdlib_linalg_c_pivoting_qr
       pure module subroutine stdlib_linalg_z_qr(a,q,r,overwrite_a,storage,err) 
          !> Input matrix a[m,n]
          complex(dp), intent(inout), target :: a(:,:)
@@ -1557,6 +1808,23 @@ module stdlib_linalg
          !> [optional] state return flag. On error if not requested, the code will stop
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine stdlib_linalg_z_qr
+
+      pure module subroutine stdlib_linalg_z_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+          !> Input matrix a[m, n]
+          complex(dp), intent(inout), target :: a(:, :)
+          !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
+          complex(dp), intent(out), contiguous, target :: q(:, :)
+          !> Upper triangular matrix R ([m, n] or [k, n] if reduced)
+          complex(dp), intent(out), contiguous, target :: r(:, :)
+          !> Pivots.
+          integer(ilp), intent(out) :: pivots(:)
+          !> [optional] Can A data be overwritten and destroyed?
+          logical(lk), optional, intent(in) :: overwrite_a
+          !> [optional] Provide pre-allocated workspace, size to be checked with qr_space.
+          complex(dp), intent(out), optional, target :: storage(:)
+          !> [optional] state return flag. On error if not requested, the code will stop.
+          type(linalg_state_type), optional, intent(out) :: err
+      end subroutine stdlib_linalg_z_pivoting_qr
   end interface qr
 
   ! Return the working array space required by the QR factorization solver
@@ -1582,6 +1850,17 @@ module stdlib_linalg
          !> State return flag. Returns an error if the query failed
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine get_qr_s_workspace
+
+      pure module subroutine get_pivoting_qr_s_workspace(a, lwork, pivoting, err)
+        !> Input matrix a[m, n]
+        real(sp), intent(in), target :: a(:, :)
+        !> Minimum workspace size for both operations.
+        integer(ilp), intent(out) :: lwork
+        !> Pivoting flag.
+        logical(lk), intent(in) :: pivoting
+        !> State return flag. Returns an error if the query failed.
+        type(linalg_state_type), optional, intent(out) :: err
+      end subroutine get_pivoting_qr_s_workspace
       pure module subroutine get_qr_d_workspace(a,lwork,err)
          !> Input matrix a[m,n]
          real(dp), intent(in), target :: a(:,:)
@@ -1590,6 +1869,17 @@ module stdlib_linalg
          !> State return flag. Returns an error if the query failed
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine get_qr_d_workspace
+
+      pure module subroutine get_pivoting_qr_d_workspace(a, lwork, pivoting, err)
+        !> Input matrix a[m, n]
+        real(dp), intent(in), target :: a(:, :)
+        !> Minimum workspace size for both operations.
+        integer(ilp), intent(out) :: lwork
+        !> Pivoting flag.
+        logical(lk), intent(in) :: pivoting
+        !> State return flag. Returns an error if the query failed.
+        type(linalg_state_type), optional, intent(out) :: err
+      end subroutine get_pivoting_qr_d_workspace
       pure module subroutine get_qr_c_workspace(a,lwork,err)
          !> Input matrix a[m,n]
          complex(sp), intent(in), target :: a(:,:)
@@ -1598,6 +1888,17 @@ module stdlib_linalg
          !> State return flag. Returns an error if the query failed
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine get_qr_c_workspace
+
+      pure module subroutine get_pivoting_qr_c_workspace(a, lwork, pivoting, err)
+        !> Input matrix a[m, n]
+        complex(sp), intent(in), target :: a(:, :)
+        !> Minimum workspace size for both operations.
+        integer(ilp), intent(out) :: lwork
+        !> Pivoting flag.
+        logical(lk), intent(in) :: pivoting
+        !> State return flag. Returns an error if the query failed.
+        type(linalg_state_type), optional, intent(out) :: err
+      end subroutine get_pivoting_qr_c_workspace
       pure module subroutine get_qr_z_workspace(a,lwork,err)
          !> Input matrix a[m,n]
          complex(dp), intent(in), target :: a(:,:)
@@ -1606,6 +1907,17 @@ module stdlib_linalg
          !> State return flag. Returns an error if the query failed
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine get_qr_z_workspace
+
+      pure module subroutine get_pivoting_qr_z_workspace(a, lwork, pivoting, err)
+        !> Input matrix a[m, n]
+        complex(dp), intent(in), target :: a(:, :)
+        !> Minimum workspace size for both operations.
+        integer(ilp), intent(out) :: lwork
+        !> Pivoting flag.
+        logical(lk), intent(in) :: pivoting
+        !> State return flag. Returns an error if the query failed.
+        type(linalg_state_type), optional, intent(out) :: err
+      end subroutine get_pivoting_qr_z_workspace
   end interface qr_space
  
   ! Schur decomposition of rank-2 array A
@@ -5593,6 +5905,184 @@ module stdlib_linalg
       end function matrix_norm_4D_to_2D_int_z
   end interface mnorm
 
+  !> Matrix exponential: function interface
+  interface expm
+    !! version : experimental
+    !!
+    !! Computes the exponential of a matrix using a rational Pade approximation.
+    !! ([Specification](../page/specs/stdlib_linalg.html#expm))
+    !!
+    !! ### Description
+    !!
+    !! This interface provides methods for computing the exponential of a matrix
+    !! represented as a standard Fortran rank-2 array. Supported data types include
+    !! `real` and `complex`.
+    !!
+    !! By default, the order of the Pade approximation is set to 10. It can be changed
+    !! via the `order` argument that must be non-negative.
+    !!
+    !! If the input matrix is non-square or the order of the Pade approximation is
+    !! negative, the function returns an error state.
+    !!
+    !! ### Example
+    !!
+    !! ```fortran
+    !!  real(dp) :: A(3, 3), E(3, 3)
+    !!
+    !!  A = reshape([1, 2, 3, 4, 5, 6, 7, 8, 9], [3, 3])
+    !!
+    !!  ! Default Pade approximation of the matrix exponential.
+    !!  E = expm(A)
+    !!
+    !!  ! Pade approximation with specified order.
+    !!  E = expm(A, order=12)
+    !! ```
+    !!
+    module function stdlib_linalg_s_expm_fun(A, order) result(E)
+        !> Input matrix a(:, :).
+        real(sp), intent(in) :: A(:, :)
+        !> [optional] Order of the Pade approximation (default `order=10`)
+        integer(ilp), optional, intent(in) :: order
+        !> Exponential of the input matrix E = exp(A).
+        real(sp), allocatable :: E(:, :)
+    end function stdlib_linalg_s_expm_fun
+    module function stdlib_linalg_d_expm_fun(A, order) result(E)
+        !> Input matrix a(:, :).
+        real(dp), intent(in) :: A(:, :)
+        !> [optional] Order of the Pade approximation (default `order=10`)
+        integer(ilp), optional, intent(in) :: order
+        !> Exponential of the input matrix E = exp(A).
+        real(dp), allocatable :: E(:, :)
+    end function stdlib_linalg_d_expm_fun
+    module function stdlib_linalg_c_expm_fun(A, order) result(E)
+        !> Input matrix a(:, :).
+        complex(sp), intent(in) :: A(:, :)
+        !> [optional] Order of the Pade approximation (default `order=10`)
+        integer(ilp), optional, intent(in) :: order
+        !> Exponential of the input matrix E = exp(A).
+        complex(sp), allocatable :: E(:, :)
+    end function stdlib_linalg_c_expm_fun
+    module function stdlib_linalg_z_expm_fun(A, order) result(E)
+        !> Input matrix a(:, :).
+        complex(dp), intent(in) :: A(:, :)
+        !> [optional] Order of the Pade approximation (default `order=10`)
+        integer(ilp), optional, intent(in) :: order
+        !> Exponential of the input matrix E = exp(A).
+        complex(dp), allocatable :: E(:, :)
+    end function stdlib_linalg_z_expm_fun
+  end interface expm
+
+  !> Matrix exponential: subroutine interface
+  interface matrix_exp
+    !! version : experimental
+    !!
+    !! Computes the exponential of a matrix using a rational Pade approximation.
+    !! ([Specification](../page/specs/stdlib_linalg.html#matrix_exp))
+    !!
+    !! ### Description
+    !!
+    !! This interface provides methods for computing the exponential of a matrix
+    !! represented as a standard Fortran rank-2 array. Supported data types include
+    !! `real` and `complex`.
+    !!
+    !! By default, the order of the Pade approximation is set to 10. It can be changed
+    !! via the `order` argument that must be non-negative.
+    !!
+    !! If the input matrix is non-square or the order of the Pade approximation is
+    !! negative, the function returns an error state.
+    !!
+    !! ### Example
+    !!
+    !! ```fortran
+    !!  real(dp) :: A(3, 3), E(3, 3)
+    !!
+    !!  A = reshape([1, 2, 3, 4, 5, 6, 7, 8, 9], [3, 3])
+    !!
+    !!  ! Default Pade approximation of the matrix exponential.
+    !!  call matrix_exp(A, E) ! Out-of-place
+    !!  ! call matrix_exp(A) for in-place computation.
+    !!
+    !!  ! Pade approximation with specified order.
+    !!  call matrix_exp(A, E, order=12)
+    !! ```
+    !!
+    module subroutine stdlib_linalg_s_expm_inplace(A, order, err)
+        !> Input matrix A(n, n) / Output matrix E = exp(A)
+        real(sp), intent(inout) :: A(:, :)
+        !> [optional] Order of the Pade approximation (default `order=10`)
+        integer(ilp), optional, intent(in) :: order
+        !> [optional] Error handling.
+        type(linalg_state_type), optional, intent(out) :: err
+    end subroutine stdlib_linalg_s_expm_inplace
+
+    module subroutine stdlib_linalg_s_expm(A, E, order, err)
+        !> Input matrix A(n, n)
+        real(sp), intent(in) :: A(:, :)
+        !> Output matrix exponential E = exp(A)
+        real(sp), intent(out) :: E(:, :)
+        !> [optional] Order of the Pade approximation (default `order=10`)
+        integer(ilp), optional, intent(in) :: order
+        !> [optional] Error handling.
+        type(linalg_state_type), optional, intent(out) :: err
+    end subroutine stdlib_linalg_s_expm
+    module subroutine stdlib_linalg_d_expm_inplace(A, order, err)
+        !> Input matrix A(n, n) / Output matrix E = exp(A)
+        real(dp), intent(inout) :: A(:, :)
+        !> [optional] Order of the Pade approximation (default `order=10`)
+        integer(ilp), optional, intent(in) :: order
+        !> [optional] Error handling.
+        type(linalg_state_type), optional, intent(out) :: err
+    end subroutine stdlib_linalg_d_expm_inplace
+
+    module subroutine stdlib_linalg_d_expm(A, E, order, err)
+        !> Input matrix A(n, n)
+        real(dp), intent(in) :: A(:, :)
+        !> Output matrix exponential E = exp(A)
+        real(dp), intent(out) :: E(:, :)
+        !> [optional] Order of the Pade approximation (default `order=10`)
+        integer(ilp), optional, intent(in) :: order
+        !> [optional] Error handling.
+        type(linalg_state_type), optional, intent(out) :: err
+    end subroutine stdlib_linalg_d_expm
+    module subroutine stdlib_linalg_c_expm_inplace(A, order, err)
+        !> Input matrix A(n, n) / Output matrix E = exp(A)
+        complex(sp), intent(inout) :: A(:, :)
+        !> [optional] Order of the Pade approximation (default `order=10`)
+        integer(ilp), optional, intent(in) :: order
+        !> [optional] Error handling.
+        type(linalg_state_type), optional, intent(out) :: err
+    end subroutine stdlib_linalg_c_expm_inplace
+
+    module subroutine stdlib_linalg_c_expm(A, E, order, err)
+        !> Input matrix A(n, n)
+        complex(sp), intent(in) :: A(:, :)
+        !> Output matrix exponential E = exp(A)
+        complex(sp), intent(out) :: E(:, :)
+        !> [optional] Order of the Pade approximation (default `order=10`)
+        integer(ilp), optional, intent(in) :: order
+        !> [optional] Error handling.
+        type(linalg_state_type), optional, intent(out) :: err
+    end subroutine stdlib_linalg_c_expm
+    module subroutine stdlib_linalg_z_expm_inplace(A, order, err)
+        !> Input matrix A(n, n) / Output matrix E = exp(A)
+        complex(dp), intent(inout) :: A(:, :)
+        !> [optional] Order of the Pade approximation (default `order=10`)
+        integer(ilp), optional, intent(in) :: order
+        !> [optional] Error handling.
+        type(linalg_state_type), optional, intent(out) :: err
+    end subroutine stdlib_linalg_z_expm_inplace
+
+    module subroutine stdlib_linalg_z_expm(A, E, order, err)
+        !> Input matrix A(n, n)
+        complex(dp), intent(in) :: A(:, :)
+        !> Output matrix exponential E = exp(A)
+        complex(dp), intent(out) :: E(:, :)
+        !> [optional] Order of the Pade approximation (default `order=10`)
+        integer(ilp), optional, intent(in) :: order
+        !> [optional] Error handling.
+        type(linalg_state_type), optional, intent(out) :: err
+    end subroutine stdlib_linalg_z_expm
+  end interface matrix_exp
 contains
 
 
