@@ -75,8 +75,19 @@ if(FIND_BLAS)
     message(STATUS "Detected Intel MKL environment")
   endif()
 
+  # For MinGW/MSYS2, prioritize dynamic libraries over static ones
+  if(MINGW)
+    set(ORIGINAL_CMAKE_FIND_LIBRARY_SUFFIXES ${CMAKE_FIND_LIBRARY_SUFFIXES})
+    set(CMAKE_FIND_LIBRARY_SUFFIXES .dll .dll.a .a)
+  endif()
+
   find_package(BLAS)
   find_package(LAPACK)
+
+  # Restore original library suffixes
+  if(MINGW)
+    set(CMAKE_FIND_LIBRARY_SUFFIXES ${ORIGINAL_CMAKE_FIND_LIBRARY_SUFFIXES})
+  endif()
 
   if(BLAS_FOUND AND LAPACK_FOUND)
     message(STATUS "Found external BLAS: ${BLAS_LIBRARIES}")
