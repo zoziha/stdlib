@@ -33,7 +33,21 @@ function(resolve_pc_libs out_var root_target)
             endif()
         else()
             # Plain linker flag or library
-            list(APPEND _result "${target}")
+            # Convert absolute paths to -l flags
+            set(processed_target "${target}")
+            
+            # Check if it's an absolute path to a library file
+            if(processed_target MATCHES "^(/|[A-Za-z]:).*\.(dll\.a|a|lib|so|dylib|dll)$")
+                # Extract library name
+                get_filename_component(lib_name "${processed_target}" NAME)
+                # Remove prefix and suffix
+                string(REGEX REPLACE "^lib" "" lib_name "${lib_name}")
+                string(REGEX REPLACE "\.(dll\.a|a|lib|so|dylib|dll)(\.[0-9]+)*$" "" lib_name "${lib_name}")
+                # Convert to -l flag
+                set(processed_target "-l${lib_name}")
+            endif()
+            
+            list(APPEND _result "${processed_target}")
         endif()
 
         set(_result "${_result}" PARENT_SCOPE)
